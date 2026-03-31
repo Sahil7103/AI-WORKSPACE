@@ -560,7 +560,14 @@ API_HOST=0.0.0.0
 API_PORT=8000
 DEBUG=False
 
-# OpenAI (for real LLM responses)
+# LLM generation endpoint
+LLM_API_URL=https://sk1354-llama3-career-api.hf.space/chat
+LLM_API_TOKEN=
+LLM_MODEL_LABEL=sk1354/llama3-career-api
+LLM_TIMEOUT_SECONDS=60
+LLM_MAX_TOKENS=1000
+
+# Optional OpenAI config (only if you later switch providers)
 OPENAI_API_KEY=sk-your-api-key-here
 OPENAI_MODEL=gpt-4-turbo-preview
 EMBEDDING_MODEL=text-embedding-3-small

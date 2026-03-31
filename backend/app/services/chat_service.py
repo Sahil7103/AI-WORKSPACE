@@ -2,8 +2,9 @@
 Chat session management service.
 """
 
+from datetime import datetime, UTC
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, func
 from typing import List, Optional
 
 from app.models import ChatSession, ChatMessage
@@ -23,6 +24,7 @@ class ChatService:
             session = ChatSession(
                 user_id=user_id,
                 session_name=session_name or "New Chat",
+                updated_at=datetime.now(UTC).replace(tzinfo=None),
             )
 
             db.add(session)
@@ -58,7 +60,7 @@ class ChatService:
             stmt = (
                 select(ChatSession)
                 .where(ChatSession.user_id == user_id)
-                .order_by(ChatSession.updated_at.desc())
+                .order_by(func.coalesce(ChatSession.updated_at, ChatSession.created_at).desc())
                 .offset(skip)
                 .limit(limit)
             )

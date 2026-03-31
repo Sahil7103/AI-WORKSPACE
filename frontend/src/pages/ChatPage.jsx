@@ -1,10 +1,30 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
-import Header from '../components/Header'
-import Sidebar from '../components/Sidebar'
+import AppShell from '../components/AppShell'
 import ChatMessage from '../components/ChatMessage'
 import { authAPI, chatAPI } from '../services/api'
+
+const normalizeSources = (sources) => {
+  if (!sources) return []
+  if (Array.isArray(sources)) return sources
+
+  if (typeof sources === 'string') {
+    try {
+      const parsed = JSON.parse(sources)
+      return Array.isArray(parsed) ? parsed : []
+    } catch {
+      return []
+    }
+  }
+
+  return []
+}
+
+const normalizeMessage = (message) => ({
+  ...message,
+  sources: normalizeSources(message.sources),
+})
 
 const ChatPage = () => {
   const { sessionId } = useParams()
@@ -25,6 +45,7 @@ const ChatPage = () => {
         navigate('/login')
       }
     }
+
     fetchUser()
   }, [navigate])
 
@@ -32,35 +53,41 @@ const ChatPage = () => {
     const fetchSessions = async () => {
       try {
         const response = await chatAPI.listSessions()
-        setSessions(response.data.sessions)
-      } catch (error) {
+        setSessions(response.data.sessions || [])
+      } catch {
         toast.error('Failed to load sessions')
       }
     }
+
     fetchSessions()
   }, [])
 
   useEffect(() => {
-    if (sessionId) {
-      const fetchSession = async () => {
-        try {
-          const response = await chatAPI.getSession(sessionId)
-          setCurrentSession(response.data)
-          setMessages(response.data.messages)
-        } catch (error) {
-          toast.error('Failed to load session')
-        }
-      }
-      fetchSession()
+    if (!sessionId) {
+      setCurrentSession(null)
+      setMessages([])
+      return
     }
+
+    const fetchSession = async () => {
+      try {
+        const response = await chatAPI.getSession(sessionId)
+        setCurrentSession(response.data)
+        setMessages((response.data.messages || []).map(normalizeMessage))
+      } catch {
+        toast.error('Failed to load session')
+      }
+    }
+
+    fetchSession()
   }, [sessionId])
 
   const handleNewSession = async () => {
     try {
-      const response = await chatAPI.createSession('New Chat')
-      setSessions([...sessions, response.data])
+      const response = await chatAPI.createSession('New chat')
+      setSessions((prev) => [response.data, ...prev])
       navigate(`/chat/${response.data.id}`)
-    } catch (error) {
+    } catch {
       toast.error('Failed to create session')
     }
   }
@@ -69,17 +96,39 @@ const ChatPage = () => {
     e.preventDefault()
     if (!input.trim() || !sessionId) return
 
+    const nextInput = input.trim()
+    const optimisticUserMessage = {
+      id: `temp-user-${Date.now()}`,
+      role: 'user',
+      content: nextInput,
+      created_at: new Date().toISOString(),
+      sources: [],
+    }
+
+    setMessages((prev) => [...prev, optimisticUserMessage])
+    setInput('')
     setLoading(true)
+
     try {
       const response = await chatAPI.query({
-        session_id: parseInt(sessionId),
-        query: input,
+        session_id: parseInt(sessionId, 10),
+        query: nextInput,
       })
 
-      setMessages([...messages, response.data])
-      setInput('')
-      toast.success('Message sent!')
-    } catch (error) {
+      const assistantMessage = {
+        id: response.data.message_id,
+        role: 'assistant',
+        content: response.data.response,
+        created_at: new Date().toISOString(),
+        sources: normalizeSources(response.data.sources),
+      }
+
+      setMessages((prev) => [...prev, assistantMessage])
+    } catch {
+      setMessages((prev) =>
+        prev.filter((message) => message.id !== optimisticUserMessage.id)
+      )
+      setInput(nextInput)
       toast.error('Failed to send message')
     } finally {
       setLoading(false)
@@ -91,94 +140,91 @@ const ChatPage = () => {
     navigate('/login')
   }
 
-  if (!user) return <div>Loading...</div>
+  if (!user) return <div className="page-loading">Loading chat...</div>
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      <Sidebar role={user.role} />
-      <div className="flex-1 flex flex-col">
-        <Header user={user} onLogout={handleLogout} />
-
-        <div className="flex flex-1 overflow-hidden">
-          {/* Sessions Sidebar */}
-          <div className="w-64 bg-white border-r border-gray-200 overflow-y-auto">
-            <div className="p-4">
-              <button
-                onClick={handleNewSession}
-                className="btn btn-primary w-full mb-4"
-              >
-                + New Chat
-              </button>
-
-              <div className="space-y-2">
-                {sessions.map((session) => (
-                  <button
-                    key={session.id}
-                    onClick={() => navigate(`/chat/${session.id}`)}
-                    className={`w-full text-left px-4 py-2 rounded-lg transition ${
-                      currentSession?.id === session.id
-                        ? 'bg-blue-100 text-blue-900'
-                        : 'hover:bg-gray-100'
-                    }`}
-                  >
-                    {session.session_name}
-                  </button>
-                ))}
+    <AppShell
+      user={user}
+      onLogout={handleLogout}
+      title={currentSession?.session_name || 'Chat'}
+      subtitle="A ChatGPT-style conversation area with recent threads in the sidebar and a focused composer."
+      contentClassName="chat-shell"
+      sidebarContent={sessions.map((session) => (
+        <button
+          key={session.id}
+          onClick={() => navigate(`/chat/${session.id}`)}
+          className={`sidebar-thread ${
+            currentSession?.id === session.id ? 'sidebar-thread--active' : ''
+          }`.trim()}
+        >
+          <span className="sidebar-thread__title">
+            {session.session_name || 'New chat'}
+          </span>
+          <span className="sidebar-thread__meta">Open thread</span>
+        </button>
+      ))}
+      actions={
+        <button onClick={handleNewSession} className="btn btn-primary">
+          New chat
+        </button>
+      }
+    >
+      {currentSession ? (
+        <section className="chat-room">
+          <div className="chat-room__messages">
+            {messages.length === 0 ? (
+              <div className="empty-state empty-state--chat">
+                <h3 className="empty-state__title">Start the conversation</h3>
+                <p className="empty-state__text">
+                  Ask a question about your uploaded documents and the assistant will respond here.
+                </p>
               </div>
-            </div>
-          </div>
-
-          {/* Chat Area */}
-          <div className="flex-1 flex flex-col">
-            {currentSession ? (
-              <>
-                <div className="flex-1 overflow-y-auto p-6">
-                  {messages.length === 0 ? (
-                    <div className="flex items-center justify-center h-full">
-                      <p className="text-gray-500">No messages yet. Start typing!</p>
-                    </div>
-                  ) : (
-                    <div>
-                      {messages.map((msg, i) => (
-                        <ChatMessage key={i} message={msg} />
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                <form onSubmit={handleSendMessage} className="border-t border-gray-200 p-4">
-                  <div className="flex gap-2">
-                    <input
-                      type="text"
-                      value={input}
-                      onChange={(e) => setInput(e.target.value)}
-                      placeholder="Ask a question..."
-                      className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                    <button
-                      type="submit"
-                      disabled={loading}
-                      className="btn btn-primary"
-                    >
-                      {loading ? 'Sending...' : 'Send'}
-                    </button>
-                  </div>
-                </form>
-              </>
             ) : (
-              <div className="flex items-center justify-center h-full">
-                <button
-                  onClick={handleNewSession}
-                  className="btn btn-primary text-lg"
-                >
-                  Start a New Chat
-                </button>
+              <div className="chat-room__stack">
+                {messages.map((message, index) => (
+                  <ChatMessage
+                    key={message.id || `${message.role}-${index}`}
+                    message={message}
+                  />
+                ))}
               </div>
             )}
           </div>
-        </div>
-      </div>
-    </div>
+
+          <form onSubmit={handleSendMessage} className="composer">
+            <div className="composer__inner">
+              <textarea
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Message Copilot..."
+                className="composer__input"
+                rows={1}
+              />
+              <button
+                type="submit"
+                disabled={loading || !sessionId}
+                className="btn btn-primary"
+              >
+                {loading ? 'Sending...' : 'Send'}
+              </button>
+            </div>
+            <p className="composer__hint">
+              Backend routes stay the same. This update is strictly a frontend redesign.
+            </p>
+          </form>
+        </section>
+      ) : (
+        <section className="empty-state empty-state--chat-home">
+          <h2 className="empty-state__title">No chat selected</h2>
+          <p className="empty-state__text">
+            Create a new conversation to start using the ChatGPT-style chat interface.
+          </p>
+          <button onClick={handleNewSession} className="btn btn-primary">
+            Create new chat
+          </button>
+        </section>
+      )}
+    </AppShell>
   )
 }
 

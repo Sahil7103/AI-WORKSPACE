@@ -19,8 +19,8 @@ Choose your setup method based on your needs:
 
 - Python 3.11+
 - Node.js 18+
-- PostgreSQL 15+
-- Redis 7+
+- PostgreSQL 15+ (optional)
+- Redis 7+ (optional)
 
 ### Option 3: Cloud (Render/Railway)
 
@@ -133,8 +133,8 @@ pip install -r requirements.txt
 # Copy and configure environment
 copy .env.example .env
 
-# Start PostgreSQL (in Docker or locally)
-# Start Redis (in Docker or locally)
+# Default local config uses SQLite.
+# PostgreSQL/Redis are optional for local development.
 
 # Initialize database
 python -c "from app.core.database import init_db; import asyncio; asyncio.run(init_db())"
@@ -162,12 +162,12 @@ npm run dev
 # App runs on http://localhost:3000
 ```
 
-### Database/Cache Setup
+### Optional Database/Cache Setup
 
 **Terminal 3: Services**
 
 ```bash
-# Start PostgreSQL (Docker)
+# Start PostgreSQL (Docker, optional)
 docker run -d \
   --name ai-postgres \
   -e POSTGRES_PASSWORD=aipass \
@@ -175,7 +175,7 @@ docker run -d \
   -p 5432:5432 \
   postgres:15-alpine
 
-# Start Redis (Docker)
+# Start Redis (Docker, optional)
 docker run -d \
   --name ai-redis \
   -p 6379:6379 \
@@ -292,6 +292,9 @@ If your account is admin role:
 ### "Cannot connect to database"
 
 ```bash
+# Default local setup uses backend/ai_workplace_copilot.db (SQLite).
+# If you changed DATABASE_URL to PostgreSQL, check that PostgreSQL is running.
+
 # Check PostgreSQL running
 docker ps | grep postgres
 
@@ -300,6 +303,8 @@ psql -h localhost -U postgres -d ai_workplace_copilot
 ```
 
 ### "Cannot connect to Redis"
+
+The app can still start without Redis in local development. Redis only enables cache/session storage.
 
 ```bash
 # Check Redis running

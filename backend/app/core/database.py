@@ -2,16 +2,31 @@
 Database connection and session management.
 """
 
-from sqlalchemy import create_engine
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 from sqlalchemy.pool import NullPool
 
 from app.core.config import settings
 
+
+def _build_async_database_url(database_url: str) -> str:
+    """Normalize sync database URLs to async SQLAlchemy URLs."""
+    if database_url.startswith(("postgresql+asyncpg://", "sqlite+aiosqlite://")):
+        return database_url
+    if database_url.startswith("postgresql://"):
+        return database_url.replace("postgresql://", "postgresql+asyncpg://", 1)
+    if database_url.startswith("sqlite:///"):
+        return database_url.replace("sqlite:///", "sqlite+aiosqlite:///", 1)
+    if database_url.startswith("sqlite://"):
+        return database_url.replace("sqlite://", "sqlite+aiosqlite://", 1)
+    return database_url
+
+
+database_url = settings.sqlalchemy_db_url or settings.database_url
+
 # Create async engine for async support
 engine = create_async_engine(
-    settings.sqlalchemy_db_url.replace("postgresql://", "postgresql+asyncpg://"),
+    _build_async_database_url(database_url),
     echo=settings.debug,
     poolclass=NullPool,
 )
@@ -37,5 +52,8 @@ async def get_db() -> AsyncSession:
 
 async def init_db():
     """Initialize database tables."""
+    # Import models before create_all so SQLAlchemy knows every table.
+    import app.models  # noqa: F401
+
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)

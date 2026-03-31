@@ -8,6 +8,7 @@ from typing import Any, Optional
 import redis.asyncio as redis
 
 from app.core.config import settings
+from app.utils.logger import logger
 
 
 class RedisCache:
@@ -19,7 +20,20 @@ class RedisCache:
 
     async def connect(self):
         """Connect to Redis."""
-        self.client = await redis.from_url(self.redis_url)
+        if not self.redis_url:
+            logger.info("Redis URL not configured, cache disabled")
+            self.client = None
+            return False
+
+        try:
+            client = redis.from_url(self.redis_url)
+            await client.ping()
+            self.client = client
+            return True
+        except Exception as exc:
+            logger.warning(f"Redis unavailable, cache disabled: {exc}")
+            self.client = None
+            return False
 
     async def disconnect(self):
         """Disconnect from Redis."""

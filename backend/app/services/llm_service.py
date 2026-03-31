@@ -2,10 +2,12 @@
 LLM and query service - handles LLM interactions and response generation.
 """
 
-from typing import List, Optional, AsyncGenerator
-import json
-from datetime import datetime
+from typing import List, AsyncGenerator
+import time
 
+import httpx
+
+from app.core.config import settings
 from app.rag.retriever import get_rag_retriever
 from app.utils.logger import logger
 
@@ -13,22 +15,32 @@ from app.utils.logger import logger
 class LLMService:
     """Service for LLM interactions."""
 
-    def __init__(self, api_key: str = None, model: str = "gpt-4-turbo-preview"):
+    def __init__(
+        self,
+        api_url: str = None,
+        api_token: str = None,
+        model: str = None,
+        timeout: float = None,
+        max_tokens: int = None,
+    ):
         """Initialize LLM service."""
-        try:
-            import openai
+        self.api_url = (api_url or settings.llm_api_url).strip()
+        self.api_token = (api_token or settings.llm_api_token).strip()
+        self.model = model or settings.llm_model_label
+        self.timeout = timeout or settings.llm_timeout_seconds
+        self.max_tokens = max_tokens or settings.llm_max_tokens
+        self.client = httpx.AsyncClient(timeout=self.timeout)
 
-            if api_key:
-                self.client = openai.OpenAI(api_key=api_key)
-            else:
-                self.client = openai.OpenAI()
+        if self.api_url:
+            logger.info(
+                f"Initialized external LLM service with model: {self.model} via {self.api_url}"
+            )
+        else:
+            logger.warning("No external LLM API configured. Using fallback responses.")
 
-            self.model = model
-            logger.info(f"Initialized LLM service with model: {model}")
-        except Exception as e:
-            logger.warning(f"OpenAI not available: {str(e)}. Using mock responses.")
-            self.client = None
-            self.model = model
+    async def close(self) -> None:
+        """Close the HTTP client."""
+        await self.client.aclose()
 
     def _format_context(self, retrieved_chunks: List[dict]) -> str:
         """Format retrieved chunks as context."""
@@ -57,6 +69,59 @@ Guidelines:
 - If uncertain, ask for clarification
 - Never make up information not in the context"""
 
+    def _format_conversation_history(self, conversation_history: List[dict] = None) -> str:
+        """Format prior conversation turns for single-prompt APIs."""
+        if not conversation_history:
+            return ""
+
+        lines = []
+        for message in conversation_history[-4:]:
+            role = "Assistant" if message.get("role") == "assistant" else "User"
+            content = (message.get("content") or "").strip()
+            if content:
+                lines.append(f"{role}: {content}")
+
+        if not lines:
+            return ""
+
+        return "Conversation History:\n" + "\n".join(lines) + "\n\n"
+
+    async def _request_completion(self, prompt: str, system_prompt: str) -> str:
+        """Call the configured external LLM endpoint."""
+        if not self.api_url:
+            return (
+                "No external LLM endpoint is configured. Set LLM_API_URL to your model "
+                "service and try again."
+            )
+
+        headers = {}
+        if self.api_token:
+            headers["Authorization"] = f"Bearer {self.api_token}"
+
+        response = await self.client.post(
+            self.api_url,
+            json={
+                "prompt": prompt,
+                "system_prompt": system_prompt,
+                "max_tokens": self.max_tokens,
+            },
+            headers=headers,
+        )
+        response.raise_for_status()
+
+        payload = response.json()
+        answer = (
+            payload.get("answer")
+            or payload.get("response")
+            or payload.get("text")
+            or ""
+        ).strip()
+
+        if not answer:
+            raise ValueError("External LLM endpoint returned an empty response payload")
+
+        return answer
+
     async def query(
         self,
         query: str,
@@ -77,43 +142,24 @@ Guidelines:
             (response_text, sources, response_time_ms)
         """
         try:
-            import time
-
             start_time = time.time()
 
             # Format context
             context = self._format_context(retrieved_chunks)
             system_prompt = self._create_system_prompt(context)
+            prompt = (
+                f"{self._format_conversation_history(conversation_history)}"
+                f"Current User Question:\n{query}"
+            )
 
-            # Build messages
-            messages = []
-
-            # Add conversation history if provided
-            if conversation_history:
-                messages.extend(
-                    conversation_history[-4:]
-                )  # Last 4 messages for context
-
-            # Add current query
-            messages.append({"role": "user", "content": query})
-
-            if not self.client:
-                # Mock response for development
-                response_text = f"(Mock Response) Based on the retrieved documents, here's the answer to '{query}':\n\n"
-                response_text += "This is a placeholder response. Configure OpenAI API key for real responses."
-            else:
-                # Call OpenAI
-                response = self.client.chat.completions.create(
-                    model=self.model,
-                    messages=[
-                        {"role": "system", "content": system_prompt},
-                        *messages,
-                    ],
-                    temperature=0.7,
-                    max_tokens=1000,
+            try:
+                response_text = await self._request_completion(prompt, system_prompt)
+            except Exception as exc:
+                logger.error(f"Error querying external LLM endpoint: {str(exc)}")
+                response_text = (
+                    "The configured LLM endpoint is currently unavailable. "
+                    "Please try again in a moment."
                 )
-
-                response_text = response.choices[0].message.content
 
             response_time_ms = (time.time() - start_time) * 1000
 
@@ -154,37 +200,15 @@ Guidelines:
             Response tokens
         """
         try:
-            # Format context
-            context = self._format_context(retrieved_chunks)
-            system_prompt = self._create_system_prompt(context)
+            response_text, _, _ = await self.query(
+                query=query,
+                retrieved_chunks=retrieved_chunks,
+                conversation_history=conversation_history,
+                stream=False,
+            )
 
-            # Build messages
-            messages = []
-            if conversation_history:
-                messages.extend(conversation_history[-4:])
-            messages.append({"role": "user", "content": query})
-
-            if not self.client:
-                # Mock streaming response
-                mock_response = "This is a mock streaming response. Configure OpenAI API key for real streaming."
-                for token in mock_response.split():
-                    yield token + " "
-            else:
-                # Stream from OpenAI
-                response = self.client.chat.completions.create(
-                    model=self.model,
-                    messages=[
-                        {"role": "system", "content": system_prompt},
-                        *messages,
-                    ],
-                    temperature=0.7,
-                    max_tokens=1000,
-                    stream=True,
-                )
-
-                for chunk in response:
-                    if chunk.choices[0].delta.content:
-                        yield chunk.choices[0].delta.content
+            for token in response_text.split():
+                yield token + " "
 
         except Exception as e:
             logger.error(f"Error streaming query: {str(e)}")

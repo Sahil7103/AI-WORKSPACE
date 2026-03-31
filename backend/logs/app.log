@@ -1,0 +1,275 @@
+2026-03-30 14:55:29,307 - ai_copilot - WARNING - OpenAI not available: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable. Using mock responses.
+2026-03-30 14:55:29,835 - ai_copilot - INFO - Starting up application
+2026-03-30 14:55:29,844 - ai_copilot - INFO - Environment: development
+2026-03-30 14:55:29,866 - ai_copilot - INFO - Debug: False
+2026-03-30 14:56:12,719 - ai_copilot - WARNING - OpenAI not available: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable. Using mock responses.
+2026-03-30 14:56:13,022 - ai_copilot - INFO - Starting up application
+2026-03-30 14:56:13,054 - ai_copilot - INFO - Environment: development
+2026-03-30 14:56:13,078 - ai_copilot - INFO - Debug: False
+2026-03-30 14:58:47,545 - ai_copilot - WARNING - OpenAI not available: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable. Using mock responses.
+2026-03-30 14:58:47,731 - ai_copilot - INFO - Starting up application
+2026-03-30 14:58:47,732 - ai_copilot - INFO - Environment: development
+2026-03-30 14:58:47,733 - ai_copilot - INFO - Debug: False
+2026-03-30 15:26:05,541 - ai_copilot - WARNING - OpenAI not available: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable. Using mock responses.
+2026-03-30 15:26:05,631 - ai_copilot - INFO - Starting up application
+2026-03-30 15:26:05,632 - ai_copilot - INFO - Environment: development
+2026-03-30 15:26:05,632 - ai_copilot - INFO - Debug: False
+2026-03-30 15:26:05,946 - ai_copilot - INFO - Database initialized
+2026-03-30 15:26:10,304 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-03-30 15:26:10,323 - ai_copilot - INFO - Redis connected
+2026-03-30 15:26:24,255 - ai_copilot - WARNING - OpenAI not available: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable. Using mock responses.
+2026-03-30 15:26:24,423 - ai_copilot - INFO - Starting up application
+2026-03-30 15:26:24,424 - ai_copilot - INFO - Environment: development
+2026-03-30 15:26:24,425 - ai_copilot - INFO - Debug: False
+2026-03-30 15:26:24,449 - ai_copilot - INFO - Database initialized
+2026-03-30 15:26:29,050 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error 22 connecting to localhost:6379. The remote computer refused the network connection.
+2026-03-30 15:26:29,051 - ai_copilot - INFO - Redis connected
+2026-03-30 15:26:29,063 - ai_copilot - INFO - Shutting down application
+2026-03-30 15:26:29,063 - ai_copilot - INFO - Redis disconnected
+2026-03-30 15:27:01,386 - ai_copilot - ERROR - Error creating user: password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+2026-03-30 15:27:05,121 - ai_copilot - WARNING - OpenAI not available: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable. Using mock responses.
+2026-03-30 15:27:05,281 - ai_copilot - INFO - Starting up application
+2026-03-30 15:27:05,284 - ai_copilot - INFO - Environment: development
+2026-03-30 15:27:05,286 - ai_copilot - INFO - Debug: False
+2026-03-30 15:27:05,313 - ai_copilot - INFO - Database initialized
+2026-03-30 15:27:09,882 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error 22 connecting to localhost:6379. The remote computer refused the network connection.
+2026-03-30 15:27:09,882 - ai_copilot - INFO - Redis connected
+2026-03-30 15:27:09,950 - ai_copilot - ERROR - Error creating user: password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+2026-03-30 15:27:09,954 - ai_copilot - INFO - Shutting down application
+2026-03-30 15:27:09,954 - ai_copilot - INFO - Redis disconnected
+2026-03-30 15:27:40,242 - ai_copilot - INFO - Shutting down application
+2026-03-30 15:27:40,243 - ai_copilot - INFO - Redis disconnected
+2026-03-30 15:28:04,437 - ai_copilot - WARNING - OpenAI not available: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable. Using mock responses.
+2026-03-30 15:28:04,623 - ai_copilot - INFO - Starting up application
+2026-03-30 15:28:04,630 - ai_copilot - INFO - Environment: development
+2026-03-30 15:28:04,639 - ai_copilot - INFO - Debug: False
+2026-03-30 15:28:04,720 - ai_copilot - INFO - Database initialized
+2026-03-30 15:28:09,483 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-03-30 15:28:09,503 - ai_copilot - INFO - Redis cache disabled
+2026-03-30 15:28:15,536 - ai_copilot - WARNING - OpenAI not available: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable. Using mock responses.
+2026-03-30 15:28:15,749 - ai_copilot - INFO - Starting up application
+2026-03-30 15:28:15,750 - ai_copilot - INFO - Environment: development
+2026-03-30 15:28:15,750 - ai_copilot - INFO - Debug: False
+2026-03-30 15:28:15,784 - ai_copilot - INFO - Database initialized
+2026-03-30 15:28:20,486 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error 22 connecting to localhost:6379. The remote computer refused the network connection.
+2026-03-30 15:28:20,487 - ai_copilot - INFO - Redis cache disabled
+2026-03-30 15:28:20,816 - ai_copilot - INFO - User created: terminalcheck2@example.com
+2026-03-30 15:28:20,835 - ai_copilot - INFO - Shutting down application
+2026-03-30 15:28:20,836 - ai_copilot - INFO - Redis disconnected
+2026-03-30 15:29:08,494 - ai_copilot - WARNING - OpenAI not available: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable. Using mock responses.
+2026-03-30 15:29:08,933 - ai_copilot - INFO - Starting up application
+2026-03-30 15:29:08,933 - ai_copilot - INFO - Environment: development
+2026-03-30 15:29:08,933 - ai_copilot - INFO - Debug: False
+2026-03-30 15:29:09,259 - ai_copilot - INFO - Database initialized
+2026-03-30 15:29:13,959 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error 22 connecting to localhost:6379. The remote computer refused the network connection.
+2026-03-30 15:29:13,959 - ai_copilot - INFO - Redis cache disabled
+2026-03-30 15:29:14,094 - ai_copilot - ERROR - Error creating user: User with email terminalcheck2@example.com already exists
+2026-03-30 15:29:14,097 - ai_copilot - INFO - Shutting down application
+2026-03-30 15:29:14,097 - ai_copilot - INFO - Redis disconnected
+2026-03-30 15:31:54,242 - ai_copilot - INFO - Shutting down application
+2026-03-30 15:31:54,242 - ai_copilot - INFO - Redis disconnected
+2026-03-30 15:32:00,598 - ai_copilot - WARNING - OpenAI not available: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable. Using mock responses.
+2026-03-30 15:32:00,688 - ai_copilot - INFO - Starting up application
+2026-03-30 15:32:00,688 - ai_copilot - INFO - Environment: development
+2026-03-30 15:32:00,689 - ai_copilot - INFO - Debug: False
+2026-03-30 15:32:00,709 - ai_copilot - INFO - Database initialized
+2026-03-30 15:32:05,591 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-03-30 15:32:05,595 - ai_copilot - INFO - Redis cache disabled
+2026-03-31 14:52:58,994 - ai_copilot - WARNING - OpenAI not available: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable. Using mock responses.
+2026-03-31 14:52:59,076 - ai_copilot - INFO - Starting up application
+2026-03-31 14:52:59,077 - ai_copilot - INFO - Environment: development
+2026-03-31 14:52:59,077 - ai_copilot - INFO - Debug: False
+2026-03-31 14:52:59,094 - ai_copilot - INFO - Database initialized
+2026-03-31 14:53:03,436 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-03-31 14:53:03,437 - ai_copilot - INFO - Redis cache disabled
+2026-03-31 14:54:23,678 - ai_copilot - INFO - User created: sahilkoshti1354@gmail.com
+2026-03-31 14:58:27,243 - ai_copilot - INFO - Chat session created: 1
+2026-03-31 15:29:28,223 - ai_copilot - ERROR - Error saving uploaded file: object bytes can't be used in 'await' expression
+2026-03-31 15:29:28,241 - ai_copilot - ERROR - Error uploading document: object bytes can't be used in 'await' expression
+2026-03-31 15:29:37,362 - ai_copilot - ERROR - Error saving uploaded file: object bytes can't be used in 'await' expression
+2026-03-31 15:29:37,365 - ai_copilot - ERROR - Error uploading document: object bytes can't be used in 'await' expression
+2026-03-31 15:32:18,289 - ai_copilot - WARNING - OpenAI not available: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable. Using mock responses.
+2026-03-31 15:32:18,419 - ai_copilot - INFO - Starting up application
+2026-03-31 15:32:18,419 - ai_copilot - INFO - Environment: development
+2026-03-31 15:32:18,419 - ai_copilot - INFO - Debug: False
+2026-03-31 15:32:18,441 - ai_copilot - INFO - Database initialized
+2026-03-31 15:32:22,959 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error 22 connecting to localhost:6379. The remote computer refused the network connection.
+2026-03-31 15:32:22,959 - ai_copilot - INFO - Redis cache disabled
+2026-03-31 15:32:23,333 - ai_copilot - ERROR - Error saving uploaded file: object bytes can't be used in 'await' expression
+2026-03-31 15:32:23,334 - ai_copilot - ERROR - Error uploading document: object bytes can't be used in 'await' expression
+2026-03-31 15:32:23,336 - ai_copilot - INFO - Shutting down application
+2026-03-31 15:32:23,336 - ai_copilot - INFO - Redis disconnected
+2026-03-31 15:33:12,530 - ai_copilot - INFO - Shutting down application
+2026-03-31 15:33:12,531 - ai_copilot - INFO - Redis disconnected
+2026-03-31 15:33:26,194 - ai_copilot - WARNING - OpenAI not available: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable. Using mock responses.
+2026-03-31 15:33:26,345 - ai_copilot - INFO - Starting up application
+2026-03-31 15:33:26,346 - ai_copilot - INFO - Environment: development
+2026-03-31 15:33:26,347 - ai_copilot - INFO - Debug: False
+2026-03-31 15:33:26,375 - ai_copilot - INFO - Database initialized
+2026-03-31 15:33:30,870 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-03-31 15:33:30,876 - ai_copilot - INFO - Redis cache disabled
+2026-03-31 15:37:58,647 - ai_copilot - WARNING - OpenAI not available: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable. Using mock responses.
+2026-03-31 15:37:58,787 - ai_copilot - INFO - Starting up application
+2026-03-31 15:37:58,787 - ai_copilot - INFO - Environment: development
+2026-03-31 15:37:58,787 - ai_copilot - INFO - Debug: False
+2026-03-31 15:37:58,840 - ai_copilot - INFO - Database initialized
+2026-03-31 15:38:03,265 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error 22 connecting to localhost:6379. The remote computer refused the network connection.
+2026-03-31 15:38:03,265 - ai_copilot - INFO - Redis cache disabled
+2026-03-31 15:38:03,449 - ai_copilot - INFO - File saved: uploads\sample.txt
+2026-03-31 15:38:03,544 - ai_copilot - INFO - Document created: sample.txt (ID: 1)
+2026-03-31 15:40:35,714 - ai_copilot - INFO - Shutting down application
+2026-03-31 15:40:35,714 - ai_copilot - INFO - Redis disconnected
+2026-03-31 15:40:43,346 - ai_copilot - WARNING - OpenAI not available: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable. Using mock responses.
+2026-03-31 15:40:43,572 - ai_copilot - INFO - Starting up application
+2026-03-31 15:40:43,585 - ai_copilot - INFO - Environment: development
+2026-03-31 15:40:43,588 - ai_copilot - INFO - Debug: False
+2026-03-31 15:40:43,619 - ai_copilot - INFO - Database initialized
+2026-03-31 15:40:48,292 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-03-31 15:40:48,334 - ai_copilot - INFO - Redis cache disabled
+2026-03-31 15:40:58,446 - ai_copilot - WARNING - OpenAI not available: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable. Using mock responses.
+2026-03-31 15:40:58,578 - ai_copilot - INFO - Starting up application
+2026-03-31 15:40:58,579 - ai_copilot - INFO - Environment: development
+2026-03-31 15:40:58,579 - ai_copilot - INFO - Debug: False
+2026-03-31 15:40:58,602 - ai_copilot - INFO - Database initialized
+2026-03-31 15:41:03,150 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error 22 connecting to localhost:6379. The remote computer refused the network connection.
+2026-03-31 15:41:03,151 - ai_copilot - INFO - Redis cache disabled
+2026-03-31 15:41:03,723 - ai_copilot - INFO - File saved: uploads\sample.txt
+2026-03-31 15:41:03,793 - ai_copilot - INFO - Document created: sample.txt (ID: 2)
+2026-03-31 15:41:03,794 - ai_copilot - INFO - Uploaded sample.txt without immediate processing
+2026-03-31 15:41:03,797 - ai_copilot - INFO - Shutting down application
+2026-03-31 15:41:03,797 - ai_copilot - INFO - Redis disconnected
+2026-03-31 15:43:10,885 - ai_copilot - INFO - Chat session created: 2
+2026-03-31 16:02:57,937 - ai_copilot - WARNING - OpenAI not available: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable. Using mock responses.
+2026-03-31 16:02:58,039 - ai_copilot - INFO - Starting up application
+2026-03-31 16:02:58,049 - ai_copilot - INFO - Environment: development
+2026-03-31 16:02:58,050 - ai_copilot - INFO - Debug: False
+2026-03-31 16:02:58,073 - ai_copilot - INFO - Database initialized
+2026-03-31 16:03:02,376 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-03-31 16:03:02,378 - ai_copilot - INFO - Redis cache disabled
+2026-03-31 16:41:42,993 - ai_copilot - INFO - Shutting down application
+2026-03-31 16:41:42,995 - ai_copilot - INFO - Redis disconnected
+2026-03-31 16:42:00,288 - ai_copilot - WARNING - OpenAI not available: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable. Using mock responses.
+2026-03-31 16:42:00,509 - ai_copilot - INFO - Starting up application
+2026-03-31 16:42:00,536 - ai_copilot - INFO - Environment: development
+2026-03-31 16:42:00,555 - ai_copilot - INFO - Debug: False
+2026-03-31 16:42:00,672 - ai_copilot - INFO - Database initialized
+2026-03-31 16:42:05,290 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-03-31 16:42:05,312 - ai_copilot - INFO - Redis cache disabled
+2026-03-31 16:42:47,954 - ai_copilot - INFO - Shutting down application
+2026-03-31 16:42:47,954 - ai_copilot - INFO - Redis disconnected
+2026-03-31 16:44:14,692 - ai_copilot - WARNING - OpenAI not available: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable. Using mock responses.
+2026-03-31 16:45:09,228 - ai_copilot - WARNING - OpenAI not available: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable. Using mock responses.
+2026-03-31 16:45:09,418 - ai_copilot - WARNING - OpenAI not available: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable. Using mock responses.
+2026-03-31 16:45:09,514 - ai_copilot - INFO - Starting up application
+2026-03-31 16:45:09,514 - ai_copilot - INFO - Environment: development
+2026-03-31 16:45:09,514 - ai_copilot - INFO - Debug: False
+2026-03-31 16:45:09,545 - ai_copilot - INFO - Database initialized
+2026-03-31 16:45:09,749 - ai_copilot - INFO - Starting up application
+2026-03-31 16:45:09,749 - ai_copilot - INFO - Environment: development
+2026-03-31 16:45:09,749 - ai_copilot - INFO - Debug: False
+2026-03-31 16:45:09,969 - ai_copilot - INFO - Database initialized
+2026-03-31 16:45:14,104 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error 22 connecting to localhost:6379. The remote computer refused the network connection.
+2026-03-31 16:45:14,105 - ai_copilot - INFO - Redis cache disabled
+2026-03-31 16:45:14,110 - ai_copilot - INFO - Shutting down application
+2026-03-31 16:45:14,110 - ai_copilot - INFO - Redis disconnected
+2026-03-31 16:45:14,750 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error 22 connecting to localhost:6379. The remote computer refused the network connection.
+2026-03-31 16:45:14,751 - ai_copilot - INFO - Redis cache disabled
+2026-03-31 16:45:14,763 - ai_copilot - INFO - Shutting down application
+2026-03-31 16:45:14,763 - ai_copilot - INFO - Redis disconnected
+2026-03-31 16:46:39,516 - ai_copilot - WARNING - OpenAI not available: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable. Using mock responses.
+2026-03-31 16:46:39,810 - ai_copilot - INFO - Starting up application
+2026-03-31 16:46:39,811 - ai_copilot - INFO - Environment: development
+2026-03-31 16:46:39,811 - ai_copilot - INFO - Debug: False
+2026-03-31 16:46:40,076 - ai_copilot - INFO - Database initialized
+2026-03-31 16:46:44,751 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error 22 connecting to localhost:6379. The remote computer refused the network connection.
+2026-03-31 16:46:44,751 - ai_copilot - INFO - Redis cache disabled
+2026-03-31 16:46:44,760 - ai_copilot - INFO - Shutting down application
+2026-03-31 16:46:44,760 - ai_copilot - INFO - Redis disconnected
+2026-03-31 16:51:40,916 - ai_copilot - WARNING - OpenAI not available: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable. Using mock responses.
+2026-03-31 16:51:41,179 - ai_copilot - INFO - Starting up application
+2026-03-31 16:51:41,210 - ai_copilot - INFO - Environment: development
+2026-03-31 16:51:41,240 - ai_copilot - INFO - Debug: False
+2026-03-31 16:51:41,410 - ai_copilot - INFO - Database initialized
+2026-03-31 16:51:46,092 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-03-31 16:51:46,104 - ai_copilot - INFO - Redis cache disabled
+2026-03-31 16:52:30,722 - ai_copilot - WARNING - OpenAI not available: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable. Using mock responses.
+2026-03-31 16:52:30,901 - ai_copilot - INFO - Starting up application
+2026-03-31 16:52:30,915 - ai_copilot - INFO - Environment: development
+2026-03-31 16:52:30,921 - ai_copilot - INFO - Debug: False
+2026-03-31 16:52:30,964 - ai_copilot - INFO - Database initialized
+2026-03-31 16:52:35,308 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-03-31 16:52:35,315 - ai_copilot - INFO - Redis cache disabled
+2026-03-31 17:03:39,497 - ai_copilot - INFO - Shutting down application
+2026-03-31 17:03:39,507 - ai_copilot - INFO - Redis disconnected
+2026-03-31 17:04:05,085 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-03-31 17:04:05,538 - ai_copilot - INFO - Starting up application
+2026-03-31 17:04:05,562 - ai_copilot - INFO - Environment: development
+2026-03-31 17:04:05,598 - ai_copilot - INFO - Debug: False
+2026-03-31 17:04:05,705 - ai_copilot - INFO - Database initialized
+2026-03-31 17:04:10,441 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-03-31 17:04:10,462 - ai_copilot - INFO - Redis cache disabled
+2026-03-31 17:05:51,303 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-03-31 17:05:53,818 - ai_copilot - INFO - Query processed in 2511.95ms
+2026-03-31 17:07:05,740 - ai_copilot - INFO - Shutting down application
+2026-03-31 17:07:05,741 - ai_copilot - INFO - Redis disconnected
+2026-03-31 17:07:26,534 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-03-31 17:07:26,850 - ai_copilot - INFO - Starting up application
+2026-03-31 17:07:26,876 - ai_copilot - INFO - Environment: development
+2026-03-31 17:07:26,934 - ai_copilot - INFO - Debug: False
+2026-03-31 17:07:27,083 - ai_copilot - INFO - Database initialized
+2026-03-31 17:07:31,952 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-03-31 17:07:31,983 - ai_copilot - INFO - Redis cache disabled
+2026-03-31 17:07:49,302 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-03-31 17:12:05,379 - ai_copilot - INFO - Chat session created: 3
+2026-03-31 17:12:08,461 - ai_copilot - INFO - Chat session created: 4
+2026-03-31 17:14:20,994 - ai_copilot - INFO - Shutting down application
+2026-03-31 17:14:21,015 - ai_copilot - INFO - Redis disconnected
+2026-03-31 17:14:59,897 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-03-31 17:15:01,402 - ai_copilot - INFO - Starting up application
+2026-03-31 17:15:01,403 - ai_copilot - INFO - Environment: development
+2026-03-31 17:15:01,403 - ai_copilot - INFO - Debug: False
+2026-03-31 17:15:01,908 - ai_copilot - INFO - Database initialized
+2026-03-31 17:15:07,555 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error 22 connecting to localhost:6379. The remote computer refused the network connection.
+2026-03-31 17:15:07,556 - ai_copilot - INFO - Redis cache disabled
+2026-03-31 17:15:07,791 - ai_copilot - INFO - Shutting down application
+2026-03-31 17:15:07,791 - ai_copilot - INFO - Redis disconnected
+2026-03-31 17:15:31,805 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-03-31 17:15:33,233 - ai_copilot - INFO - Starting up application
+2026-03-31 17:15:33,375 - ai_copilot - INFO - Environment: development
+2026-03-31 17:15:33,743 - ai_copilot - INFO - Debug: False
+2026-03-31 17:15:34,012 - ai_copilot - INFO - Database initialized
+2026-03-31 17:15:38,955 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-03-31 17:15:39,000 - ai_copilot - INFO - Redis cache disabled
+2026-03-31 17:16:20,666 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-03-31 17:16:21,211 - ai_copilot - INFO - Starting up application
+2026-03-31 17:16:21,212 - ai_copilot - INFO - Environment: development
+2026-03-31 17:16:21,212 - ai_copilot - INFO - Debug: False
+2026-03-31 17:16:21,283 - ai_copilot - INFO - Database initialized
+2026-03-31 17:16:26,051 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error 22 connecting to localhost:6379. The remote computer refused the network connection.
+2026-03-31 17:16:26,051 - ai_copilot - INFO - Redis cache disabled
+2026-03-31 17:16:26,660 - ai_copilot - INFO - User created: tmpuser1774957581@example.com
+2026-03-31 17:16:27,266 - ai_copilot - INFO - Chat session created: 5
+2026-03-31 17:16:27,274 - ai_copilot - INFO - Shutting down application
+2026-03-31 17:16:27,275 - ai_copilot - INFO - Redis disconnected
+2026-03-31 17:20:23,175 - ai_copilot - INFO - Chat session created: 6
+2026-03-31 17:20:23,541 - ai_copilot - ERROR - Error fetching session: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2026-03-31 17:31:34,379 - ai_copilot - INFO - Shutting down application
+2026-03-31 17:31:34,398 - ai_copilot - INFO - Redis disconnected
+2026-03-31 17:31:50,424 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-03-31 17:31:50,727 - ai_copilot - INFO - Starting up application
+2026-03-31 17:31:50,754 - ai_copilot - INFO - Environment: development
+2026-03-31 17:31:50,801 - ai_copilot - INFO - Debug: False
+2026-03-31 17:31:50,900 - ai_copilot - INFO - Database initialized
+2026-03-31 17:31:55,664 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-03-31 17:31:55,718 - ai_copilot - INFO - Redis cache disabled
+2026-03-31 17:31:59,520 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-03-31 17:31:59,662 - ai_copilot - INFO - Starting up application
+2026-03-31 17:31:59,662 - ai_copilot - INFO - Environment: development
+2026-03-31 17:31:59,662 - ai_copilot - INFO - Debug: False
+2026-03-31 17:31:59,695 - ai_copilot - INFO - Database initialized
+2026-03-31 17:32:04,454 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error 22 connecting to localhost:6379. The remote computer refused the network connection.
+2026-03-31 17:32:04,454 - ai_copilot - INFO - Redis cache disabled
+2026-03-31 17:32:04,664 - ai_copilot - INFO - User created: fetchuser1774958519@example.com
+2026-03-31 17:32:05,020 - ai_copilot - INFO - Chat session created: 7
+2026-03-31 17:32:05,090 - ai_copilot - INFO - Shutting down application
+2026-03-31 17:32:05,090 - ai_copilot - INFO - Redis disconnected

@@ -26,6 +26,22 @@ router = APIRouter(prefix="/chat", tags=["chat"])
 query_service = QueryService(LLMService())
 
 
+def _serialize_chat_session(session, messages=None) -> ChatSessionDetailResponse:
+    """Convert ORM session objects into plain response models."""
+    serialized_messages = [
+        ChatMessageResponse.model_validate(message, from_attributes=True)
+        for message in (messages or [])
+    ]
+
+    return ChatSessionDetailResponse(
+        id=session.id,
+        session_name=session.session_name,
+        created_at=session.created_at,
+        updated_at=session.updated_at,
+        messages=serialized_messages,
+    )
+
+
 @router.post("/sessions", response_model=ChatSessionResponse)
 async def create_chat_session(
     session_name: str = None,
@@ -99,9 +115,7 @@ async def get_chat_session(
 
         # Get messages
         messages = await ChatService.get_session_messages(db, session_id)
-        session.messages = messages
-
-        return session
+        return _serialize_chat_session(session, messages)
 
     except HTTPException:
         raise

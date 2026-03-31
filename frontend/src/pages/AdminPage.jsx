@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
-import Header from '../components/Header'
-import Sidebar from '../components/Sidebar'
+import AppShell from '../components/AppShell'
 import { authAPI, adminAPI } from '../services/api'
 
 const AdminPage = () => {
@@ -17,6 +16,7 @@ const AdminPage = () => {
       try {
         const response = await authAPI.getMe()
         setUser(response.data)
+
         if (response.data.role !== 'admin') {
           navigate('/')
         }
@@ -24,6 +24,7 @@ const AdminPage = () => {
         navigate('/login')
       }
     }
+
     fetchUser()
   }, [navigate])
 
@@ -36,10 +37,11 @@ const AdminPage = () => {
         ])
         setUsers(usersRes.data.users)
         setStats(statsRes.data)
-      } catch (error) {
+      } catch {
         toast.error('Failed to load admin data')
       }
     }
+
     if (user?.role === 'admin') {
       fetchAdminData()
     }
@@ -48,9 +50,13 @@ const AdminPage = () => {
   const handleUpdateRole = async (userId, newRole) => {
     try {
       await adminAPI.updateUserRole(userId, newRole)
-      setUsers(users.map(u => u.id === userId ? { ...u, role: newRole } : u))
-      toast.success('User role updated!')
-    } catch (error) {
+      setUsers((prev) =>
+        prev.map((entry) =>
+          entry.id === userId ? { ...entry, role: newRole } : entry
+        )
+      )
+      toast.success('User role updated')
+    } catch {
       toast.error('Failed to update user role')
     }
   }
@@ -59,8 +65,8 @@ const AdminPage = () => {
     try {
       setLoading(true)
       await adminAPI.clearCache()
-      toast.success('Cache cleared!')
-    } catch (error) {
+      toast.success('Cache cleared')
+    } catch {
       toast.error('Failed to clear cache')
     } finally {
       setLoading(false)
@@ -72,103 +78,106 @@ const AdminPage = () => {
     navigate('/login')
   }
 
-  if (!user) return <div>Loading...</div>
+  if (!user) return <div className="page-loading">Loading admin console...</div>
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      <Sidebar role={user.role} />
-      <div className="flex-1 flex flex-col">
-        <Header user={user} onLogout={handleLogout} />
+    <AppShell
+      user={user}
+      onLogout={handleLogout}
+      title="Admin"
+      subtitle="Manage system-wide usage without changing backend routes or permissions."
+      actions={
+        <button onClick={handleClearCache} disabled={loading} className="btn btn-primary">
+          {loading ? 'Clearing cache...' : 'Clear cache'}
+        </button>
+      }
+    >
+      <div className="page-stack">
+        {stats ? (
+          <section className="admin-stats">
+            <article className="stat-card">
+              <span className="stat-card__label">Documents</span>
+              <strong className="stat-card__value">{stats.total_documents}</strong>
+              <p className="stat-card__hint">Stored files</p>
+            </article>
+            <article className="stat-card">
+              <span className="stat-card__label">Processed</span>
+              <strong className="stat-card__value">{stats.total_processed}</strong>
+              <p className="stat-card__hint">Ready for search</p>
+            </article>
+            <article className="stat-card">
+              <span className="stat-card__label">Embedded</span>
+              <strong className="stat-card__value">{stats.total_with_embeddings}</strong>
+              <p className="stat-card__hint">Vectorized content</p>
+            </article>
+            <article className="stat-card">
+              <span className="stat-card__label">Chunks</span>
+              <strong className="stat-card__value">{stats.total_chunks}</strong>
+              <p className="stat-card__hint">Retrieval units</p>
+            </article>
+          </section>
+        ) : null}
 
-        <main className="flex-1 overflow-auto p-8">
-          <h1 className="text-3xl font-bold mb-8">Administration</h1>
-
-          {/* Statistics */}
-          {stats && (
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-              <div className="card text-center">
-                <p className="text-3xl font-bold text-blue-600">{stats.total_documents}</p>
-                <p className="text-gray-600">Total Documents</p>
-              </div>
-              <div className="card text-center">
-                <p className="text-3xl font-bold text-green-600">{stats.total_processed}</p>
-                <p className="text-gray-600">Processed</p>
-              </div>
-              <div className="card text-center">
-                <p className="text-3xl font-bold text-purple-600">{stats.total_with_embeddings}</p>
-                <p className="text-gray-600">Embedded</p>
-              </div>
-              <div className="card text-center">
-                <p className="text-3xl font-bold text-orange-600">{stats.total_chunks}</p>
-                <p className="text-gray-600">Chunks</p>
-              </div>
+        <section className="surface-card">
+          <div className="surface-card__header">
+            <div>
+              <p className="surface-card__eyebrow">User management</p>
+              <h2 className="surface-card__title">Access and roles</h2>
             </div>
-          )}
-
-          {/* Actions */}
-          <div className="card mb-8">
-            <h2 className="text-xl font-semibold mb-4">System Actions</h2>
-            <button
-              onClick={handleClearCache}
-              disabled={loading}
-              className="btn btn-primary"
-            >
-              {loading ? 'Clearing...' : 'Clear Cache'}
-            </button>
           </div>
 
-          {/* Users Table */}
-          <div className="card">
-            <h2 className="text-xl font-semibold mb-4">User Management</h2>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b">
-                    <th className="text-left py-2 px-4">Username</th>
-                    <th className="text-left py-2 px-4">Email</th>
-                    <th className="text-left py-2 px-4">Role</th>
-                    <th className="text-left py-2 px-4">Status</th>
-                    <th className="text-left py-2 px-4">Actions</th>
+          <div className="table-wrap">
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>Username</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.map((entry) => (
+                  <tr key={entry.id}>
+                    <td>{entry.username}</td>
+                    <td>{entry.email}</td>
+                    <td className="capitalize">{entry.role}</td>
+                    <td>
+                      <span
+                        className={`status-pill ${
+                          entry.is_active ? 'status-pill--success' : 'status-pill--warning'
+                        }`.trim()}
+                      >
+                        {entry.is_active ? 'Active' : 'Inactive'}
+                      </span>
+                    </td>
+                    <td className="data-table__actions">
+                      {entry.role !== 'admin' ? (
+                        <button
+                          onClick={() => handleUpdateRole(entry.id, 'admin')}
+                          className="btn btn-secondary"
+                        >
+                          Make admin
+                        </button>
+                      ) : null}
+                      {entry.role !== 'employee' ? (
+                        <button
+                          onClick={() => handleUpdateRole(entry.id, 'employee')}
+                          className="btn btn-secondary"
+                        >
+                          Make employee
+                        </button>
+                      ) : null}
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                  {users.map((u) => (
-                    <tr key={u.id} className="border-b hover:bg-gray-50">
-                      <td className="py-2 px-4">{u.username}</td>
-                      <td className="py-2 px-4">{u.email}</td>
-                      <td className="py-2 px-4">{u.role}</td>
-                      <td className="py-2 px-4">
-                        <span className={u.is_active ? 'text-green-600' : 'text-red-600'}>
-                          {u.is_active ? '✓ Active' : '✗ Inactive'}
-                        </span>
-                      </td>
-                      <td className="py-2 px-4 space-x-2">
-                        {u.role !== 'admin' && (
-                          <button
-                            onClick={() => handleUpdateRole(u.id, 'admin')}
-                            className="btn btn-secondary text-sm"
-                          >
-                            Make Admin
-                          </button>
-                        )}
-                        {u.role !== 'employee' && (
-                          <button
-                            onClick={() => handleUpdateRole(u.id, 'employee')}
-                            className="btn btn-secondary text-sm"
-                          >
-                            Make Employee
-                          </button>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                ))}
+              </tbody>
+            </table>
           </div>
-        </main>
+        </section>
       </div>
-    </div>
+    </AppShell>
   )
 }
 

@@ -5,6 +5,7 @@ Document management endpoints.
 from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.config import settings
 from app.core.database import get_db
 from app.core.security import get_current_user
 from app.schemas import DocumentResponse, DocumentDetailResponse
@@ -24,15 +25,13 @@ async def upload_document(
     """Upload a document."""
     try:
         user_id = int(current_user["user_id"])
-
-        # Save file
-        file_path = await save_uploaded_file(file.filename, file.file)
-
-        # Get file type
         file_type = file.filename.split(".")[-1].lower()
 
+        # Save file
+        file_path, file_size = await save_uploaded_file(file)
+
         # Read file content
-        content = await read_file_content(file_path)
+        content = await read_file_content(file_path, file_type)
 
         # Create document record
         document = await DocumentService.create_document(
@@ -40,17 +39,22 @@ async def upload_document(
             filename=file.filename,
             file_path=file_path,
             file_type=file_type,
-            size_bytes=len(content.encode()),
+            size_bytes=file_size,
             uploaded_by_id=user_id,
             content=content,
         )
 
         # Process document asynchronously (in production, use Celery/tasks)
-        try:
-            await DocumentService.process_document(db, document.id, content)
-        except Exception as e:
-            logger.warning(f"Error processing document: {str(e)}")
-            # Don't fail upload if processing fails
+        if settings.process_documents_on_upload and content.strip():
+            try:
+                await DocumentService.process_document(db, document.id, content)
+            except Exception as e:
+                logger.warning(f"Error processing document: {str(e)}")
+                # Don't fail upload if processing fails
+        else:
+            logger.info(
+                f"Uploaded {file.filename} without immediate processing"
+            )
 
         return document
 

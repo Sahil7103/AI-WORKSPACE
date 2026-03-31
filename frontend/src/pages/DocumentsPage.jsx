@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
-import Header from '../components/Header'
-import Sidebar from '../components/Sidebar'
+import AppShell from '../components/AppShell'
 import DocumentCard from '../components/DocumentCard'
 import { authAPI, documentsAPI } from '../services/api'
 
@@ -22,6 +21,7 @@ const DocumentsPage = () => {
         navigate('/login')
       }
     }
+
     fetchUser()
   }, [navigate])
 
@@ -30,10 +30,11 @@ const DocumentsPage = () => {
       try {
         const response = await documentsAPI.list()
         setDocuments(response.data.documents)
-      } catch (error) {
+      } catch {
         toast.error('Failed to load documents')
       }
     }
+
     fetchDocuments()
   }, [])
 
@@ -42,18 +43,28 @@ const DocumentsPage = () => {
     if (!file) return
 
     setLoading(true)
+    setUploadProgress(0)
+
     try {
       const formData = new FormData()
       formData.append('file', file)
 
-      const response = await documentsAPI.upload(formData)
-      setDocuments([...documents, response.data])
+      const response = await documentsAPI.upload(formData, {
+        onUploadProgress: (progressEvent) => {
+          if (!progressEvent.total) return
+          setUploadProgress(
+            Math.round((progressEvent.loaded * 100) / progressEvent.total)
+          )
+        },
+      })
+      setDocuments((prev) => [...prev, response.data])
       setUploadProgress(0)
-      toast.success('Document uploaded successfully!')
+      toast.success('Document uploaded successfully')
     } catch (error) {
-      toast.error('Failed to upload document')
+      toast.error(error.response?.data?.detail || 'Failed to upload document')
     } finally {
       setLoading(false)
+      e.target.value = ''
     }
   }
 
@@ -62,9 +73,9 @@ const DocumentsPage = () => {
 
     try {
       await documentsAPI.delete(docId)
-      setDocuments(documents.filter(d => d.id !== docId))
-      toast.success('Document deleted!')
-    } catch (error) {
+      setDocuments((prev) => prev.filter((doc) => doc.id !== docId))
+      toast.success('Document deleted')
+    } catch {
       toast.error('Failed to delete document')
     }
   }
@@ -74,21 +85,60 @@ const DocumentsPage = () => {
     navigate('/login')
   }
 
-  if (!user) return <div>Loading...</div>
+  if (!user) return <div className="page-loading">Loading documents...</div>
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      <Sidebar role={user.role} />
-      <div className="flex-1 flex flex-col">
-        <Header user={user} onLogout={handleLogout} />
+    <AppShell
+      user={user}
+      onLogout={handleLogout}
+      title="Documents"
+      subtitle="Organize your knowledge base in a cleaner, more professional workspace."
+      actions={
+        <label className="btn btn-primary cursor-pointer">
+          Upload file
+          <input
+            type="file"
+            onChange={handleFileUpload}
+            disabled={loading}
+            className="hidden"
+            accept=".pdf,.docx,.txt"
+          />
+        </label>
+      }
+    >
+      <div className="page-stack">
+        <section className="documents-summary">
+          <article className="stat-card">
+            <span className="stat-card__label">Files</span>
+            <strong className="stat-card__value">{documents.length}</strong>
+            <p className="stat-card__hint">Available in your workspace</p>
+          </article>
+          <article className="stat-card">
+            <span className="stat-card__label">Processed</span>
+            <strong className="stat-card__value">
+              {documents.filter((doc) => doc.is_processed).length}
+            </strong>
+            <p className="stat-card__hint">Ready for retrieval</p>
+          </article>
+          <article className="stat-card">
+            <span className="stat-card__label">Embeddings</span>
+            <strong className="stat-card__value">
+              {documents.filter((doc) => doc.embedding_generated).length}
+            </strong>
+            <p className="stat-card__hint">Indexed for AI responses</p>
+          </article>
+        </section>
 
-        <main className="flex-1 overflow-auto p-8">
-          <h1 className="text-3xl font-bold mb-8">Documents</h1>
+        <section className="documents-layout">
+          <section className="surface-card surface-card--tall">
+            <div className="surface-card__header">
+              <div>
+                <p className="surface-card__eyebrow">Upload</p>
+                <h2 className="surface-card__title">Add a new document</h2>
+              </div>
+            </div>
 
-          {/* Upload Section */}
-          <div className="card mb-8">
-            <h2 className="text-xl font-semibold mb-4">Upload Document</h2>
-            <label className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer hover:border-blue-500 transition">
+            <label className="upload-dropzone">
               <input
                 type="file"
                 onChange={handleFileUpload}
@@ -96,33 +146,62 @@ const DocumentsPage = () => {
                 className="hidden"
                 accept=".pdf,.docx,.txt"
               />
-              <div>
-                <p className="text-gray-600 mb-2">📤 Click to upload or drag and drop</p>
-                <p className="text-sm text-gray-500">PDF, DOCX, TXT (max 50MB)</p>
-                {loading && <p className="text-blue-600 mt-2">Uploading... {uploadProgress}%</p>}
-              </div>
+              <p className="upload-dropzone__title">Drop a file here or click to browse</p>
+              <p className="upload-dropzone__meta">
+                PDF, DOCX, and TXT are supported up to 50MB.
+              </p>
+              {loading ? (
+                <div className="upload-progress">
+                  <div className="upload-progress__bar">
+                    <span
+                      className="upload-progress__fill"
+                      style={{ width: `${uploadProgress}%` }}
+                    />
+                  </div>
+                  <p className="upload-dropzone__status">
+                    Uploading... {uploadProgress}%
+                  </p>
+                </div>
+              ) : null}
             </label>
-          </div>
+          </section>
 
-          {/* Documents Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {documents.map((doc) => (
-              <DocumentCard
-                key={doc.id}
-                document={doc}
-                onDelete={handleDelete}
-              />
-            ))}
-          </div>
-
-          {documents.length === 0 && (
-            <div className="text-center py-12">
-              <p className="text-gray-500 text-lg">No documents yet. Upload one to get started!</p>
+          <aside className="surface-card surface-card--tall">
+            <p className="surface-card__eyebrow">Workspace guidance</p>
+            <h2 className="surface-card__title">Keep uploads clean and searchable</h2>
+            <div className="info-list">
+              <div className="info-list__item">
+                <span className="info-list__label">Recommended</span>
+                <p>Use text-based PDF, DOCX, or TXT files for the best retrieval results.</p>
+              </div>
+              <div className="info-list__item">
+                <span className="info-list__label">Processing</span>
+                <p>Files with extracted text are processed immediately after upload.</p>
+              </div>
+              <div className="info-list__item">
+                <span className="info-list__label">Limit</span>
+                <p>Maximum size is 50MB per file in the current setup.</p>
+              </div>
             </div>
-          )}
-        </main>
+          </aside>
+        </section>
+
+        {documents.length === 0 ? (
+          <section className="empty-state">
+            <h3 className="empty-state__title">No documents yet</h3>
+            <p className="empty-state__text">
+              Upload your first file to start building a knowledge base for chat.
+            </p>
+          </section>
+        ) : (
+          <section className="documents-grid">
+            {documents.map((doc) => (
+              <DocumentCard key={doc.id} document={doc} onDelete={handleDelete} />
+            ))}
+          </section>
+        )}
       </div>
-    </div>
+    </AppShell>
   )
 }
 

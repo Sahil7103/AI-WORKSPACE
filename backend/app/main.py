@@ -28,13 +28,17 @@ async def lifespan(app: FastAPI):
     logger.info("Database initialized")
 
     # Initialize Redis
-    await cache.connect()
-    logger.info("Redis connected")
+    cache_ready = await cache.connect()
+    if cache_ready:
+        logger.info("Redis connected")
+    else:
+        logger.info("Redis cache disabled")
 
     yield
 
     # Shutdown
     logger.info("Shutting down application")
+    await chat.query_service.llm.close()
     await cache.disconnect()
     logger.info("Redis disconnected")
 
@@ -51,13 +55,17 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins,
+    allow_origin_regex=r"https?://(localhost|127\.0\.0\.1)(:\d+)?$",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 # Add trusted host middleware
-app.add_middleware(TrustedHostMiddleware, allowed_hosts=["localhost", "127.0.0.1"])
+app.add_middleware(
+    TrustedHostMiddleware,
+    allowed_hosts=["localhost", "127.0.0.1", "testserver"],
+)
 
 
 # Include routers

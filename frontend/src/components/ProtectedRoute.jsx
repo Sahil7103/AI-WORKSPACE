@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Navigate } from 'react-router-dom'
+import { Navigate, Outlet } from 'react-router-dom'
 import { authAPI } from '../services/api'
 
 const ProtectedRoute = ({ children }) => {
@@ -33,7 +33,7 @@ const ProtectedRoute = ({ children }) => {
     return <Navigate to="/login" />
   }
 
-  return children
+  return children || <Outlet />
 }
 
 export default ProtectedRoute

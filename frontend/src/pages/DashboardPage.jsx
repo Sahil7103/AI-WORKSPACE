@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import Header from '../components/Header'
-import Sidebar from '../components/Sidebar'
-import { authAPI } from '../services/api'
 import { useNavigate } from 'react-router-dom'
+import AppShell from '../components/AppShell'
+import { authAPI } from '../services/api'
 
 const DashboardPage = () => {
   const [user, setUser] = useState(null)
@@ -13,10 +12,11 @@ const DashboardPage = () => {
       try {
         const response = await authAPI.getMe()
         setUser(response.data)
-      } catch (error) {
+      } catch {
         navigate('/login')
       }
     }
+
     fetchUser()
   }, [navigate])
 
@@ -25,62 +25,84 @@ const DashboardPage = () => {
     navigate('/login')
   }
 
-  if (!user) return <div>Loading...</div>
+  if (!user) return <div className="page-loading">Loading workspace...</div>
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      <Sidebar role={user.role} />
-      <div className="flex-1 flex flex-col">
-        <Header user={user} onLogout={handleLogout} />
-        
-        <main className="flex-1 overflow-auto p-8">
-          <h1 className="text-3xl font-bold mb-8">Welcome, {user.full_name || user.username}!</h1>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="card">
-              <h3 className="text-lg font-semibold mb-4">💬 Start Chatting</h3>
-              <p className="text-gray-600 mb-4">
-                Upload documents and ask questions about them.
-              </p>
-              <button
-                onClick={() => navigate('/chat')}
-                className="btn btn-primary w-full"
-              >
-                Go to Chat
-              </button>
-            </div>
-
-            <div className="card">
-              <h3 className="text-lg font-semibold mb-4">📄 Manage Documents</h3>
-              <p className="text-gray-600 mb-4">
-                Upload, view, and manage your documents.
-              </p>
-              <button
-                onClick={() => navigate('/documents')}
-                className="btn btn-primary w-full"
-              >
-                Go to Documents
-              </button>
-            </div>
-
-            {user.role === 'admin' && (
-              <div className="card">
-                <h3 className="text-lg font-semibold mb-4">⚙️ Administration</h3>
-                <p className="text-gray-600 mb-4">
-                  Manage users and system settings.
-                </p>
-                <button
-                  onClick={() => navigate('/admin')}
-                  className="btn btn-primary w-full"
-                >
-                  Go to Admin
-                </button>
-              </div>
-            )}
+    <AppShell
+      user={user}
+      onLogout={handleLogout}
+      title={`Welcome back, ${user.full_name || user.username}`}
+      subtitle="A ChatGPT-style workspace for conversations, documents, and team operations."
+      actions={
+        <button onClick={() => navigate('/chat')} className="btn btn-primary">
+          Open chat
+        </button>
+      }
+    >
+      <div className="page-stack">
+        <section className="hero-panel">
+          <div>
+            <p className="hero-panel__eyebrow">Ready to work</p>
+            <h2 className="hero-panel__title">
+              Ask questions, manage files, and stay in one clean workflow.
+            </h2>
+            <p className="hero-panel__text">
+              This pass is frontend-only. The backend APIs and data flow stay exactly where they were.
+            </p>
           </div>
-        </main>
+
+          <div className="hero-panel__actions">
+            <button onClick={() => navigate('/chat')} className="btn btn-primary">
+              Start a conversation
+            </button>
+            <button onClick={() => navigate('/documents')} className="btn btn-secondary">
+              Review documents
+            </button>
+          </div>
+        </section>
+
+        <section className="dashboard-grid">
+          <article className="surface-card surface-card--tall">
+            <p className="surface-card__eyebrow">Chat</p>
+            <h3 className="surface-card__title">Start a new thread</h3>
+            <p className="surface-card__text">
+              Jump into a focused chat interface with recent sessions in the sidebar and a bottom composer.
+            </p>
+            <button onClick={() => navigate('/chat')} className="btn btn-secondary">
+              Go to chat
+            </button>
+          </article>
+
+          <article className="surface-card surface-card--tall">
+            <p className="surface-card__eyebrow">Documents</p>
+            <h3 className="surface-card__title">Upload and organize knowledge</h3>
+            <p className="surface-card__text">
+              Keep PDFs, DOCX files, and text documents ready for retrieval while preserving the current backend.
+            </p>
+            <button onClick={() => navigate('/documents')} className="btn btn-secondary">
+              Open documents
+            </button>
+          </article>
+
+          <article className="surface-card surface-card--tall">
+            <p className="surface-card__eyebrow">Account</p>
+            <h3 className="surface-card__title">{user.email}</h3>
+            <p className="surface-card__text">
+              Signed in as <strong>{user.role}</strong>. Permissions are unchanged in this redesign.
+            </p>
+            {user.role === 'admin' ? (
+              <button onClick={() => navigate('/admin')} className="btn btn-secondary">
+                Open admin tools
+              </button>
+            ) : (
+              <button onClick={handleLogout} className="btn btn-secondary">
+                Log out
+              </button>
+            )}
+          </article>
+        </section>
       </div>
-    </div>
+    </AppShell>
   )
 }
 

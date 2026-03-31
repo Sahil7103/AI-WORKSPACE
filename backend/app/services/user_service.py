@@ -3,10 +3,11 @@ User management service.
 """
 
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import or_, select
+from sqlalchemy.exc import IntegrityError
 
 from app.models import User
-from app.schemas import UserCreate, UserResponse
+from app.schemas import UserCreate
 from app.core.security import hash_password, verify_password
 from app.utils.logger import logger
 
@@ -18,11 +19,16 @@ class UserService:
     async def create_user(db: AsyncSession, user_data: UserCreate) -> User:
         """Create a new user."""
         try:
-            # Check if user exists
-            stmt = select(User).where(User.email == user_data.email)
+            # Check for conflicting username or email before insert.
+            stmt = select(User).where(
+                or_(User.email == user_data.email, User.username == user_data.username)
+            )
             existing = await db.execute(stmt)
-            if existing.scalar_one_or_none():
-                raise ValueError(f"User with email {user_data.email} already exists")
+            existing_user = existing.scalar_one_or_none()
+            if existing_user:
+                if existing_user.email == user_data.email:
+                    raise ValueError(f"User with email {user_data.email} already exists")
+                raise ValueError(f"Username {user_data.username} is already taken")
 
             # Hash password
             hashed_pwd = hash_password(user_data.password)
@@ -43,6 +49,10 @@ class UserService:
             logger.info(f"User created: {user.email}")
             return user
 
+        except IntegrityError as e:
+            await db.rollback()
+            logger.error(f"Integrity error creating user: {str(e)}")
+            raise ValueError("Username or email is already in use") from e
         except Exception as e:
             await db.rollback()
             logger.error(f"Error creating user: {str(e)}")
