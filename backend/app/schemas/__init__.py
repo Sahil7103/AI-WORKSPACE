@@ -141,6 +141,7 @@ class QueryResponse(BaseModel):
 
     message_id: int
     session_id: int
+    session_name: Optional[str] = None
     query: str
     response: str
     sources: List[dict]

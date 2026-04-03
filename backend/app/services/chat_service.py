@@ -6,6 +6,7 @@ from datetime import datetime, UTC
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
 from typing import List, Optional
+import re
 
 from app.models import ChatSession, ChatMessage
 from app.utils.cache import get_session_memory, set_session_memory
@@ -14,6 +15,47 @@ from app.utils.logger import logger
 
 class ChatService:
     """Service for chat operations."""
+
+    DEFAULT_SESSION_NAMES = {"new chat", "new"}
+
+    @staticmethod
+    def is_default_session_name(session_name: Optional[str]) -> bool:
+        """Return whether the session title is still a placeholder."""
+        if not session_name:
+            return True
+        normalized = session_name.strip().lower()
+        return normalized in ChatService.DEFAULT_SESSION_NAMES
+
+    @staticmethod
+    def generate_session_name(prompt: str, max_words: int = 7, max_chars: int = 60) -> str:
+        """Generate a concise chat title from the first prompt."""
+        text = (prompt or "").strip()
+        if not text:
+            return "New Chat"
+
+        text = re.sub(r"\s+", " ", text)
+        text = re.sub(r"^[\"'`]+|[\"'`]+$", "", text)
+        text = re.sub(
+            r"^(hi|hello|hey|please|can you|could you|would you|help me|i want to know|tell me about|explain|summarize)\s+",
+            "",
+            text,
+            flags=re.IGNORECASE,
+        )
+        text = text.strip(" .,:;!?-")
+
+        if not text:
+            return "New Chat"
+
+        words = text.split()
+        if len(words) > max_words:
+            text = " ".join(words[:max_words])
+
+        text = text[:max_chars].rstrip(" ,:;.-")
+
+        if not text:
+            return "New Chat"
+
+        return text[0].upper() + text[1:]
 
     @staticmethod
     async def create_session(
@@ -144,4 +186,28 @@ class ChatService:
         except Exception as e:
             await db.rollback()
             logger.error(f"Error deleting session: {str(e)}")
+            raise
+
+    @staticmethod
+    async def rename_session(
+        db: AsyncSession,
+        session_id: int,
+        session_name: str,
+    ) -> ChatSession:
+        """Rename a session."""
+        try:
+            session = await ChatService.get_session(db, session_id)
+            if not session:
+                raise ValueError(f"Session {session_id} not found")
+
+            session.session_name = (session_name or "").strip() or "New Chat"
+            session.updated_at = datetime.now(UTC).replace(tzinfo=None)
+
+            await db.commit()
+            await db.refresh(session)
+            logger.info(f"Chat session renamed: {session.id}")
+            return session
+        except Exception as e:
+            await db.rollback()
+            logger.error(f"Error renaming chat session: {str(e)}")
             raise

@@ -2,7 +2,9 @@
 Embedding generation and management.
 """
 
+from hashlib import sha256
 from typing import List
+import re
 import numpy as np
 
 from app.utils.logger import logger
@@ -11,22 +13,54 @@ from app.utils.logger import logger
 class EmbeddingModel:
     """Wrapper for embedding models."""
 
-    def __init__(self, model_name: str = "all-MiniLM-L6-v2"):
+    def __init__(self, model_name: str = "all-MiniLM-L6-v2", fallback_dim: int = 384):
         """
         Initialize embedding model.
 
         Args:
             model_name: HuggingFace model identifier
         """
+        self.model_name = model_name
+        self.fallback_dim = fallback_dim
+        self.model = None
+
         try:
             from sentence_transformers import SentenceTransformer
 
             self.model = SentenceTransformer(model_name)
-            self.model_name = model_name
             logger.info(f"Loaded embedding model: {model_name}")
         except Exception as e:
-            logger.error(f"Failed to load embedding model: {str(e)}")
-            raise
+            logger.warning(
+                f"Failed to load embedding model '{model_name}': {str(e)}. "
+                "Falling back to local hash embeddings."
+            )
+
+    def _fallback_encode(self, texts: List[str]) -> np.ndarray:
+        """Generate deterministic local embeddings without external downloads."""
+        vectors = []
+
+        for text in texts:
+            vector = np.zeros(self.fallback_dim, dtype=np.float32)
+            normalized = (text or "").lower()
+            tokens = re.findall(r"\w+", normalized)
+
+            if not tokens:
+                vectors.append(vector)
+                continue
+
+            for token in tokens:
+                digest = sha256(token.encode("utf-8")).digest()
+                index = int.from_bytes(digest[:4], "big") % self.fallback_dim
+                sign = 1.0 if digest[4] % 2 == 0 else -1.0
+                vector[index] += sign
+
+            norm = np.linalg.norm(vector)
+            if norm > 0:
+                vector = vector / norm
+
+            vectors.append(vector)
+
+        return np.vstack(vectors)
 
     def encode(self, texts: List[str]) -> np.ndarray:
         """
@@ -39,11 +73,17 @@ class EmbeddingModel:
             NumPy array of embeddings
         """
         try:
+            if self.model is None:
+                return self._fallback_encode(texts)
+
             embeddings = self.model.encode(texts, convert_to_numpy=True)
             return embeddings
         except Exception as e:
-            logger.error(f"Error encoding texts: {str(e)}")
-            raise
+            logger.warning(
+                f"Error encoding texts with '{self.model_name}': {str(e)}. "
+                "Using local hash embeddings instead."
+            )
+            return self._fallback_encode(texts)
 
     def encode_single(self, text: str) -> np.ndarray:
         """Encode a single text."""

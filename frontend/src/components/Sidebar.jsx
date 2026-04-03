@@ -1,97 +1,123 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { 
+  Plus, 
+  Search, 
+  MessageSquare, 
+  Folder, 
+  ShieldAlert,
+  Download
+} from 'lucide-react'
+
 import { getInitials } from '../utils/helpers'
+
+const SidebarItem = ({ to, icon: Icon, label, isActive }) => (
+  <Link
+    to={to}
+    className={`
+      flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors
+      hover:bg-[#27272A] 
+      ${isActive ? 'bg-[#27272A] text-[#F4F4F5]' : 'text-[#A1A1AA] hover:text-[#F4F4F5]'}
+    `}
+  >
+    <Icon size={18} strokeWidth={2} />
+    <span>{label}</span>
+  </Link>
+)
 
 const Sidebar = ({ role, user, onLogout, children }) => {
   const location = useLocation()
 
   const isActive = (path) => {
-    if (path === '/') {
-      return location.pathname === '/'
-    }
-
+    if (path === '/') return location.pathname === '/'
     return location.pathname.startsWith(path)
   }
 
-  const navItems = [
-    { to: '/', label: 'Home', description: 'Overview and shortcuts' },
-    { to: '/chat', label: 'Chat', description: 'Conversations and answers' },
-    { to: '/documents', label: 'Documents', description: 'Files and processing' },
-  ]
-
-  if (role === 'admin') {
-    navItems.push({
-      to: '/admin',
-      label: 'Admin',
-      description: 'Users and system controls',
-    })
-  }
-
   return (
-    <aside className="app-sidebar">
-      <div className="app-sidebar__brand">
-        <div className="app-sidebar__badge">AI</div>
-        <div>
-          <p className="app-sidebar__title">Copilot</p>
-          <p className="app-sidebar__subtitle">ChatGPT-style workspace</p>
+    <aside className="flex flex-col h-full w-full bg-[#18181A] border-r border-[#3F3F46]/60 text-[#F4F4F5]">
+      {/* Brand Header */}
+      <div className="flex items-center justify-between px-4 py-3 pb-5">
+        <div className="text-xl font-serif text-[#F4F4F5]">
+          Current
         </div>
       </div>
 
-      <div className="app-sidebar__scroll">
-        <Link to="/chat" className="sidebar-primary-link">
-          <span className="sidebar-primary-link__plus">+</span>
-          <span>New chat</span>
-        </Link>
-
-        <div className="sidebar-section">
-          <p className="sidebar-section__label">Workspace</p>
-          <nav className="sidebar-nav">
-            {navItems.map((item) => (
-              <Link
-                key={item.to}
-                to={item.to}
-                className={`sidebar-nav__item ${
-                  isActive(item.to) ? 'sidebar-nav__item--active' : ''
-                }`.trim()}
-              >
-                <span className="sidebar-nav__title">{item.label}</span>
-                <span className="sidebar-nav__description">{item.description}</span>
-              </Link>
-            ))}
-          </nav>
-        </div>
-
-        {children ? (
-          <div className="sidebar-section">
-            <p className="sidebar-section__label">Recent chats</p>
-            <div className="sidebar-stack">{children}</div>
-          </div>
-        ) : null}
-      </div>
-
-      {user ? (
-        <div className="app-sidebar__footer">
-          <div className="app-sidebar__user">
-            <div className="app-sidebar__avatar">
-              {getInitials(user.full_name || user.username || 'AI').slice(0, 2)}
-            </div>
-            <div className="app-sidebar__user-copy">
-              <p className="app-sidebar__user-name">
-                {user.full_name || user.username}
-              </p>
-              <p className="app-sidebar__user-email">{user.email}</p>
-            </div>
-          </div>
-
+      <div className="flex-1 overflow-y-auto px-3 space-y-6">
+        
+        {/* Core Actions */}
+        <div className="space-y-1">
           <Link
-            to="/login"
-            onClick={onLogout}
-            className="sidebar-secondary-link"
+            to="/chat"
+            className="flex items-center gap-3 px-3 py-2 rounded-lg text-[#F4F4F5] hover:bg-[#27272A] transition-colors text-sm font-medium"
           >
-            Log out
+            <div className="flex h-6 w-6 items-center justify-center rounded-sm bg-[#EA580C] text-white">
+              <Plus size={16} strokeWidth={3} />
+            </div>
+            <span>New chat</span>
           </Link>
+          
+          <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-[#A1A1AA] hover:bg-[#27272A] hover:text-[#F4F4F5] transition-colors">
+            <Search size={18} strokeWidth={2} />
+            <span>Search</span>
+          </button>
+          
         </div>
-      ) : null}
+
+        {/* Navigation Sections */}
+        <div className="space-y-4">
+          <div className="space-y-1">
+            <SidebarItem 
+              to="/chat" 
+              icon={MessageSquare} 
+              label="Chats" 
+              isActive={isActive('/chat')} 
+            />
+            <SidebarItem 
+              to="/documents" 
+              icon={Folder} 
+              label="Documents" 
+              isActive={isActive('/documents')} 
+            />
+            {role === 'admin' && (
+              <SidebarItem 
+                to="/admin" 
+                icon={ShieldAlert} 
+                label="Admin" 
+                isActive={isActive('/admin')} 
+              />
+            )}
+          </div>
+        </div>
+
+        {/* Recent Threads Slot */}
+        {children && (
+          <div className="space-y-1 pt-4 border-t border-[#3F3F46]/40">
+            <p className="px-3 text-xs font-semibold text-[#A1A1AA] uppercase tracking-wider mb-2">
+              Recent Threads
+            </p>
+            {children}
+          </div>
+        )}
+      </div>
+
+      {/* Footer / User Profile */}
+      <div className="flex items-center justify-between p-4 border-t border-[#3F3F46]/40 mt-auto">
+        <button 
+          onClick={onLogout}
+          className="flex items-center gap-3 text-sm font-medium text-[#A1A1AA] hover:text-[#F4F4F5] transition-colors"
+        >
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#27272A] text-xs font-bold text-[#F4F4F5]">
+            {getInitials(user?.full_name || user?.username || 'U').slice(0, 2)}
+          </div>
+          <div className="text-left leading-tight hidden sm:block">
+            <div className="text-[#F4F4F5]">{user?.full_name || user?.username || 'User'}</div>
+            <div className="text-xs text-[#A1A1AA]">Log out</div>
+          </div>
+        </button>
+        <button className="text-[#A1A1AA] hover:text-[#F4F4F5] p-2 rounded-md hover:bg-[#27272A] transition-colors">
+          <Download size={16} />
+        </button>
+      </div>
     </aside>
   )
 }

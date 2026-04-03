@@ -16,6 +16,28 @@ from app.utils.file_handler import save_uploaded_file, read_file_content
 router = APIRouter(prefix="/documents", tags=["documents"])
 
 
+def _serialize_document(document) -> DocumentResponse:
+    """Convert ORM document into plain response model."""
+    return DocumentResponse.model_validate(document, from_attributes=True)
+
+
+def _serialize_document_detail(document, chunks=None) -> DocumentDetailResponse:
+    """Convert ORM document and chunks into a plain detail response."""
+    return DocumentDetailResponse(
+        **DocumentResponse.model_validate(document, from_attributes=True).model_dump(),
+        content=document.content,
+        chunks=[
+            {
+                "id": chunk.id,
+                "chunk_text": chunk.chunk_text,
+                "chunk_index": chunk.chunk_index,
+                "document_id": chunk.document_id,
+            }
+            for chunk in (chunks or [])
+        ],
+    )
+
+
 @router.post("/upload", response_model=DocumentResponse)
 async def upload_document(
     file: UploadFile = File(...),
@@ -84,7 +106,7 @@ async def list_documents(
             "total": total,
             "skip": skip,
             "limit": limit,
-            "documents": documents,
+            "documents": [_serialize_document(document) for document in documents],
         }
 
     except Exception as e:
@@ -124,9 +146,7 @@ async def get_document(
 
         # Get chunks
         chunks = await DocumentService.get_document_chunks(db, doc_id)
-        document.chunks = chunks
-
-        return document
+        return _serialize_document_detail(document, chunks)
 
     except HTTPException:
         raise

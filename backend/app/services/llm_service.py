@@ -2,7 +2,8 @@
 LLM and query service - handles LLM interactions and response generation.
 """
 
-from typing import List, AsyncGenerator
+from typing import List, AsyncGenerator, Optional
+import re
 import time
 
 import httpx
@@ -44,6 +45,12 @@ class LLMService:
 
     def _format_context(self, retrieved_chunks: List[dict]) -> str:
         """Format retrieved chunks as context."""
+        if not retrieved_chunks:
+            return (
+                "# Retrieved Documents Context\n\n"
+                "No relevant internal documents were retrieved for this request.\n"
+            )
+
         context = "# Retrieved Documents Context\n\n"
 
         for i, chunk in enumerate(retrieved_chunks, 1):
@@ -58,16 +65,51 @@ class LLMService:
         return f"""You are an AI assistant for an organization's internal knowledge base. 
 You help employees find information and answer questions based on organizational documents.
 
-Answer questions based strictly on the provided context. If the answer is not in the context, 
-say so clearly. Always cite your sources.
+Answer questions based on the provided context whenever relevant. If no useful context is available,
+you may still answer simple conversational prompts naturally, but be clear that no internal documents
+were used. Cite sources when context is available.
 
 {context}
 
 Guidelines:
 - Be concise and accurate
 - Always mention which document(s) you're referencing
+- Format the answer cleanly using markdown-style structure when helpful
+- Prefer short headings, tight paragraphs, and bullet points for multiple items
 - If uncertain, ask for clarification
 - Never make up information not in the context"""
+
+    def _normalize_response_text(self, text: str) -> str:
+        """Preserve readable markdown-style spacing from model responses."""
+        normalized = (text or "").replace("\r\n", "\n").strip()
+        normalized = re.sub(r"\n{3,}", "\n\n", normalized)
+        return normalized
+
+    def _chunk_stream_text(self, text: str) -> List[str]:
+        """Split text into streaming chunks while preserving whitespace and newlines."""
+        pieces = re.findall(r"\n+|[^\S\n]+|[^\s]+", text)
+        if not pieces:
+            return [text] if text else []
+
+        chunks = []
+        buffer = ""
+        for piece in pieces:
+            if piece.startswith("\n"):
+                if buffer:
+                    chunks.append(buffer)
+                    buffer = ""
+                chunks.append(piece)
+                continue
+
+            buffer += piece
+            if len(buffer) >= 14 or piece.endswith((".", ",", "!", "?", ":", ";")):
+                chunks.append(buffer)
+                buffer = ""
+
+        if buffer:
+            chunks.append(buffer)
+
+        return chunks
 
     def _format_conversation_history(self, conversation_history: List[dict] = None) -> str:
         """Format prior conversation turns for single-prompt APIs."""
@@ -122,6 +164,152 @@ Guidelines:
 
         return answer
 
+    def _sanitize_title(
+        self,
+        title: str,
+        fallback_query: str,
+        max_words: int = 6,
+        max_chars: int = 48,
+    ) -> str:
+        """Normalize generated titles into short, task-style labels."""
+        cleaned = (title or "").strip()
+        cleaned = re.sub(r"\*+", "", cleaned)
+        cleaned = re.sub(r"^['\"`#*\-\s]+|['\"`#*\-\s]+$", "", cleaned)
+        cleaned = re.sub(r"\s+", " ", cleaned)
+        cleaned = re.sub(
+            r"^(task title|title|chat title)\s*:?[\s-]*",
+            "",
+            cleaned,
+            flags=re.IGNORECASE,
+        )
+        cleaned = cleaned.strip(" .,:;!?-")
+
+        if not cleaned:
+            cleaned = fallback_query or ""
+
+        words = cleaned.split()
+        if len(words) > max_words:
+            cleaned = " ".join(words[:max_words])
+
+        cleaned = cleaned[:max_chars].rstrip(" ,:;.-")
+        if not cleaned:
+            cleaned = "New Chat"
+
+        return cleaned[0].upper() + cleaned[1:]
+
+    def _format_title_tokens(self, text: str) -> str:
+        """Apply lightweight title casing with common acronym preservation."""
+        acronyms = {
+            "api": "API",
+            "ai": "AI",
+            "hr": "HR",
+            "sql": "SQL",
+            "ui": "UI",
+            "ux": "UX",
+            "cv": "CV",
+            "pdf": "PDF",
+            "docx": "DOCX",
+            "rag": "RAG",
+            "jwt": "JWT",
+            "faiss": "FAISS",
+            "python": "Python",
+            "github": "GitHub",
+            "slack": "Slack",
+            "gmail": "Gmail",
+        }
+        words = []
+        for word in text.split():
+            stripped = word.strip()
+            lower = stripped.lower()
+            words.append(acronyms.get(lower, stripped.capitalize()))
+        return " ".join(words)
+
+    def _heuristic_session_title(self, query: str) -> str:
+        """Infer a concise task title from the user's first message."""
+        text = (query or "").strip().lower()
+        text = re.sub(r"\s+", " ", text)
+        for pattern in [
+            r"^(hi|hello|hey|please)\s+",
+            r"^(can you|could you|would you)\s+",
+            r"^(help me)\s+",
+            r"^(i want to know|tell me about)\s+",
+        ]:
+            text = re.sub(pattern, "", text)
+        text = text.strip(" .,:;!?-")
+
+        def cleanup_subject(subject: str) -> str:
+            subject = re.sub(r"^(the|a|an|my)\s+", "", subject.strip())
+            subject = re.sub(r"\b(per week|for employees|for me)\b", "", subject)
+            subject = re.sub(r"\b(roles?)\b$", "", subject).strip()
+            subject = re.sub(r"\s+", " ", subject).strip(" .,:;!?-")
+            return self._format_title_tokens(subject)
+
+        patterns = [
+            (r"^(summarize|summarise|summary of)\s+(.*)$", "Summary"),
+            (r"^(debug|fix|troubleshoot|resolve)\s+(.*)$", "Debugging"),
+            (r"^(explain|describe)\s+(.*)$", ""),
+            (r"^(compare)\s+(.*)$", "Comparison"),
+            (r"^(draft|write|create)\s+(.*)$", "Draft"),
+        ]
+
+        for pattern, suffix in patterns:
+            match = re.match(pattern, text)
+            if match:
+                subject = cleanup_subject(match.group(2))
+                if suffix == "Debugging":
+                    subject = re.sub(r"\b(error|issue|problem)\b$", "", subject, flags=re.IGNORECASE).strip()
+                if not suffix:
+                    return subject or "New Chat"
+                if suffix == "Comparison":
+                    return f"{subject} Comparison" if subject else "Comparison"
+                if suffix == "Draft":
+                    return f"{subject} Draft" if subject else "Draft"
+                return f"{subject} {suffix}".strip() if subject else suffix
+
+        resume_match = re.match(r"^(review|analyze|analyse|assess|evaluate)\s+my\s+(resume|cv)(?:\s+for\s+(.*?))?$", text)
+        if resume_match:
+            role = cleanup_subject(resume_match.group(3) or "")
+            return f"{role} Resume Review".strip() if role else "Resume Review"
+
+        if "resume" in text or "cv" in text:
+            return "Resume Review"
+
+        if "policy" in text:
+            return f"{cleanup_subject(text)}".strip() or "Policy Question"
+
+        words = [
+            word for word in re.findall(r"[a-zA-Z0-9+#.]+", text)
+            if word not in {"the", "a", "an", "my", "for", "with", "and", "to", "of", "on", "in"}
+        ]
+        if not words:
+            return "New Chat"
+
+        return self._format_title_tokens(" ".join(words[:5]))
+
+    def _is_valid_generated_title(self, title: str, query: str) -> bool:
+        """Reject noisy model-generated titles and use heuristic fallback instead."""
+        lowered = title.lower()
+        if any(token in lowered for token in ["###", "task title", "section name"]):
+            return False
+        if " or " in lowered:
+            return False
+        words = title.split()
+        if len(words) < 2 or len(words) > 6:
+            return False
+        if len(set(word.lower() for word in words)) <= max(1, len(words) // 2):
+            return False
+        query_words = set(re.findall(r"[a-zA-Z0-9+#.]+", query.lower()))
+        title_words = set(re.findall(r"[a-zA-Z0-9+#.]+", title.lower()))
+        return bool(title_words) and not title_words.issubset({"new", "chat"}) and len(title_words & query_words) >= 1
+
+    async def generate_session_title(
+        self,
+        first_query: str,
+        conversation_history: Optional[List[dict]] = None,
+    ) -> str:
+        """Generate a short task-oriented title for a new chat."""
+        return self._heuristic_session_title(first_query)
+
     async def query(
         self,
         query: str,
@@ -160,6 +348,8 @@ Guidelines:
                     "The configured LLM endpoint is currently unavailable. "
                     "Please try again in a moment."
                 )
+
+            response_text = self._normalize_response_text(response_text)
 
             response_time_ms = (time.time() - start_time) * 1000
 
@@ -207,8 +397,8 @@ Guidelines:
                 stream=False,
             )
 
-            for token in response_text.split():
-                yield token + " "
+            for chunk in self._chunk_stream_text(response_text):
+                yield chunk
 
         except Exception as e:
             logger.error(f"Error streaming query: {str(e)}")
@@ -221,6 +411,14 @@ class QueryService:
     def __init__(self, llm_service: LLMService = None):
         """Initialize query service."""
         self.llm = llm_service or LLMService()
+
+    async def generate_session_title(
+        self,
+        first_query: str,
+        conversation_history: Optional[List[dict]] = None,
+    ) -> str:
+        """Generate a smart task-based title for a new chat."""
+        return await self.llm.generate_session_title(first_query, conversation_history)
 
     async def process_query(
         self,
@@ -242,15 +440,20 @@ class QueryService:
         4. Format and return response
         """
         try:
-            # Get RAG retriever
-            retriever = await get_rag_retriever()
-
-            # Retrieve relevant chunks
-            retrieved_chunks = await retriever.retrieve(
-                query,
-                k=max_results,
-                similarity_threshold=similarity_threshold,
-            )
+            retrieved_chunks = []
+            try:
+                retriever = await get_rag_retriever()
+                retrieved_chunks = await retriever.retrieve(
+                    query,
+                    k=max_results,
+                    similarity_threshold=similarity_threshold,
+                    allowed_doc_ids=document_ids,
+                )
+            except Exception as exc:
+                logger.warning(
+                    f"Retriever unavailable for query '{query}': {str(exc)}. "
+                    "Continuing without document context."
+                )
 
             # Query LLM
             response, sources, response_time = await self.llm.query(
@@ -284,14 +487,20 @@ class QueryService:
     ) -> AsyncGenerator:
         """Process query with streaming response."""
         try:
-            retriever = await get_rag_retriever()
-
-            # Retrieve chunks
-            retrieved_chunks = await retriever.retrieve(
-                query,
-                k=max_results,
-                similarity_threshold=similarity_threshold,
-            )
+            retrieved_chunks = []
+            try:
+                retriever = await get_rag_retriever()
+                retrieved_chunks = await retriever.retrieve(
+                    query,
+                    k=max_results,
+                    similarity_threshold=similarity_threshold,
+                    allowed_doc_ids=document_ids,
+                )
+            except Exception as exc:
+                logger.warning(
+                    f"Retriever unavailable for streaming query '{query}': {str(exc)}. "
+                    "Continuing without document context."
+                )
 
             # Stream response
             async for token in self.llm.stream_query(

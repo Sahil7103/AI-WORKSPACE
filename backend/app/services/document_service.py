@@ -98,7 +98,11 @@ class DocumentService:
             chunk_metadata = await retriever.process_document(
                 doc_id=str(doc_id),
                 content=content,
-                metadata={"filename": doc.filename, "file_type": doc.file_type},
+                metadata={
+                    "filename": doc.filename,
+                    "file_type": doc.file_type,
+                    "uploaded_by_id": doc.uploaded_by_id,
+                },
             )
 
             # Store chunks in database
@@ -125,6 +129,59 @@ class DocumentService:
         except Exception as e:
             await db.rollback()
             logger.error(f"Error processing document: {str(e)}")
+            raise
+
+    @staticmethod
+    async def ensure_documents_indexed(
+        db: AsyncSession,
+        user_id: int,
+        document_ids: Optional[List[int]] = None,
+    ) -> List[int]:
+        """Ensure the current user's documents are available in the live vector store."""
+        try:
+            stmt = select(Document).where(Document.uploaded_by_id == user_id)
+            if document_ids:
+                stmt = stmt.where(Document.id.in_(document_ids))
+
+            result = await db.execute(stmt)
+            documents = result.scalars().all()
+            if not documents:
+                return []
+
+            retriever = await get_rag_retriever()
+            store_is_empty = not retriever.has_indexed_content()
+            indexed_doc_ids = []
+
+            for doc in documents:
+                if not (doc.content or "").strip():
+                    continue
+
+                needs_db_processing = not doc.is_processed or not doc.embedding_generated
+                existing_chunks = await DocumentService.get_document_chunks(db, doc.id)
+
+                if needs_db_processing or not existing_chunks:
+                    await DocumentService.process_document(db, doc.id, doc.content)
+                    indexed_doc_ids.append(doc.id)
+                    continue
+
+                if store_is_empty:
+                    await retriever.index_existing_chunks(
+                        doc_id=str(doc.id),
+                        chunks=[
+                            {"chunk_index": chunk.chunk_index, "text": chunk.chunk_text}
+                            for chunk in existing_chunks
+                        ],
+                        metadata={
+                            "filename": doc.filename,
+                            "file_type": doc.file_type,
+                            "uploaded_by_id": doc.uploaded_by_id,
+                        },
+                    )
+                    indexed_doc_ids.append(doc.id)
+
+            return indexed_doc_ids
+        except Exception as e:
+            logger.error(f"Error ensuring documents are indexed: {str(e)}")
             raise
 
     @staticmethod

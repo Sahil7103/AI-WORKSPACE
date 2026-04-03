@@ -26,87 +26,56 @@ const LoginPage = () => {
   }
 
   return (
-    <div className="auth-page">
-      <div className="auth-page__backdrop" />
+    <div className="flex min-h-screen items-center justify-center bg-[#18181A] text-[#F4F4F5] px-4">
+      <div className="w-full max-w-md bg-[#27272A] p-8 rounded-3xl border border-[#3F3F46] shadow-2xl">
+        <div className="text-center mb-8">
+          <div className="flex justify-center mb-4 text-[#EA580C]">
+            <svg viewBox="0 0 24 24" fill="currentColor" className="w-12 h-12">
+              <path d="M12 2L13.5 10.5L22 12L13.5 13.5L12 22L10.5 13.5L2 12L10.5 10.5L12 2Z" />
+            </svg>
+          </div>
+          <h1 className="text-3xl font-serif tracking-tight">Welcome back</h1>
+          <p className="text-[#A1A1AA] mt-2 text-sm">Log in to continue to your workspace</p>
+        </div>
 
-      <div className="auth-page__content">
-        <section className="auth-page__intro">
-          <p className="auth-page__eyebrow">AI Workplace Copilot</p>
-          <h1 className="auth-page__title">
-            A familiar ChatGPT-style workspace for your internal knowledge.
-          </h1>
-          <p className="auth-page__text">
-            Sign in to chat with your documents, manage uploads, and work inside the refreshed interface.
-          </p>
-
-          <div className="auth-page__feature-list">
-            <div className="auth-page__feature">
-              <span className="auth-page__feature-kicker">Focused</span>
-              <p>One clean workspace for chat, knowledge files, and team operations.</p>
-            </div>
-            <div className="auth-page__feature">
-              <span className="auth-page__feature-kicker">Fast</span>
-              <p>Recent threads, uploads, and answers stay in one predictable flow.</p>
-            </div>
-            <div className="auth-page__feature">
-              <span className="auth-page__feature-kicker">Safe</span>
-              <p>Your current backend and auth model stay exactly as they are.</p>
-            </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-1">
+            <label className="text-sm font-medium text-[#A1A1AA]">Username</label>
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="w-full bg-[#18181A] border border-[#3F3F46] rounded-xl px-4 py-3 text-[#F4F4F5] focus:outline-none focus:border-[#EA580C] focus:ring-1 focus:ring-[#EA580C] transition-colors"
+              required
+            />
           </div>
 
-          <div className="auth-page__metric-row">
-            <div className="auth-page__metric">
-              <strong>Chat</strong>
-              <span>Document-grounded conversations</span>
-            </div>
-            <div className="auth-page__metric">
-              <strong>Upload</strong>
-              <span>PDF, DOCX, and TXT support</span>
-            </div>
-          </div>
-        </section>
-
-        <section className="auth-card">
-          <div className="auth-card__header">
-            <p className="auth-card__eyebrow">Welcome back</p>
-            <h2 className="auth-card__title">Log in</h2>
+          <div className="space-y-1">
+            <label className="text-sm font-medium text-[#A1A1AA]">Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full bg-[#18181A] border border-[#3F3F46] rounded-xl px-4 py-3 text-[#F4F4F5] focus:outline-none focus:border-[#EA580C] focus:ring-1 focus:ring-[#EA580C] transition-colors"
+              required
+            />
           </div>
 
-          <form onSubmit={handleSubmit} className="auth-form">
-            <div className="field">
-              <label className="field__label">Username</label>
-              <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="field__input"
-                required
-              />
-            </div>
+          <button 
+            type="submit" 
+            disabled={loading} 
+            className="w-full py-3 mt-4 bg-[#EA580C] text-white rounded-xl font-medium hover:bg-[#C2410C] transition-colors disabled:opacity-50"
+          >
+            {loading ? 'Logging in...' : 'Continue'}
+          </button>
+        </form>
 
-            <div className="field">
-              <label className="field__label">Password</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="field__input"
-                required
-              />
-            </div>
-
-            <button type="submit" disabled={loading} className="btn btn-primary btn-block">
-              {loading ? 'Logging in...' : 'Continue'}
-            </button>
-          </form>
-
-          <p className="auth-card__footer">
-            Do not have an account?{' '}
-            <Link to="/register" className="auth-card__link">
-              Create one
-            </Link>
-          </p>
-        </section>
+        <p className="text-center mt-6 text-sm text-[#A1A1AA]">
+          Don't have an account?{' '}
+          <Link to="/register" className="text-[#EA580C] hover:underline">
+            Sign up
+          </Link>
+        </p>
       </div>
     </div>
   )

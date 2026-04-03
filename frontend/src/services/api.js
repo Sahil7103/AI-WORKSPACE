@@ -55,8 +55,68 @@ export const chatAPI = {
     api.get('/chat/sessions', { params: { skip, limit } }),
   getSession: (sessionId) => api.get(`/chat/sessions/${sessionId}`),
   deleteSession: (sessionId) => api.delete(`/chat/sessions/${sessionId}`),
+  renameSession: (sessionId, newName) => 
+    api.put(`/chat/sessions/${sessionId}/rename`, null, { params: { session_name: newName } }),
   query: (query) => api.post('/chat/query', query),
-  queryStream: (query) => api.post('/chat/query-stream', query),
+  queryStream: async (query, { onToken, onDone } = {}) => {
+    const token = localStorage.getItem('auth_token')
+    const response = await fetch(`${API_BASE_URL}/chat/query-stream`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: JSON.stringify(query),
+    })
+
+    if (response.status === 401) {
+      localStorage.removeItem('auth_token')
+      window.location.href = '/login'
+      throw new Error('Unauthorized')
+    }
+
+    if (!response.ok || !response.body) {
+      throw new Error('Streaming request failed')
+    }
+
+    const reader = response.body.getReader()
+    const decoder = new TextDecoder()
+    let buffer = ''
+    let fullText = ''
+    let donePayload = null
+
+    while (true) {
+      const { value, done } = await reader.read()
+      if (done) break
+
+      buffer += decoder.decode(value, { stream: true })
+      const events = buffer.split('\n\n')
+      buffer = events.pop() || ''
+
+      for (const eventBlock of events) {
+        const dataLines = eventBlock
+          .split('\n')
+          .filter((line) => line.startsWith('data: '))
+
+        for (const line of dataLines) {
+          const payload = JSON.parse(line.slice(6))
+          if (payload.token) {
+            fullText += payload.token
+            onToken?.(payload.token, fullText)
+          }
+          if (payload.done) {
+            donePayload = payload
+            onDone?.(payload, fullText)
+          }
+        }
+      }
+    }
+
+    return {
+      response: fullText.trim(),
+      ...donePayload,
+    }
+  },
 }
 
 export const adminAPI = {

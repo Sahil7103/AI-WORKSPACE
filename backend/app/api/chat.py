@@ -17,6 +17,7 @@ from app.schemas import (
     ChatMessageResponse,
 )
 from app.services.chat_service import ChatService
+from app.services.document_service import DocumentService
 from app.services.llm_service import QueryService, LLMService
 from app.utils.logger import logger
 
@@ -42,6 +43,16 @@ def _serialize_chat_session(session, messages=None) -> ChatSessionDetailResponse
     )
 
 
+def _serialize_chat_session_summary(session) -> ChatSessionResponse:
+    """Convert ORM session objects into summary response models."""
+    return ChatSessionResponse(
+        id=session.id,
+        session_name=session.session_name,
+        created_at=session.created_at,
+        updated_at=session.updated_at,
+    )
+
+
 @router.post("/sessions", response_model=ChatSessionResponse)
 async def create_chat_session(
     session_name: str = None,
@@ -62,6 +73,40 @@ async def create_chat_session(
         )
 
 
+@router.put("/sessions/{session_id}/rename", response_model=ChatSessionResponse)
+async def rename_chat_session(
+    session_id: int,
+    session_name: str,
+    current_user: dict = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """Rename a chat session."""
+    try:
+        session = await ChatService.get_session(db, session_id)
+        if not session:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Session not found",
+            )
+
+        user_id = int(current_user["user_id"])
+        if session.user_id != user_id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied",
+            )
+
+        return await ChatService.rename_session(db, session_id, session_name)
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error renaming session: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Error renaming chat session",
+        )
+
+
 @router.get("/sessions", response_model=dict)
 async def list_chat_sessions(
     skip: int = 0,
@@ -78,7 +123,7 @@ async def list_chat_sessions(
 
         return {
             "total": total,
-            "sessions": sessions,
+            "sessions": [_serialize_chat_session_summary(session) for session in sessions],
         }
 
     except Exception as e:
@@ -152,6 +197,24 @@ async def query_chat(
             for msg in messages[-4:]  # Last 4 messages for context
         ]
 
+        if not messages and ChatService.is_default_session_name(session.session_name):
+            generated_title = await query_service.generate_session_title(
+                request.query,
+                conversation_history,
+            )
+            session = await ChatService.rename_session(
+                db,
+                request.session_id,
+                generated_title,
+            )
+
+        # Ensure the user's documents are indexed into the live vector store
+        await DocumentService.ensure_documents_indexed(
+            db,
+            user_id=user_id,
+            document_ids=request.document_ids,
+        )
+
         # Process query
         result = await query_service.process_query(
             query=request.query,
@@ -173,6 +236,7 @@ async def query_chat(
         return QueryResponse(
             message_id=response_msg.id,
             session_id=request.session_id,
+            session_name=session.session_name,
             query=request.query,
             response=result["response"],
             sources=result["sources"],
@@ -214,9 +278,30 @@ async def query_stream(
             {"role": msg.role, "content": msg.content} for msg in messages[-4:]
         ]
 
+        if not messages and ChatService.is_default_session_name(session.session_name):
+            generated_title = await query_service.generate_session_title(
+                request.query,
+                conversation_history,
+            )
+            session = await ChatService.rename_session(
+                db,
+                request.session_id,
+                generated_title,
+            )
+
+        await DocumentService.ensure_documents_indexed(
+            db,
+            user_id=user_id,
+            document_ids=request.document_ids,
+        )
+
+        # Save the user message before streaming begins
+        await ChatService.add_message(db, request.session_id, "user", request.query)
+
         # Stream response
         async def generate():
             """Generate streaming response."""
+            streamed_tokens = []
             async for token in query_service.process_query_streaming(
                 query=request.query,
                 user_id=user_id,
@@ -224,14 +309,18 @@ async def query_stream(
                 document_ids=request.document_ids,
                 conversation_history=conversation_history,
             ):
+                streamed_tokens.append(token)
                 yield f"data: {json.dumps({'token': token})}\n\n"
 
-            # Save messages when streaming completes
-            await ChatService.add_message(db, request.session_id, "user", request.query)
-            # Note: Real response would be reconstructed from stream
-            await ChatService.add_message(
-                db, request.session_id, "assistant", "[Streaming complete]"
+            full_response = "".join(streamed_tokens).strip() or "No response generated."
+            response_msg = await ChatService.add_message(
+                db,
+                request.session_id,
+                "assistant",
+                full_response,
+                json.dumps([]),
             )
+            yield f"data: {json.dumps({'done': True, 'message_id': response_msg.id, 'session_name': session.session_name})}\n\n"
 
         return StreamingResponse(generate(), media_type="text/event-stream")
 
