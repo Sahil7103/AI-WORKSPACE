@@ -87,6 +87,17 @@ class ChatService:
         return await db.get(ChatSession, session_id)
 
     @staticmethod
+    async def get_session_for_user(
+        db: AsyncSession, session_id: int, user_id: int
+    ) -> Optional[ChatSession]:
+        """Get a session by ID scoped to a specific user."""
+        stmt = select(ChatSession).where(
+            ChatSession.id == session_id, ChatSession.user_id == user_id
+        )
+        result = await db.execute(stmt)
+        return result.scalars().first()
+
+    @staticmethod
     async def list_sessions(
         db: AsyncSession, user_id: int, skip: int = 0, limit: int = 20
     ) -> tuple:
@@ -163,6 +174,19 @@ class ChatService:
         result = await db.execute(stmt)
         return result.scalars().all()
 
+    @staticmethod
+    async def get_session_messages_for_user(
+        db: AsyncSession, session_id: int, user_id: int
+    ) -> List[ChatMessage]:
+        """Get all messages in a session scoped to a specific user."""
+        stmt = (
+            select(ChatMessage)
+            .join(ChatSession, ChatMessage.session_id == ChatSession.id)
+            .where(ChatMessage.session_id == session_id, ChatSession.user_id == user_id)
+            .order_by(ChatMessage.created_at)
+        )
+        result = await db.execute(stmt)
+        return result.scalars().all()
     @staticmethod
     async def get_session_memory_context(session_id: int) -> list:
         """Get conversation memory from Redis for context."""

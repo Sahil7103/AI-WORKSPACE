@@ -88,6 +88,34 @@ class DocumentDetailResponse(DocumentResponse):
     chunks: List[DocumentChunkResponse] = []
 
 
+class GmailConnectionRequest(BaseModel):
+    gmail_address: EmailStr
+    app_password: str = Field(min_length=8)
+    sync_limit: int = Field(default=20, ge=1, le=100)
+
+
+class GmailConnectionResponse(BaseModel):
+    connected: bool
+    gmail_address: Optional[EmailStr] = None
+    last_synced_at: Optional[datetime] = None
+    imported_count: int = 0
+
+
+class GmailOAuthStartResponse(BaseModel):
+    auth_url: str
+
+
+class GitHubConnectionResponse(BaseModel):
+    connected: bool
+    github_login: Optional[str] = None
+    last_synced_at: Optional[datetime] = None
+    imported_count: int = 0
+
+
+class GitHubOAuthStartResponse(BaseModel):
+    auth_url: str
+
+
 # ==================== Chat Schemas ====================
 
 

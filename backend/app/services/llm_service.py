@@ -3,6 +3,7 @@ LLM and query service - handles LLM interactions and response generation.
 """
 
 from typing import List, AsyncGenerator, Optional
+import asyncio
 import re
 import time
 
@@ -43,6 +44,33 @@ class LLMService:
         """Close the HTTP client."""
         await self.client.aclose()
 
+    async def warmup(self, prompt: Optional[str] = None) -> bool:
+        """Warm the external LLM endpoint with a lightweight request."""
+        if not self.api_url:
+            return False
+
+        warmup_prompt = (prompt or settings.llm_warmup_prompt).strip()
+        if not warmup_prompt:
+            return False
+
+        try:
+            await self._request_completion(
+                prompt=warmup_prompt,
+                system_prompt=(
+                    "You are a healthcheck assistant. "
+                    "Reply with a very short plain-text response only."
+                ),
+            )
+            logger.info("External LLM warmup completed")
+            return True
+        except Exception as exc:
+            logger.warning(f"External LLM warmup failed: {str(exc)}")
+            return False
+
+    async def keepalive_once(self) -> bool:
+        """Ping the configured LLM endpoint once to reduce cold starts."""
+        return await self.warmup(settings.llm_keepalive_prompt)
+
     def _format_context(self, retrieved_chunks: List[dict]) -> str:
         """Format retrieved chunks as context."""
         if not retrieved_chunks:
@@ -71,13 +99,36 @@ were used. Cite sources when context is available.
 
 {context}
 
-Guidelines:
+Response style requirements:
+- Write like a polished professional AI product
+- Lead with the answer, not filler
+- Use short markdown headings only when they improve clarity
+- Use bullet points for multiple items, comparisons, steps, recommendations, or grouped facts
+- Keep paragraphs tight: usually 1 to 3 sentences
+- Highlight the most important phrases using **bold**
+- Use `inline code` for commands, file names, API fields, IDs, and technical terms when useful
+- Avoid unnecessary preambles, repeated caveats, and robotic wording
+
+Grounding rules:
 - Be concise and accurate
-- Always mention which document(s) you're referencing
-- Format the answer cleanly using markdown-style structure when helpful
-- Prefer short headings, tight paragraphs, and bullet points for multiple items
-- If uncertain, ask for clarification
-- Never make up information not in the context"""
+- Always mention which document(s) you're referencing when context is available
+- If the answer comes from the retrieved context, clearly anchor the answer to that context
+- If no useful context is available, say so briefly and then answer as a general assistant if possible
+- If uncertain, ask for clarification instead of guessing
+- Never make up information not in the context
+
+Preferred answer patterns:
+- For direct factual questions: a short answer first, then 2 to 5 bullet points if helpful
+- For summaries: begin with a one-line takeaway, then key points
+- For how-to questions: use numbered steps
+- For recommendations: state the recommendation first, then concise reasoning
+- For comparisons: use short labeled bullets
+
+Formatting rules:
+- Output clean markdown-style text only
+- Do not output JSON, XML, or meta labels like "Final Answer"
+- Do not overuse headings
+- Do not use tables unless the comparison is genuinely easier to read that way"""
 
     def _normalize_response_text(self, text: str) -> str:
         """Preserve readable markdown-style spacing from model responses."""
@@ -140,29 +191,48 @@ Guidelines:
         if self.api_token:
             headers["Authorization"] = f"Bearer {self.api_token}"
 
-        response = await self.client.post(
-            self.api_url,
-            json={
-                "prompt": prompt,
-                "system_prompt": system_prompt,
-                "max_tokens": self.max_tokens,
-            },
-            headers=headers,
-        )
-        response.raise_for_status()
+        last_error = None
 
-        payload = response.json()
-        answer = (
-            payload.get("answer")
-            or payload.get("response")
-            or payload.get("text")
-            or ""
-        ).strip()
+        for attempt in range(1, 3):
+            try:
+                response = await self.client.post(
+                    self.api_url,
+                    json={
+                        "prompt": prompt,
+                        "system_prompt": system_prompt,
+                        "max_tokens": self.max_tokens,
+                    },
+                    headers=headers,
+                )
+                response.raise_for_status()
 
-        if not answer:
-            raise ValueError("External LLM endpoint returned an empty response payload")
+                payload = response.json()
+                answer = (
+                    payload.get("answer")
+                    or payload.get("response")
+                    or payload.get("text")
+                    or ""
+                ).strip()
 
-        return answer
+                if not answer:
+                    raise ValueError("External LLM endpoint returned an empty response payload")
+
+                return answer
+            except httpx.HTTPStatusError as exc:
+                last_error = exc
+                status_code = exc.response.status_code if exc.response else None
+                if status_code is not None and status_code < 500:
+                    raise
+            except httpx.RequestError as exc:
+                last_error = exc
+
+            if attempt < 2:
+                logger.warning(
+                    f"External LLM request failed on attempt {attempt}; retrying once."
+                )
+                await asyncio.sleep(0.6)
+
+        raise last_error or RuntimeError("External LLM request failed")
 
     def _sanitize_title(
         self,
@@ -343,7 +413,7 @@ Guidelines:
             try:
                 response_text = await self._request_completion(prompt, system_prompt)
             except Exception as exc:
-                logger.error(f"Error querying external LLM endpoint: {str(exc)}")
+                logger.error(f"Error querying external LLM endpoint after retry: {str(exc)}")
                 response_text = (
                     "The configured LLM endpoint is currently unavailable. "
                     "Please try again in a moment."
@@ -513,3 +583,16 @@ class QueryService:
         except Exception as e:
             logger.error(f"Error in streaming query: {str(e)}")
             yield f"Error: {str(e)}"
+
+    async def warmup_dependencies(self) -> None:
+        """Warm the LLM endpoint and embedding stack in the background."""
+        if settings.llm_warmup_on_startup:
+            await self.llm.warmup()
+
+        if settings.warm_embeddings_on_startup:
+            try:
+                retriever = await get_rag_retriever()
+                retriever.initialize_embedding_model()
+                logger.info("Embedding model warmup completed")
+            except Exception as exc:
+                logger.warning(f"Embedding warmup failed: {str(exc)}")

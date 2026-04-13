@@ -40,6 +40,12 @@ class Settings(BaseSettings):
     llm_model_label: str = "sk1354/llama3-career-api"
     llm_timeout_seconds: float = 60.0
     llm_max_tokens: int = 1000
+    llm_warmup_on_startup: bool = True
+    llm_warmup_prompt: str = "Reply with the single word READY."
+    llm_keepalive_enabled: bool = True
+    llm_keepalive_interval_seconds: int = 240
+    llm_keepalive_prompt: str = "Reply with the single word ALIVE."
+    warm_embeddings_on_startup: bool = True
 
     # Vector Database
     use_faiss: bool = True
@@ -52,6 +58,13 @@ class Settings(BaseSettings):
 
     # Gmail Integration
     google_credentials_json: str = "{}"
+    frontend_url: str = "http://localhost:3000"
+    google_oauth_redirect_uri: str = "http://localhost:8000/integrations/gmail/oauth/callback"
+
+    # GitHub Integration
+    github_client_id: str = ""
+    github_client_secret: str = ""
+    github_oauth_redirect_uri: str = "http://localhost:8000/integrations/github/oauth/callback"
 
     # CORS
     cors_origins: List[str] = [

@@ -3,8 +3,8 @@ import { useParams, useNavigate, useLocation, Link } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import AppShell from '../components/AppShell'
 import ChatMessage from '../components/ChatMessage'
-import { authAPI, chatAPI } from '../services/api'
-import { 
+import { authAPI, chatAPI, integrationsAPI } from '../services/api'
+import {
   Paperclip, 
   Send,
   FileText,
@@ -50,6 +50,10 @@ const ChatPage = () => {
   const [input, setInput] = useState(location.state?.initialQuery || '')
   const [loading, setLoading] = useState(false)
   const [showAttachMenu, setShowAttachMenu] = useState(false)
+  const [gmailStatus, setGmailStatus] = useState({ connected: false, imported_count: 0 })
+  const [githubStatus, setGitHubStatus] = useState({ connected: false, imported_count: 0 })
+  const [gmailBusy, setGmailBusy] = useState(false)
+  const [githubBusy, setGitHubBusy] = useState(false)
   
   // Sidebar Thread Context Menus
   const [editingSessionId, setEditingSessionId] = useState(null)
@@ -60,6 +64,10 @@ const ChatPage = () => {
   const menuRef = useRef(null)
   const threadMenuRefs = useRef({})
   const composerTextareaRef = useRef(null)
+  const initialQueryHandledRef = useRef(false)
+  const creatingSessionRef = useRef(false)
+  const sendingMessageRef = useRef(false)
+  const pendingAutoSendTimeoutRef = useRef(null)
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -77,6 +85,14 @@ const ChatPage = () => {
     const nextHeight = Math.min(textarea.scrollHeight, 160)
     textarea.style.height = `${Math.max(nextHeight, 28)}px`
   }, [input])
+
+  useEffect(() => {
+    return () => {
+      if (pendingAutoSendTimeoutRef.current) {
+        clearTimeout(pendingAutoSendTimeoutRef.current)
+      }
+    }
+  }, [])
 
   // Close attach menu if clicking outside
   useEffect(() => {
@@ -110,6 +126,65 @@ const ChatPage = () => {
   }, [navigate])
 
   useEffect(() => {
+    const loadIntegrationStatus = async () => {
+      try {
+        const [gmailResponse, githubResponse] = await Promise.all([
+          integrationsAPI.getGmailStatus(),
+          integrationsAPI.getGitHubStatus(),
+        ])
+        setGmailStatus(gmailResponse.data)
+        setGitHubStatus(githubResponse.data)
+      } catch {
+        setGmailStatus({ connected: false, imported_count: 0 })
+        setGitHubStatus({ connected: false, imported_count: 0 })
+      }
+    }
+
+    loadIntegrationStatus()
+  }, [])
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search)
+    const gmail = params.get('gmail')
+    const gmailMessage = params.get('gmail_message')
+    const github = params.get('github')
+    const githubMessage = params.get('github_message')
+
+    if (!gmail && !github) return
+
+    const loadIntegrationStatus = async () => {
+      try {
+        const [gmailResponse, githubResponse] = await Promise.all([
+          integrationsAPI.getGmailStatus(),
+          integrationsAPI.getGitHubStatus(),
+        ])
+        setGmailStatus(gmailResponse.data)
+        setGitHubStatus(githubResponse.data)
+      } catch {
+        setGmailStatus({ connected: false, imported_count: 0 })
+        setGitHubStatus({ connected: false, imported_count: 0 })
+      }
+    }
+
+    if (gmail === 'connected') {
+      toast.success('Gmail connected successfully')
+      loadIntegrationStatus()
+    } else if (gmail === 'error') {
+      toast.error(gmailMessage || 'Failed to connect Gmail')
+    }
+
+    if (github === 'connected') {
+      toast.success('GitHub connected successfully')
+      loadIntegrationStatus()
+    } else if (github === 'error') {
+      toast.error(githubMessage || 'Failed to connect GitHub')
+    }
+
+    const cleaned = `${location.pathname}${location.hash || ''}`
+    window.history.replaceState({}, '', cleaned)
+  }, [location.pathname, location.search, location.hash])
+
+  useEffect(() => {
     const fetchSessions = async () => {
       try {
         const response = await chatAPI.listSessions()
@@ -125,13 +200,23 @@ const ChatPage = () => {
     if (!sessionId) {
       setCurrentSession(null)
       setMessages([])
-      
-      if (location.state?.initialQuery) {
-        handleNewSession(location.state.initialQuery)
+
+      const initialQuery =
+        typeof location.state?.initialQuery === 'string'
+          ? location.state.initialQuery.trim()
+          : ''
+
+      if (!initialQuery) {
+        initialQueryHandledRef.current = false
+      } else if (!initialQueryHandledRef.current) {
+        initialQueryHandledRef.current = true
+        handleNewSession(initialQuery)
         navigate('/chat', { replace: true, state: {} })
       }
       return
     }
+
+    initialQueryHandledRef.current = false
 
     const fetchSession = async () => {
       try {
@@ -184,6 +269,11 @@ const ChatPage = () => {
   }
 
   const handleNewSession = async (initialMessage = '') => {
+    if (creatingSessionRef.current) {
+      return
+    }
+
+    creatingSessionRef.current = true
     try {
       const response = await chatAPI.createSession('New Chat')
       const finalSession = { ...response.data, session_name: response.data.session_name || 'New Chat' }
@@ -191,16 +281,25 @@ const ChatPage = () => {
       setSessions((prev) => [finalSession, ...prev])
       navigate(`/chat/${finalSession.id}`)
       
-      if (initialMessage && typeof initialMessage === 'string') {
-        setTimeout(() => sendMessage(initialMessage, finalSession.id), 100)
+      if (pendingAutoSendTimeoutRef.current) {
+        clearTimeout(pendingAutoSendTimeoutRef.current)
+      }
+
+      if (initialMessage && typeof initialMessage === 'string' && initialMessage.trim()) {
+        pendingAutoSendTimeoutRef.current = setTimeout(() => {
+          pendingAutoSendTimeoutRef.current = null
+          sendMessage(initialMessage, finalSession.id)
+        }, 100)
       }
     } catch {
       toast.error('Failed to create session')
+    } finally {
+      creatingSessionRef.current = false
     }
   }
 
   const sendMessage = async (messageContent, targetSessionId) => {
-    if (!messageContent.trim()) return
+    if (!messageContent.trim() || sendingMessageRef.current) return
 
     const nextInput = messageContent.trim()
     const optimisticUserMessage = {
@@ -223,6 +322,7 @@ const ChatPage = () => {
     setMessages((prev) => [...prev, optimisticUserMessage, optimisticAssistantMessage])
     setInput('')
     setLoading(true)
+    sendingMessageRef.current = true
 
     try {
       const response = await chatAPI.queryStream({
@@ -277,6 +377,7 @@ const ChatPage = () => {
       toast.error('Failed to send message')
     } finally {
       setLoading(false)
+      sendingMessageRef.current = false
     }
   }
 
@@ -299,6 +400,92 @@ const ChatPage = () => {
   const handleLogout = () => {
     localStorage.removeItem('auth_token')
     navigate('/login')
+  }
+
+  const handleSyncGmail = async () => {
+    setGmailBusy(true)
+    try {
+      const response = await integrationsAPI.syncGmail(20)
+      setGmailStatus(response.data)
+      toast.success(`Synced Gmail. Imported ${response.data.imported_count} new emails.`)
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Failed to sync Gmail')
+    } finally {
+      setGmailBusy(false)
+    }
+  }
+
+  const handleDisconnectGmail = async () => {
+    setGmailBusy(true)
+    try {
+      await integrationsAPI.disconnectGmail()
+      setGmailStatus({ connected: false, imported_count: 0 })
+      toast.success('Gmail disconnected')
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Failed to disconnect Gmail')
+    } finally {
+      setGmailBusy(false)
+    }
+  }
+
+  const handleSyncGitHub = async () => {
+    setGitHubBusy(true)
+    try {
+      const response = await integrationsAPI.syncGitHub(10)
+      setGitHubStatus(response.data)
+      toast.success(`Synced GitHub. Imported ${response.data.imported_count} repositories.`)
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Failed to sync GitHub')
+    } finally {
+      setGitHubBusy(false)
+    }
+  }
+
+  const handleDisconnectGitHub = async () => {
+    setGitHubBusy(true)
+    try {
+      await integrationsAPI.disconnectGitHub()
+      setGitHubStatus({ connected: false, imported_count: 0 })
+      toast.success('GitHub disconnected')
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Failed to disconnect GitHub')
+    } finally {
+      setGitHubBusy(false)
+    }
+  }
+
+  const handleGmailToggle = async () => {
+    if (gmailStatus?.connected) {
+      await handleDisconnectGmail()
+      return
+    }
+
+    setGmailBusy(true)
+    try {
+      const nextPath = sessionId ? `/chat/${sessionId}` : '/chat'
+      const response = await integrationsAPI.getGmailOAuthUrl(nextPath)
+      window.location.href = response.data.auth_url
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Failed to start Gmail connection')
+      setGmailBusy(false)
+    }
+  }
+
+  const handleGitHubToggle = async () => {
+    if (githubStatus?.connected) {
+      await handleDisconnectGitHub()
+      return
+    }
+
+    setGitHubBusy(true)
+    try {
+      const nextPath = sessionId ? `/chat/${sessionId}` : '/chat'
+      const response = await integrationsAPI.getGitHubOAuthUrl(nextPath)
+      window.location.href = response.data.auth_url
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Failed to start GitHub connection')
+      setGitHubBusy(false)
+    }
   }
 
   if (!user) return <div className="flex h-screen items-center justify-center text-[#A1A1AA]">Loading chat...</div>
@@ -383,31 +570,35 @@ const ChatPage = () => {
       sidebarContent={sidebarThreadsList}
     >
       <div className="flex-1 flex justify-center w-full px-4 overflow-y-auto">
-        <div className="w-full max-w-3xl pb-52 pt-8 flex flex-col gap-6">
+        <div className="w-full max-w-3xl pb-48 pt-8 flex flex-col gap-8">
           {messages.length === 0 ? (
             <div className="flex flex-col pt-20 pb-10">
               <h2 className="text-2xl font-semibold text-[#F4F4F5]">Start a conversation</h2>
               <p className="text-[#A1A1AA] mt-2">Chat with your models about knowledge or general queries.</p>
             </div>
           ) : (
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-8">
               {messages.map((message) => (
                 <ChatMessage key={message.id} message={message} user={user} />
               ))}
               {loading && !messages.some((message) => message.streaming) && (
-                <div className="flex gap-4 p-2 animate-pulse">
-                  <div className="w-6 h-6 rounded bg-[#27272A]" />
-                  <div className="h-4 bg-[#27272A] rounded w-1/3" />
+                <div className="flex gap-4 px-2 py-3">
+                  <div className="shimmer-line h-9 w-9 rounded-xl" />
+                  <div className="flex-1 space-y-3 pt-1">
+                    <div className="shimmer-line h-4 w-28 rounded-full" />
+                    <div className="shimmer-line h-4 w-full rounded-full" />
+                    <div className="shimmer-line h-4 w-[88%] rounded-full" />
+                  </div>
                 </div>
               )}
-              <div ref={messagesEndRef} />
+              <div ref={messagesEndRef} className="h-12" />
             </div>
           )}
         </div>
       </div>
 
       {/* Floating Composer */}
-      <div className="absolute bottom-0 left-0 right-0 px-4 pb-3 pt-7 bg-gradient-to-t from-[#18181A] via-[#18181A]/94 to-transparent flex justify-center">
+      <div className="absolute bottom-0 left-0 right-0 px-4 pb-3 pt-16 bg-gradient-to-t from-[#18181A] via-[#18181A]/94 to-transparent flex justify-center">
         <div className="w-full max-w-3xl relative">
           
           <form 
@@ -441,15 +632,20 @@ const ChatPage = () => {
                         Connectors
                       </div>
                       
-                      <div className="w-full flex items-center justify-between px-3 py-2 text-sm text-[#F4F4F5] hover:bg-[#3F3F46] rounded-xl transition-colors cursor-pointer group">
+                      <button
+                        type="button"
+                        onClick={handleGmailToggle}
+                        disabled={gmailBusy}
+                        className="w-full flex items-center justify-between px-3 py-2 text-sm text-[#F4F4F5] hover:bg-[#3F3F46] rounded-xl transition-colors cursor-pointer group"
+                      >
                         <div className="flex items-center gap-3">
                           <Mail size={16} className="text-[#A1A1AA]" />
                           <span>Gmail</span>
                         </div>
-                        <div className="w-8 h-5 bg-[#3F3F46] rounded-full flex items-center px-1 transition-colors group-hover:bg-[#52525B]">
-                          <div className="w-3 h-3 bg-[#A1A1AA] rounded-full"></div>
+                        <div className={`w-8 h-5 rounded-full flex items-center px-1 transition-colors ${gmailStatus?.connected ? 'bg-[#EA580C] justify-end' : 'bg-[#3F3F46] group-hover:bg-[#52525B]'}`}>
+                          <div className={`w-3 h-3 rounded-full ${gmailStatus?.connected ? 'bg-[#F4F4F5]' : 'bg-[#A1A1AA]'}`}></div>
                         </div>
-                      </div>
+                      </button>
 
                       <div className="w-full flex items-center justify-between px-3 py-2 text-sm text-[#F4F4F5] hover:bg-[#3F3F46] rounded-xl transition-colors cursor-pointer group">
                         <div className="flex items-center gap-3">
@@ -461,15 +657,44 @@ const ChatPage = () => {
                         </div>
                       </div>
 
-                      <div className="w-full flex items-center justify-between px-3 py-2 text-sm text-[#F4F4F5] hover:bg-[#3F3F46] rounded-xl transition-colors cursor-pointer group">
+                      <button
+                        type="button"
+                        onClick={handleGitHubToggle}
+                        disabled={githubBusy}
+                        className="w-full flex items-center justify-between px-3 py-2 text-sm text-[#F4F4F5] hover:bg-[#3F3F46] rounded-xl transition-colors cursor-pointer group"
+                      >
                         <div className="flex items-center gap-3">
                           <GitBranch size={16} className="text-[#A1A1AA]" />
-                          <span>Github</span>
+                          <span>GitHub</span>
                         </div>
-                        <div className="w-8 h-5 bg-[#EA580C] rounded-full flex items-center justify-end px-1 transition-colors group-hover:bg-[#C2410C]">
-                          <div className="w-3 h-3 bg-[#F4F4F5] rounded-full"></div>
+                        <div className={`w-8 h-5 rounded-full flex items-center px-1 transition-colors ${githubStatus?.connected ? 'bg-[#EA580C] justify-end' : 'bg-[#3F3F46] group-hover:bg-[#52525B]'}`}>
+                          <div className={`w-3 h-3 rounded-full ${githubStatus?.connected ? 'bg-[#F4F4F5]' : 'bg-[#A1A1AA]'}`}></div>
                         </div>
-                      </div>
+                      </button>
+
+                      {gmailStatus?.connected && (
+                        <button
+                          type="button"
+                          onClick={handleSyncGmail}
+                          disabled={gmailBusy}
+                          className="w-full flex items-center gap-3 px-3 py-2 text-sm text-[#F4F4F5] hover:bg-[#3F3F46] rounded-xl transition-colors"
+                        >
+                          <Mail size={16} className="text-[#A1A1AA]" />
+                          <span>{gmailBusy ? 'Syncing Gmail...' : 'Sync Gmail inbox'}</span>
+                        </button>
+                      )}
+
+                      {githubStatus?.connected && (
+                        <button
+                          type="button"
+                          onClick={handleSyncGitHub}
+                          disabled={githubBusy}
+                          className="w-full flex items-center gap-3 px-3 py-2 text-sm text-[#F4F4F5] hover:bg-[#3F3F46] rounded-xl transition-colors"
+                        >
+                          <GitBranch size={16} className="text-[#A1A1AA]" />
+                          <span>{githubBusy ? 'Syncing GitHub...' : 'Sync GitHub repositories'}</span>
+                        </button>
+                      )}
                     </div>
                   </div>
                 )}
@@ -480,7 +705,7 @@ const ChatPage = () => {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="Reply to Copilot..."
+                placeholder="Reply to Sarthi..."
                 className="w-full bg-transparent text-[#F4F4F5] placeholder:text-[#A1A1AA] resize-none overflow-y-auto outline-none min-h-[24px] max-h-[120px] text-[15px] leading-6 px-2 py-1"
                 rows={1}
               />
@@ -497,7 +722,7 @@ const ChatPage = () => {
             </div>
           </form>
           <div className="text-center mt-2 px-2 text-xs text-[#A1A1AA]">
-            Claude handles frontend aesthetics. Your API remains secure.
+            Sarthi keeps your workspace secure and productive.
           </div>
         </div>
       </div>

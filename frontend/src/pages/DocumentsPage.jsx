@@ -13,6 +13,15 @@ const DocumentsPage = () => {
   const [loading, setLoading] = useState(false)
   const [uploadProgress, setUploadProgress] = useState(0)
 
+  const loadDocuments = async () => {
+    try {
+      const response = await documentsAPI.list()
+      setDocuments(response.data.documents)
+    } catch {
+      toast.error('Failed to load documents')
+    }
+  }
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -26,15 +35,7 @@ const DocumentsPage = () => {
   }, [navigate])
 
   useEffect(() => {
-    const fetchDocuments = async () => {
-      try {
-        const response = await documentsAPI.list()
-        setDocuments(response.data.documents)
-      } catch {
-        toast.error('Failed to load documents')
-      }
-    }
-    fetchDocuments()
+    loadDocuments()
   }, [])
 
   const handleFileUpload = async (e) => {
@@ -92,7 +93,7 @@ const DocumentsPage = () => {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-[#3F3F46]">
           <div>
             <h1 className="text-3xl font-serif text-[#F4F4F5] tracking-tight">Documents</h1>
-            <p className="text-[#A1A1AA] mt-2">Upload and manage knowledge bases for Claude.</p>
+            <p className="text-[#A1A1AA] mt-2">Upload and manage knowledge bases for Sarthi.</p>
           </div>
           <label className="inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold bg-[#F4F4F5] text-[#18181A] hover:bg-[#D4D4D8] transition-colors cursor-pointer">
             <UploadCloud size={18} />
@@ -158,7 +159,7 @@ const DocumentsPage = () => {
           {documents.length === 0 ? (
             <div className="flex flex-col items-center justify-center p-16 text-center border border-[#3F3F46] rounded-3xl bg-[#27272A]/30 border-dashed">
               <h3 className="text-lg font-medium text-[#F4F4F5]">No documents built</h3>
-              <p className="text-[#A1A1AA] mt-2 max-w-sm">Upload your first data source to ground the Assistant in your custom knowledge.</p>
+              <p className="text-[#A1A1AA] mt-2 max-w-sm">Upload your first data source to ground Sarthi in your custom knowledge.</p>
             </div>
           ) : (
             <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">

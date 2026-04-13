@@ -56,6 +56,12 @@ class User(Base):
     uploaded_documents = relationship(
         "Document", back_populates="uploaded_by", cascade="all, delete-orphan"
     )
+    gmail_connection = relationship(
+        "GmailConnection", back_populates="user", uselist=False, cascade="all, delete-orphan"
+    )
+    github_connection = relationship(
+        "GitHubConnection", back_populates="user", uselist=False, cascade="all, delete-orphan"
+    )
 
 
 class Document(Base):
@@ -149,6 +155,40 @@ class ApiLog(Base):
     status_code = Column(Integer)
     response_time_ms = Column(Float)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class GmailConnection(Base):
+    """Per-user Gmail integration settings."""
+
+    __tablename__ = "gmail_connections"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, unique=True)
+    gmail_address = Column(String(255), nullable=False)
+    app_password = Column(String(255), nullable=False)
+    is_active = Column(Boolean, default=True)
+    last_synced_at = Column(DateTime(timezone=True), nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+
+    user = relationship("User", back_populates="gmail_connection")
+
+
+class GitHubConnection(Base):
+    """Per-user GitHub integration settings."""
+
+    __tablename__ = "github_connections"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, unique=True)
+    github_login = Column(String(255), nullable=False)
+    access_token = Column(String(255), nullable=False)
+    is_active = Column(Boolean, default=True)
+    last_synced_at = Column(DateTime(timezone=True), nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+
+    user = relationship("User", back_populates="github_connection")
 
 
 class EvaluationMetric(Base):

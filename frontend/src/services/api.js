@@ -48,6 +48,21 @@ export const documentsAPI = {
   delete: (id) => api.delete(`/documents/${id}`),
 }
 
+export const integrationsAPI = {
+  getGmailStatus: () => api.get('/integrations/gmail'),
+  getGmailOAuthUrl: (nextPath = '/chat') =>
+    api.get('/integrations/gmail/oauth/start', { params: { next_path: nextPath } }),
+  syncGmail: (syncLimit = 20) =>
+    api.post('/integrations/gmail/sync', null, { params: { sync_limit: syncLimit } }),
+  disconnectGmail: () => api.delete('/integrations/gmail'),
+  getGitHubStatus: () => api.get('/integrations/github'),
+  getGitHubOAuthUrl: (nextPath = '/chat') =>
+    api.get('/integrations/github/oauth/start', { params: { next_path: nextPath } }),
+  syncGitHub: (syncLimit = 10) =>
+    api.post('/integrations/github/sync', null, { params: { sync_limit: syncLimit } }),
+  disconnectGitHub: () => api.delete('/integrations/github'),
+}
+
 export const chatAPI = {
   createSession: (sessionName) =>
     api.post('/chat/sessions', null, { params: { session_name: sessionName } }),

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { 
   Plus, 
@@ -10,6 +10,7 @@ import {
 } from 'lucide-react'
 
 import { getInitials } from '../utils/helpers'
+import { chatAPI } from '../services/api'
 
 const SidebarItem = ({ to, icon: Icon, label, isActive }) => (
   <Link
@@ -27,18 +28,50 @@ const SidebarItem = ({ to, icon: Icon, label, isActive }) => (
 
 const Sidebar = ({ role, user, onLogout, children }) => {
   const location = useLocation()
+  const [recentChats, setRecentChats] = useState([])
 
   const isActive = (path) => {
     if (path === '/') return location.pathname === '/'
     return location.pathname.startsWith(path)
   }
 
+  useEffect(() => {
+    if (children || !user) return
+
+    const loadChats = async () => {
+      try {
+        const response = await chatAPI.listSessions(0, 20)
+        setRecentChats(response.data.sessions || [])
+      } catch {
+        setRecentChats([])
+      }
+    }
+
+    loadChats()
+  }, [children, user])
+
+  const defaultChatList = recentChats.map((session) => (
+    <Link
+      key={session.id}
+      to={`/chat/${session.id}`}
+      className={`group flex items-center w-full rounded-lg text-sm px-3 py-2 transition-colors ${
+        location.pathname === `/chat/${session.id}`
+          ? 'bg-[#27272A] text-[#F4F4F5] font-medium'
+          : 'text-[#A1A1AA] hover:bg-[#27272A] hover:text-[#F4F4F5]'
+      }`}
+    >
+      <span className="truncate block whitespace-nowrap overflow-hidden">
+        {session.session_name || 'New Chat'}
+      </span>
+    </Link>
+  ))
+
   return (
     <aside className="flex flex-col h-full w-full bg-[#18181A] border-r border-[#3F3F46]/60 text-[#F4F4F5]">
       {/* Brand Header */}
       <div className="flex items-center justify-between px-4 py-3 pb-5">
         <div className="text-xl font-serif text-[#F4F4F5]">
-          Current
+          Sarthi
         </div>
       </div>
 
@@ -67,12 +100,6 @@ const Sidebar = ({ role, user, onLogout, children }) => {
         <div className="space-y-4">
           <div className="space-y-1">
             <SidebarItem 
-              to="/chat" 
-              icon={MessageSquare} 
-              label="Chats" 
-              isActive={isActive('/chat')} 
-            />
-            <SidebarItem 
               to="/documents" 
               icon={Folder} 
               label="Documents" 
@@ -90,14 +117,12 @@ const Sidebar = ({ role, user, onLogout, children }) => {
         </div>
 
         {/* Recent Threads Slot */}
-        {children && (
-          <div className="space-y-1 pt-4 border-t border-[#3F3F46]/40">
-            <p className="px-3 text-xs font-semibold text-[#A1A1AA] uppercase tracking-wider mb-2">
-              Recent Threads
-            </p>
-            {children}
-          </div>
-        )}
+        <div className="space-y-1 pt-4 border-t border-[#3F3F46]/40">
+          <p className="px-3 text-xs font-semibold text-[#A1A1AA] uppercase tracking-wider mb-2">
+            Chats
+          </p>
+          {children || defaultChatList}
+        </div>
       </div>
 
       {/* Footer / User Profile */}

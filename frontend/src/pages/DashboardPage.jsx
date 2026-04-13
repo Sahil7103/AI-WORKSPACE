@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
 import AppShell from '../components/AppShell'
-import { authAPI } from '../services/api'
+import { authAPI, integrationsAPI } from '../services/api'
 import { 
   Paperclip, 
   FileText, 
@@ -15,9 +16,14 @@ const DashboardPage = () => {
   const [user, setUser] = useState(null)
   const [inputVal, setInputVal] = useState('')
   const [showAttachMenu, setShowAttachMenu] = useState(false)
+  const [gmailStatus, setGmailStatus] = useState({ connected: false, imported_count: 0 })
+  const [githubStatus, setGitHubStatus] = useState({ connected: false, imported_count: 0 })
+  const [gmailBusy, setGmailBusy] = useState(false)
+  const [githubBusy, setGitHubBusy] = useState(false)
   
   const menuRef = useRef(null)
   const navigate = useNavigate()
+  const location = useLocation()
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -30,6 +36,65 @@ const DashboardPage = () => {
     }
     fetchUser()
   }, [navigate])
+
+  useEffect(() => {
+    const loadIntegrationStatus = async () => {
+      try {
+        const [gmailResponse, githubResponse] = await Promise.all([
+          integrationsAPI.getGmailStatus(),
+          integrationsAPI.getGitHubStatus(),
+        ])
+        setGmailStatus(gmailResponse.data)
+        setGitHubStatus(githubResponse.data)
+      } catch {
+        setGmailStatus({ connected: false, imported_count: 0 })
+        setGitHubStatus({ connected: false, imported_count: 0 })
+      }
+    }
+
+    loadIntegrationStatus()
+  }, [])
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search)
+    const gmail = params.get('gmail')
+    const gmailMessage = params.get('gmail_message')
+    const github = params.get('github')
+    const githubMessage = params.get('github_message')
+
+    if (!gmail && !github) return
+
+    const loadIntegrationStatus = async () => {
+      try {
+        const [gmailResponse, githubResponse] = await Promise.all([
+          integrationsAPI.getGmailStatus(),
+          integrationsAPI.getGitHubStatus(),
+        ])
+        setGmailStatus(gmailResponse.data)
+        setGitHubStatus(githubResponse.data)
+      } catch {
+        setGmailStatus({ connected: false, imported_count: 0 })
+        setGitHubStatus({ connected: false, imported_count: 0 })
+      }
+    }
+
+    if (gmail === 'connected') {
+      toast.success('Gmail connected successfully')
+      loadIntegrationStatus()
+    } else if (gmail === 'error') {
+      toast.error(gmailMessage || 'Failed to connect Gmail')
+    }
+
+    if (github === 'connected') {
+      toast.success('GitHub connected successfully')
+      loadIntegrationStatus()
+    } else if (github === 'error') {
+      toast.error(githubMessage || 'Failed to connect GitHub')
+    }
+
+    const cleaned = `${location.pathname}${location.hash || ''}`
+    window.history.replaceState({}, '', cleaned)
+  }, [location.pathname, location.search, location.hash])
 
   // Close attach menu if clicking outside
   useEffect(() => {
@@ -51,6 +116,90 @@ const DashboardPage = () => {
     e.preventDefault()
     if (!inputVal.trim()) return
     navigate('/chat', { state: { initialQuery: inputVal } })
+  }
+
+  const handleSyncGmail = async () => {
+    setGmailBusy(true)
+    try {
+      const response = await integrationsAPI.syncGmail(20)
+      setGmailStatus(response.data)
+      toast.success(`Synced Gmail. Imported ${response.data.imported_count} new emails.`)
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Failed to sync Gmail')
+    } finally {
+      setGmailBusy(false)
+    }
+  }
+
+  const handleDisconnectGmail = async () => {
+    setGmailBusy(true)
+    try {
+      await integrationsAPI.disconnectGmail()
+      setGmailStatus({ connected: false, imported_count: 0 })
+      toast.success('Gmail disconnected')
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Failed to disconnect Gmail')
+    } finally {
+      setGmailBusy(false)
+    }
+  }
+
+  const handleGmailToggle = async () => {
+    if (gmailStatus?.connected) {
+      await handleDisconnectGmail()
+      return
+    }
+
+    setGmailBusy(true)
+    try {
+      const response = await integrationsAPI.getGmailOAuthUrl('/')
+      window.location.href = response.data.auth_url
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Failed to start Gmail connection')
+      setGmailBusy(false)
+    }
+  }
+
+  const handleSyncGitHub = async () => {
+    setGitHubBusy(true)
+    try {
+      const response = await integrationsAPI.syncGitHub(10)
+      setGitHubStatus(response.data)
+      toast.success(`Synced GitHub. Imported ${response.data.imported_count} repositories.`)
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Failed to sync GitHub')
+    } finally {
+      setGitHubBusy(false)
+    }
+  }
+
+  const handleDisconnectGitHub = async () => {
+    setGitHubBusy(true)
+    try {
+      await integrationsAPI.disconnectGitHub()
+      setGitHubStatus({ connected: false, imported_count: 0 })
+      toast.success('GitHub disconnected')
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Failed to disconnect GitHub')
+    } finally {
+      setGitHubBusy(false)
+    }
+  }
+
+  const handleGitHubToggle = async () => {
+    if (githubStatus?.connected) {
+      await handleDisconnectGitHub()
+      return
+    }
+
+    setGitHubBusy(true)
+    try {
+      const response = await integrationsAPI.getGitHubOAuthUrl('/')
+      window.location.href = response.data.auth_url
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Failed to start GitHub connection')
+      setGitHubBusy(false)
+    }
   }
 
   if (!user) return <div className="flex items-center justify-center min-h-screen text-[#A1A1AA]">Loading workspace...</div>
@@ -118,15 +267,20 @@ const DashboardPage = () => {
                           Connectors
                         </div>
                         
-                        <div className="w-full flex items-center justify-between px-3 py-2 text-sm text-[#F4F4F5] hover:bg-[#3F3F46] rounded-xl transition-colors cursor-pointer group">
+                        <button
+                          type="button"
+                          onClick={handleGmailToggle}
+                          disabled={gmailBusy}
+                          className="w-full flex items-center justify-between px-3 py-2 text-sm text-[#F4F4F5] hover:bg-[#3F3F46] rounded-xl transition-colors cursor-pointer group"
+                        >
                           <div className="flex items-center gap-3">
                             <Mail size={16} className="text-[#A1A1AA]" />
                             <span>Gmail</span>
                           </div>
-                          <div className="w-8 h-5 bg-[#3F3F46] rounded-full flex items-center px-1 transition-colors group-hover:bg-[#52525B]">
-                            <div className="w-3 h-3 bg-[#A1A1AA] rounded-full"></div>
+                          <div className={`w-8 h-5 rounded-full flex items-center px-1 transition-colors ${gmailStatus?.connected ? 'bg-[#EA580C] justify-end' : 'bg-[#3F3F46] group-hover:bg-[#52525B]'}`}>
+                            <div className={`w-3 h-3 rounded-full ${gmailStatus?.connected ? 'bg-[#F4F4F5]' : 'bg-[#A1A1AA]'}`}></div>
                           </div>
-                        </div>
+                        </button>
 
                         <div className="w-full flex items-center justify-between px-3 py-2 text-sm text-[#F4F4F5] hover:bg-[#3F3F46] rounded-xl transition-colors cursor-pointer group">
                           <div className="flex items-center gap-3">
@@ -138,15 +292,32 @@ const DashboardPage = () => {
                           </div>
                         </div>
 
-                        <div className="w-full flex items-center justify-between px-3 py-2 text-sm text-[#F4F4F5] hover:bg-[#3F3F46] rounded-xl transition-colors cursor-pointer group">
+                        <button
+                          type="button"
+                          onClick={handleGitHubToggle}
+                          disabled={githubBusy}
+                          className="w-full flex items-center justify-between px-3 py-2 text-sm text-[#F4F4F5] hover:bg-[#3F3F46] rounded-xl transition-colors cursor-pointer group"
+                        >
                           <div className="flex items-center gap-3">
                             <GitBranch size={16} className="text-[#A1A1AA]" />
-                            <span>Github</span>
+                            <span>GitHub</span>
                           </div>
-                          <div className="w-8 h-5 bg-[#EA580C] rounded-full flex items-center justify-end px-1 transition-colors group-hover:bg-[#C2410C]">
-                            <div className="w-3 h-3 bg-[#F4F4F5] rounded-full"></div>
+                          <div className={`w-8 h-5 rounded-full flex items-center px-1 transition-colors ${githubStatus?.connected ? 'bg-[#EA580C] justify-end' : 'bg-[#3F3F46] group-hover:bg-[#52525B]'}`}>
+                            <div className={`w-3 h-3 rounded-full ${githubStatus?.connected ? 'bg-[#F4F4F5]' : 'bg-[#A1A1AA]'}`}></div>
                           </div>
-                        </div>
+                        </button>
+
+                        {githubStatus?.connected && (
+                          <button
+                            type="button"
+                            onClick={handleSyncGitHub}
+                            disabled={githubBusy}
+                            className="w-full flex items-center gap-3 px-3 py-2 text-sm text-[#F4F4F5] hover:bg-[#3F3F46] rounded-xl transition-colors"
+                          >
+                            <Link size={16} className="text-[#A1A1AA]" />
+                            <span>{githubBusy ? 'Syncing GitHub...' : 'Sync GitHub repositories'}</span>
+                          </button>
+                        )}
 
                       </div>
                     </div>

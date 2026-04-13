@@ -1,5 +1,13 @@
 import React from 'react'
-import { FileText, Sparkles } from 'lucide-react'
+import {
+  FileText,
+  Sparkles,
+  Copy,
+  Share,
+  RotateCcw,
+  ThumbsUp,
+  ThumbsDown,
+} from 'lucide-react'
 import { getInitials } from '../utils/helpers'
 
 const formatSourceLabel = (source) => {
@@ -38,7 +46,7 @@ const renderInline = (text) => {
     }
 
     const parts = []
-    const regex = /(\*\*[^*]+\*\*|\*[^*]+\*)/g
+    const regex = /(\*\*[^*]+\*\*|\*[^*]+\*|==[^=]+==)/g
     let lastIndex = 0
     let match
 
@@ -53,6 +61,15 @@ const renderInline = (text) => {
           <strong key={`strong-${index}-${match.index}`} className="font-semibold text-[#FAFAFA]">
             {token.slice(2, -2)}
           </strong>
+        )
+      } else if (token.startsWith('==')) {
+        parts.push(
+          <mark
+            key={`mark-${index}-${match.index}`}
+            className="rounded-md bg-[#F59E0B]/20 px-1.5 py-0.5 text-[#FEF3C7]"
+          >
+            {token.slice(2, -2)}
+          </mark>
         )
       } else {
         parts.push(
@@ -78,6 +95,7 @@ const parseBlocks = (content) => {
   const blocks = []
   let paragraphLines = []
   let listBuffer = null
+  let quoteBuffer = []
 
   const flushParagraph = () => {
     if (paragraphLines.length) {
@@ -96,12 +114,23 @@ const parseBlocks = (content) => {
     listBuffer = null
   }
 
+  const flushQuote = () => {
+    if (quoteBuffer.length) {
+      blocks.push({
+        type: 'quote',
+        text: quoteBuffer.join(' '),
+      })
+      quoteBuffer = []
+    }
+  }
+
   lines.forEach((line) => {
     const trimmed = line.trim()
 
     if (!trimmed) {
       flushParagraph()
       flushList()
+      flushQuote()
       return
     }
 
@@ -109,6 +138,7 @@ const parseBlocks = (content) => {
     if (headingMatch) {
       flushParagraph()
       flushList()
+      flushQuote()
       blocks.push({
         type: 'heading',
         level: headingMatch[1].length,
@@ -117,9 +147,18 @@ const parseBlocks = (content) => {
       return
     }
 
+    const quoteMatch = trimmed.match(/^>\s+(.*)$/)
+    if (quoteMatch) {
+      flushParagraph()
+      flushList()
+      quoteBuffer.push(quoteMatch[1].trim())
+      return
+    }
+
     const bulletMatch = trimmed.match(/^[-*]\s+(.*)$/)
     if (bulletMatch) {
       flushParagraph()
+      flushQuote()
       if (!listBuffer || listBuffer.type !== 'bullet') {
         flushList()
         listBuffer = { type: 'bullet', items: [] }
@@ -131,6 +170,7 @@ const parseBlocks = (content) => {
     const numberedMatch = trimmed.match(/^\d+\.\s+(.*)$/)
     if (numberedMatch) {
       flushParagraph()
+      flushQuote()
       if (!listBuffer || listBuffer.type !== 'numbered') {
         flushList()
         listBuffer = { type: 'numbered', items: [] }
@@ -142,12 +182,16 @@ const parseBlocks = (content) => {
     if (listBuffer) {
       flushList()
     }
+    if (quoteBuffer.length) {
+      flushQuote()
+    }
 
     paragraphLines.push(trimmed)
   })
 
   flushParagraph()
   flushList()
+  flushQuote()
 
   return blocks
 }
@@ -165,12 +209,24 @@ const renderBlocks = (content) => {
 
       const className = headingClasses[block.level] || headingClasses[3]
       if (block.level === 1) {
-        return <h1 key={index} className={className}>{renderInline(block.text)}</h1>
+        return (
+          <h1 key={index} className={className}>
+            {renderInline(block.text)}
+          </h1>
+        )
       }
       if (block.level === 2) {
-        return <h2 key={index} className={className}>{renderInline(block.text)}</h2>
+        return (
+          <h2 key={index} className={className}>
+            {renderInline(block.text)}
+          </h2>
+        )
       }
-      return <h3 key={index} className={className}>{renderInline(block.text)}</h3>
+      return (
+        <h3 key={index} className={className}>
+          {renderInline(block.text)}
+        </h3>
+      )
     }
 
     if (block.type === 'bullet' || block.type === 'numbered') {
@@ -189,6 +245,17 @@ const renderBlocks = (content) => {
       )
     }
 
+    if (block.type === 'quote') {
+      return (
+        <blockquote
+          key={index}
+          className="rounded-2xl border border-[#3A3228] bg-[#211C18] px-4 py-3 text-[16px] leading-7 text-[#F4E6D3]"
+        >
+          {renderInline(block.text)}
+        </blockquote>
+      )
+    }
+
     return (
       <p key={index} className="text-[17px] leading-8 text-[#E7E7EA]">
         {renderInline(block.text)}
@@ -199,6 +266,7 @@ const renderBlocks = (content) => {
 
 const ChatMessage = ({ message, user }) => {
   const isUser = message.role === 'user'
+  const showThinkingShimmer = !isUser && message.streaming && !message.content
 
   return (
     <div className={`flex gap-4 md:gap-5 px-2 md:px-3 py-2 md:py-3 ${isUser ? '' : ''}`}>
@@ -217,11 +285,11 @@ const ChatMessage = ({ message, user }) => {
       <div className="min-w-0 flex-1">
         <div className="mb-3 flex items-center gap-2">
           <div className="text-sm font-semibold tracking-tight text-[#FAFAFA]">
-            {isUser ? 'You' : 'Copilot'}
+            {isUser ? 'You' : 'Sarthi'}
           </div>
           {!isUser ? (
             <span className="rounded-full border border-[#3F3F46] bg-[#232326] px-2 py-0.5 text-[11px] font-medium uppercase tracking-[0.12em] text-[#A1A1AA]">
-              Assistant
+              Sarthi
             </span>
           ) : null}
         </div>
@@ -240,10 +308,21 @@ const ChatMessage = ({ message, user }) => {
               </p>
             ) : message.streaming ? (
               <div className="space-y-4">
-                {message.content ? renderBlocks(message.content) : (
-                  <p className="text-[17px] leading-8 text-[#E7E7EA]">Thinking…</p>
+                {showThinkingShimmer ? (
+                  <div className="space-y-3 py-1">
+                    <div className="shimmer-line h-4 w-32 rounded-full" />
+                    <div className="shimmer-line h-4 w-full rounded-full" />
+                    <div className="shimmer-line h-4 w-[92%] rounded-full" />
+                    <div className="shimmer-line h-4 w-[72%] rounded-full" />
+                  </div>
+                ) : message.content ? (
+                  renderBlocks(message.content)
+                ) : (
+                  <p className="text-[17px] leading-8 text-[#E7E7EA]">Thinking...</p>
                 )}
-                <span className="inline-block h-5 w-[2px] animate-pulse rounded-full bg-[#F97316]" />
+                {!showThinkingShimmer && (
+                  <span className="inline-block h-5 w-[2px] animate-pulse rounded-full bg-[#F97316]" />
+                )}
               </div>
             ) : (
               renderBlocks(message.content)
@@ -281,6 +360,28 @@ const ChatMessage = ({ message, user }) => {
             </div>
           )}
         </div>
+
+        {!isUser && (
+          <div className="mt-3 flex items-center gap-1.5 px-2">
+            <button className="flex h-8 w-8 items-center justify-center rounded-lg text-[#A1A1AA] transition-colors hover:bg-[#27272A] hover:text-[#F4F4F5]">
+              <Copy size={15} />
+            </button>
+            <button className="flex h-8 w-8 items-center justify-center rounded-lg text-[#A1A1AA] transition-colors hover:bg-[#27272A] hover:text-[#F4F4F5]">
+              <Share size={15} />
+            </button>
+            <button className="flex h-8 w-8 items-center justify-center rounded-lg text-[#A1A1AA] transition-colors hover:bg-[#27272A] hover:text-[#F4F4F5]">
+              <RotateCcw size={15} />
+            </button>
+            <div className="flex items-center gap-0.5 ml-0.5">
+              <button className="flex h-8 w-8 items-center justify-center rounded-lg text-[#A1A1AA] transition-colors hover:bg-[#27272A] hover:text-[#F4F4F5]">
+                <ThumbsUp size={15} />
+              </button>
+              <button className="flex h-8 w-8 items-center justify-center rounded-lg text-[#A1A1AA] transition-colors hover:bg-[#27272A] hover:text-[#F4F4F5]">
+                <ThumbsDown size={15} />
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )

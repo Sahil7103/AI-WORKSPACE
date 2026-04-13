@@ -29,8 +29,28 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+@keyframes shimmer-slide {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
 /* Base button styles to make styling easier */
 @layer components {
+  .shimmer-line {
+    background: linear-gradient(
+      90deg,
+      rgba(63, 63, 70, 0.5) 0%,
+      rgba(113, 113, 122, 0.75) 50%,
+      rgba(63, 63, 70, 0.5) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer-slide 1.4s linear infinite;
+  }
+
   .btn {
     @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
   }

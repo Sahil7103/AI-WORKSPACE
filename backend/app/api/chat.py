@@ -82,18 +82,12 @@ async def rename_chat_session(
 ):
     """Rename a chat session."""
     try:
-        session = await ChatService.get_session(db, session_id)
+        user_id = int(current_user["user_id"])
+        session = await ChatService.get_session_for_user(db, session_id, user_id)
         if not session:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Session not found",
-            )
-
-        user_id = int(current_user["user_id"])
-        if session.user_id != user_id:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="Access denied",
             )
 
         return await ChatService.rename_session(db, session_id, session_name)
@@ -142,7 +136,8 @@ async def get_chat_session(
 ):
     """Get chat session with messages."""
     try:
-        session = await ChatService.get_session(db, session_id)
+        user_id = int(current_user["user_id"])
+        session = await ChatService.get_session_for_user(db, session_id, user_id)
 
         if not session:
             raise HTTPException(
@@ -150,16 +145,10 @@ async def get_chat_session(
                 detail="Session not found",
             )
 
-        # Check access
-        user_id = int(current_user["user_id"])
-        if session.user_id != user_id:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="Access denied",
-            )
-
         # Get messages
-        messages = await ChatService.get_session_messages(db, session_id)
+        messages = await ChatService.get_session_messages_for_user(
+            db, session_id, user_id
+        )
         return _serialize_chat_session(session, messages)
 
     except HTTPException:
@@ -183,15 +172,19 @@ async def query_chat(
         user_id = int(current_user["user_id"])
 
         # Verify session access
-        session = await ChatService.get_session(db, request.session_id)
-        if not session or session.user_id != user_id:
+        session = await ChatService.get_session_for_user(
+            db, request.session_id, user_id
+        )
+        if not session:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Session not found or access denied",
             )
 
         # Get conversation history
-        messages = await ChatService.get_session_messages(db, request.session_id)
+        messages = await ChatService.get_session_messages_for_user(
+            db, request.session_id, user_id
+        )
         conversation_history = [
             {"role": msg.role, "content": msg.content}
             for msg in messages[-4:]  # Last 4 messages for context
@@ -265,15 +258,19 @@ async def query_stream(
         user_id = int(current_user["user_id"])
 
         # Verify session access
-        session = await ChatService.get_session(db, request.session_id)
-        if not session or session.user_id != user_id:
+        session = await ChatService.get_session_for_user(
+            db, request.session_id, user_id
+        )
+        if not session:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Session not found or access denied",
             )
 
         # Get conversation history
-        messages = await ChatService.get_session_messages(db, request.session_id)
+        messages = await ChatService.get_session_messages_for_user(
+            db, request.session_id, user_id
+        )
         conversation_history = [
             {"role": msg.role, "content": msg.content} for msg in messages[-4:]
         ]
@@ -342,20 +339,13 @@ async def delete_chat_session(
 ):
     """Delete a chat session."""
     try:
-        session = await ChatService.get_session(db, session_id)
+        user_id = int(current_user["user_id"])
+        session = await ChatService.get_session_for_user(db, session_id, user_id)
 
         if not session:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Session not found",
-            )
-
-        # Check access
-        user_id = int(current_user["user_id"])
-        if session.user_id != user_id:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="Access denied",
             )
 
         await ChatService.delete_session(db, session_id)

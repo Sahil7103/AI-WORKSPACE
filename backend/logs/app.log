@@ -724,3 +724,786 @@
 2026-04-03 16:49:40,944 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
 2026-04-03 16:49:40,970 - ai_copilot - INFO - Redis cache disabled
 2026-04-03 16:49:51,288 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-03 17:01:21,794 - ai_copilot - INFO - Initialized RAG Retriever
+2026-04-03 17:01:21,911 - ai_copilot - INFO - Initialized FAISS with dimension 384
+2026-04-03 17:01:48,767 - ai_copilot - INFO - Loaded embedding model: all-MiniLM-L6-v2
+2026-04-03 17:01:51,588 - ai_copilot - INFO - Added 44 vectors to FAISS index
+2026-04-03 17:01:51,589 - ai_copilot - INFO - Indexed 44 existing chunks for document 5
+2026-04-03 17:01:51,639 - ai_copilot - INFO - Message added to session 28
+2026-04-03 17:01:51,693 - ai_copilot - INFO - No chunks met the similarity threshold; returning top fallback matches instead
+2026-04-03 17:01:51,696 - ai_copilot - INFO - Retrieved 5 chunks for query
+2026-04-03 17:01:55,269 - ai_copilot - INFO - Query processed in 3570.36ms
+2026-04-03 17:01:55,335 - ai_copilot - INFO - Message added to session 28
+2026-04-10 14:34:12,731 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-10 14:34:12,948 - ai_copilot - INFO - Starting up application
+2026-04-10 14:34:12,949 - ai_copilot - INFO - Environment: development
+2026-04-10 14:34:12,949 - ai_copilot - INFO - Debug: False
+2026-04-10 14:34:13,034 - ai_copilot - INFO - Database initialized
+2026-04-10 14:34:17,318 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-10 14:34:17,376 - ai_copilot - INFO - Redis cache disabled
+2026-04-10 14:38:27,627 - ai_copilot - INFO - Chat session created: 29
+2026-04-10 14:38:27,643 - ai_copilot - INFO - Chat session created: 30
+2026-04-10 14:38:27,848 - ai_copilot - INFO - Chat session renamed: 30
+2026-04-10 14:38:27,857 - ai_copilot - INFO - Chat session renamed: 29
+2026-04-10 14:38:27,861 - ai_copilot - INFO - Initialized RAG Retriever
+2026-04-10 14:38:28,794 - ai_copilot - INFO - Initialized FAISS with dimension 384
+2026-04-10 14:40:01,991 - ai_copilot - INFO - Loaded embedding model: all-MiniLM-L6-v2
+2026-04-10 14:40:07,102 - ai_copilot - INFO - Added 44 vectors to FAISS index
+2026-04-10 14:40:07,103 - ai_copilot - INFO - Indexed 44 existing chunks for document 5
+2026-04-10 14:40:09,618 - ai_copilot - INFO - Added 44 vectors to FAISS index
+2026-04-10 14:40:09,619 - ai_copilot - INFO - Indexed 44 existing chunks for document 5
+2026-04-10 14:40:09,652 - ai_copilot - INFO - Message added to session 30
+2026-04-10 14:40:09,708 - ai_copilot - INFO - No chunks met the similarity threshold; returning top fallback matches instead
+2026-04-10 14:40:09,709 - ai_copilot - INFO - Retrieved 5 chunks for query
+2026-04-10 14:40:09,737 - ai_copilot - INFO - Message added to session 29
+2026-04-10 14:40:09,947 - ai_copilot - INFO - No chunks met the similarity threshold; returning top fallback matches instead
+2026-04-10 14:40:09,948 - ai_copilot - INFO - Retrieved 5 chunks for query
+2026-04-10 14:40:11,211 - ai_copilot - ERROR - Error querying external LLM endpoint: Server error '500 Internal Server Error' for url 'https://sk1354-llama3-career-api.hf.space/chat'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+2026-04-10 14:40:11,220 - ai_copilot - INFO - Query processed in 1271.80ms
+2026-04-10 14:40:11,260 - ai_copilot - INFO - Message added to session 29
+2026-04-10 14:40:11,293 - ai_copilot - ERROR - Error querying external LLM endpoint: Server error '500 Internal Server Error' for url 'https://sk1354-llama3-career-api.hf.space/chat'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+2026-04-10 14:40:11,322 - ai_copilot - INFO - Query processed in 1612.73ms
+2026-04-10 14:40:11,353 - ai_copilot - INFO - Message added to session 30
+2026-04-10 14:49:19,950 - ai_copilot - INFO - Shutting down application
+2026-04-10 14:49:19,954 - ai_copilot - INFO - Redis disconnected
+2026-04-10 14:49:33,897 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-10 14:49:34,065 - ai_copilot - INFO - Starting up application
+2026-04-10 14:49:34,068 - ai_copilot - INFO - Environment: development
+2026-04-10 14:49:34,071 - ai_copilot - INFO - Debug: False
+2026-04-10 14:49:34,097 - ai_copilot - INFO - Database initialized
+2026-04-10 14:49:38,598 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-10 14:49:38,605 - ai_copilot - INFO - Redis cache disabled
+2026-04-10 14:50:57,567 - ai_copilot - INFO - Initialized RAG Retriever
+2026-04-10 14:50:57,851 - ai_copilot - INFO - Initialized FAISS with dimension 384
+2026-04-10 14:51:38,314 - ai_copilot - INFO - Loaded embedding model: all-MiniLM-L6-v2
+2026-04-10 14:51:44,368 - ai_copilot - INFO - Added 44 vectors to FAISS index
+2026-04-10 14:51:44,369 - ai_copilot - INFO - Indexed 44 existing chunks for document 5
+2026-04-10 14:51:44,431 - ai_copilot - INFO - Message added to session 30
+2026-04-10 14:51:44,520 - ai_copilot - INFO - No chunks met the similarity threshold; returning top fallback matches instead
+2026-04-10 14:51:44,522 - ai_copilot - INFO - Retrieved 5 chunks for query
+2026-04-10 14:51:45,476 - ai_copilot - WARNING - External LLM request failed on attempt 1; retrying once.
+2026-04-10 14:51:46,334 - ai_copilot - ERROR - Error querying external LLM endpoint after retry: Server error '500 Internal Server Error' for url 'https://sk1354-llama3-career-api.hf.space/chat'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+2026-04-10 14:51:46,337 - ai_copilot - INFO - Query processed in 1814.96ms
+2026-04-10 14:51:46,396 - ai_copilot - INFO - Message added to session 30
+2026-04-10 14:54:46,096 - ai_copilot - INFO - Message added to session 28
+2026-04-10 14:54:46,461 - ai_copilot - INFO - No chunks met the similarity threshold; returning top fallback matches instead
+2026-04-10 14:54:46,462 - ai_copilot - INFO - Retrieved 5 chunks for query
+2026-04-10 14:55:07,121 - ai_copilot - INFO - Query processed in 20658.48ms
+2026-04-10 14:55:07,469 - ai_copilot - INFO - Message added to session 28
+2026-04-10 14:55:07,579 - ai_copilot - INFO - Shutting down application
+2026-04-10 14:55:07,619 - ai_copilot - INFO - Redis disconnected
+2026-04-10 14:55:24,355 - ai_copilot - INFO - External LLM endpoint configured but will use OpenAI as primary provider
+2026-04-10 14:55:24,527 - ai_copilot - INFO - Starting up application
+2026-04-10 14:55:24,528 - ai_copilot - INFO - Environment: development
+2026-04-10 14:55:24,529 - ai_copilot - INFO - Debug: False
+2026-04-10 14:55:24,575 - ai_copilot - INFO - Database initialized
+2026-04-10 14:55:28,989 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-10 14:55:28,991 - ai_copilot - INFO - Redis cache disabled
+2026-04-10 14:56:10,455 - ai_copilot - INFO - Shutting down application
+2026-04-10 14:56:10,549 - ai_copilot - INFO - Redis disconnected
+2026-04-10 14:56:16,133 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-10 14:56:16,260 - ai_copilot - INFO - Starting up application
+2026-04-10 14:56:16,260 - ai_copilot - INFO - Environment: development
+2026-04-10 14:56:16,260 - ai_copilot - INFO - Debug: False
+2026-04-10 14:56:16,279 - ai_copilot - INFO - Database initialized
+2026-04-10 14:56:20,881 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-10 14:56:20,882 - ai_copilot - INFO - Redis cache disabled
+2026-04-10 14:56:29,344 - ai_copilot - INFO - File saved: uploads\FCAITIndustryInternshipDocumentationGuidelines-Development.pdf
+2026-04-10 14:56:29,356 - ai_copilot - WARNING - PDF parser not installed; storing uploaded PDF without extracted text
+2026-04-10 14:56:29,446 - ai_copilot - INFO - Document created: FCAIT Industry Internship Documentation Guidelines-Development.pdf (ID: 10)
+2026-04-10 14:56:29,451 - ai_copilot - INFO - Uploaded FCAIT Industry Internship Documentation Guidelines-Development.pdf without immediate processing
+2026-04-10 14:56:46,327 - ai_copilot - INFO - Chat session created: 31
+2026-04-10 14:56:46,485 - ai_copilot - INFO - Chat session renamed: 31
+2026-04-10 14:56:46,488 - ai_copilot - INFO - Initialized RAG Retriever
+2026-04-10 14:56:46,633 - ai_copilot - INFO - Initialized FAISS with dimension 384
+2026-04-10 14:57:21,685 - ai_copilot - INFO - Loaded embedding model: all-MiniLM-L6-v2
+2026-04-10 14:57:24,858 - ai_copilot - INFO - Added 44 vectors to FAISS index
+2026-04-10 14:57:24,859 - ai_copilot - INFO - Indexed 44 existing chunks for document 5
+2026-04-10 14:57:24,901 - ai_copilot - INFO - Message added to session 31
+2026-04-10 14:57:24,989 - ai_copilot - INFO - No chunks met the similarity threshold; returning top fallback matches instead
+2026-04-10 14:57:24,998 - ai_copilot - INFO - Retrieved 5 chunks for query
+2026-04-10 14:57:29,226 - ai_copilot - INFO - Query processed in 4191.29ms
+2026-04-10 14:57:29,297 - ai_copilot - INFO - Message added to session 31
+2026-04-10 14:59:37,548 - ai_copilot - INFO - Message added to session 31
+2026-04-10 14:59:37,597 - ai_copilot - INFO - No chunks met the similarity threshold; returning top fallback matches instead
+2026-04-10 14:59:37,597 - ai_copilot - INFO - Retrieved 5 chunks for query
+2026-04-10 14:59:40,403 - ai_copilot - INFO - Query processed in 2805.55ms
+2026-04-10 14:59:40,486 - ai_copilot - INFO - Message added to session 31
+2026-04-10 15:01:45,522 - ai_copilot - INFO - Message added to session 31
+2026-04-10 15:01:45,590 - ai_copilot - INFO - No chunks met the similarity threshold; returning top fallback matches instead
+2026-04-10 15:01:45,596 - ai_copilot - INFO - Retrieved 5 chunks for query
+2026-04-10 15:01:48,666 - ai_copilot - INFO - Query processed in 3066.62ms
+2026-04-10 15:01:48,702 - ai_copilot - INFO - Message added to session 31
+2026-04-10 15:07:54,033 - ai_copilot - INFO - Chat session created: 32
+2026-04-10 15:07:54,183 - ai_copilot - INFO - Chat session renamed: 32
+2026-04-10 15:07:54,219 - ai_copilot - INFO - Message added to session 32
+2026-04-10 15:07:54,260 - ai_copilot - INFO - No chunks met the similarity threshold; returning top fallback matches instead
+2026-04-10 15:07:54,261 - ai_copilot - INFO - Retrieved 5 chunks for query
+2026-04-10 15:07:56,473 - ai_copilot - INFO - Query processed in 2211.96ms
+2026-04-10 15:07:56,507 - ai_copilot - INFO - Message added to session 32
+2026-04-10 15:08:02,784 - ai_copilot - INFO - Message added to session 32
+2026-04-10 15:08:02,856 - ai_copilot - INFO - No chunks met the similarity threshold; returning top fallback matches instead
+2026-04-10 15:08:02,857 - ai_copilot - INFO - Retrieved 5 chunks for query
+2026-04-10 15:08:05,272 - ai_copilot - INFO - Query processed in 2413.96ms
+2026-04-10 15:08:05,305 - ai_copilot - INFO - Message added to session 32
+2026-04-10 15:14:27,932 - ai_copilot - INFO - Message added to session 32
+2026-04-10 15:14:31,782 - ai_copilot - INFO - No chunks met the similarity threshold; returning top fallback matches instead
+2026-04-10 15:14:31,783 - ai_copilot - INFO - Retrieved 5 chunks for query
+2026-04-10 15:14:35,344 - ai_copilot - INFO - Query processed in 3556.61ms
+2026-04-10 15:14:35,386 - ai_copilot - INFO - Message added to session 32
+2026-04-10 15:14:49,014 - ai_copilot - INFO - Message added to session 32
+2026-04-10 15:14:49,153 - ai_copilot - INFO - No chunks met the similarity threshold; returning top fallback matches instead
+2026-04-10 15:14:49,156 - ai_copilot - INFO - Retrieved 5 chunks for query
+2026-04-10 15:14:52,168 - ai_copilot - INFO - Query processed in 3009.88ms
+2026-04-10 15:14:52,463 - ai_copilot - INFO - Message added to session 32
+2026-04-13 11:54:46,118 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-13 11:54:46,207 - ai_copilot - INFO - Starting up application
+2026-04-13 11:54:46,208 - ai_copilot - INFO - Environment: development
+2026-04-13 11:54:46,208 - ai_copilot - INFO - Debug: False
+2026-04-13 11:54:46,252 - ai_copilot - INFO - Database initialized
+2026-04-13 11:54:51,057 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-13 11:54:51,058 - ai_copilot - INFO - Redis cache disabled
+2026-04-13 12:07:17,880 - ai_copilot - INFO - Shutting down application
+2026-04-13 12:07:17,890 - ai_copilot - INFO - Redis disconnected
+2026-04-13 12:07:32,769 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-13 12:07:33,106 - ai_copilot - INFO - Starting up application
+2026-04-13 12:07:33,107 - ai_copilot - INFO - Environment: development
+2026-04-13 12:07:33,107 - ai_copilot - INFO - Debug: False
+2026-04-13 12:07:33,129 - ai_copilot - INFO - Database initialized
+2026-04-13 12:07:37,319 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-13 12:07:37,320 - ai_copilot - INFO - Redis cache disabled
+2026-04-13 12:07:52,749 - ai_copilot - INFO - Shutting down application
+2026-04-13 12:07:52,761 - ai_copilot - INFO - Redis disconnected
+2026-04-13 12:08:00,681 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-13 12:08:01,105 - ai_copilot - INFO - Starting up application
+2026-04-13 12:08:01,115 - ai_copilot - INFO - Environment: development
+2026-04-13 12:08:01,115 - ai_copilot - INFO - Debug: False
+2026-04-13 12:08:01,134 - ai_copilot - INFO - Database initialized
+2026-04-13 12:08:05,519 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-13 12:08:05,520 - ai_copilot - INFO - Redis cache disabled
+2026-04-13 12:15:55,812 - ai_copilot - INFO - Shutting down application
+2026-04-13 12:15:55,822 - ai_copilot - INFO - Redis disconnected
+2026-04-13 12:16:02,200 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-13 12:16:02,344 - ai_copilot - INFO - Starting up application
+2026-04-13 12:16:02,345 - ai_copilot - INFO - Environment: development
+2026-04-13 12:16:02,349 - ai_copilot - INFO - Debug: False
+2026-04-13 12:16:02,383 - ai_copilot - INFO - Database initialized
+2026-04-13 12:16:06,665 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-13 12:16:06,666 - ai_copilot - INFO - Redis cache disabled
+2026-04-13 12:21:45,335 - ai_copilot - INFO - Initialized external LLM service with model: test via https://example.com
+2026-04-13 12:22:26,909 - ai_copilot - INFO - Initialized RAG Retriever
+2026-04-13 12:22:27,679 - ai_copilot - INFO - Initialized FAISS with dimension 384
+2026-04-13 12:23:58,611 - ai_copilot - INFO - Loaded embedding model: all-MiniLM-L6-v2
+2026-04-13 12:24:04,536 - ai_copilot - INFO - Added 44 vectors to FAISS index
+2026-04-13 12:24:04,536 - ai_copilot - INFO - Indexed 44 existing chunks for document 5
+2026-04-13 12:24:04,638 - ai_copilot - INFO - Message added to session 31
+2026-04-13 12:24:04,898 - ai_copilot - INFO - No chunks met the similarity threshold; returning top fallback matches instead
+2026-04-13 12:24:04,902 - ai_copilot - INFO - Retrieved 5 chunks for query
+2026-04-13 12:24:18,433 - ai_copilot - INFO - Query processed in 13529.87ms
+2026-04-13 12:24:18,478 - ai_copilot - INFO - Message added to session 31
+2026-04-13 12:28:51,931 - ai_copilot - INFO - Shutting down application
+2026-04-13 12:28:51,934 - ai_copilot - INFO - Redis disconnected
+2026-04-13 12:29:00,566 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-13 12:29:00,769 - ai_copilot - INFO - Starting up application
+2026-04-13 12:29:00,770 - ai_copilot - INFO - Environment: development
+2026-04-13 12:29:00,771 - ai_copilot - INFO - Debug: False
+2026-04-13 12:29:00,810 - ai_copilot - INFO - Database initialized
+2026-04-13 12:29:05,450 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-13 12:29:05,452 - ai_copilot - INFO - Redis cache disabled
+2026-04-13 12:29:24,706 - ai_copilot - INFO - Shutting down application
+2026-04-13 12:29:24,718 - ai_copilot - INFO - Redis disconnected
+2026-04-13 12:29:31,758 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-13 12:29:31,916 - ai_copilot - INFO - Starting up application
+2026-04-13 12:29:31,916 - ai_copilot - INFO - Environment: development
+2026-04-13 12:29:31,917 - ai_copilot - INFO - Debug: False
+2026-04-13 12:29:31,978 - ai_copilot - INFO - Database initialized
+2026-04-13 12:29:36,652 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-13 12:29:36,653 - ai_copilot - INFO - Redis cache disabled
+2026-04-13 12:29:48,650 - ai_copilot - INFO - Shutting down application
+2026-04-13 12:29:48,659 - ai_copilot - INFO - Redis disconnected
+2026-04-13 12:29:55,120 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-13 12:29:55,266 - ai_copilot - INFO - Starting up application
+2026-04-13 12:29:55,267 - ai_copilot - INFO - Environment: development
+2026-04-13 12:29:55,267 - ai_copilot - INFO - Debug: False
+2026-04-13 12:29:55,299 - ai_copilot - INFO - Database initialized
+2026-04-13 12:29:59,665 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-13 12:29:59,668 - ai_copilot - INFO - Redis cache disabled
+2026-04-13 12:29:59,669 - ai_copilot - INFO - LLM keepalive enabled with interval 240s
+2026-04-13 12:30:01,239 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 12:30:01,241 - ai_copilot - INFO - Initialized RAG Retriever
+2026-04-13 12:30:01,358 - ai_copilot - INFO - Initialized FAISS with dimension 384
+2026-04-13 12:30:33,553 - ai_copilot - INFO - Loaded embedding model: all-MiniLM-L6-v2
+2026-04-13 12:30:33,554 - ai_copilot - INFO - Embedding model warmup completed
+2026-04-13 12:30:33,657 - ai_copilot - INFO - Shutting down application
+2026-04-13 12:30:33,659 - ai_copilot - INFO - Redis disconnected
+2026-04-13 12:30:43,990 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-13 12:30:44,382 - ai_copilot - INFO - Starting up application
+2026-04-13 12:30:44,382 - ai_copilot - INFO - Environment: development
+2026-04-13 12:30:44,383 - ai_copilot - INFO - Debug: False
+2026-04-13 12:30:44,411 - ai_copilot - INFO - Database initialized
+2026-04-13 12:30:48,993 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-13 12:30:48,994 - ai_copilot - INFO - Redis cache disabled
+2026-04-13 12:30:48,995 - ai_copilot - INFO - LLM keepalive enabled with interval 240s
+2026-04-13 12:30:50,420 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 12:30:50,423 - ai_copilot - INFO - Initialized RAG Retriever
+2026-04-13 12:30:50,553 - ai_copilot - INFO - Initialized FAISS with dimension 384
+2026-04-13 12:31:28,005 - ai_copilot - INFO - Loaded embedding model: all-MiniLM-L6-v2
+2026-04-13 12:31:28,006 - ai_copilot - INFO - Embedding model warmup completed
+2026-04-13 12:31:48,467 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-13 12:34:50,549 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 12:38:52,129 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 12:42:53,550 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 12:46:55,125 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 12:50:56,753 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 12:55:01,589 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 12:59:03,155 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 13:03:04,853 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 13:07:06,473 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 13:11:07,943 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 13:15:09,623 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 13:19:11,473 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 13:23:12,856 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 13:52:42,398 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 13:56:43,993 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 13:59:40,104 - ai_copilot - INFO - Added 44 vectors to FAISS index
+2026-04-13 13:59:40,106 - ai_copilot - INFO - Indexed 44 existing chunks for document 5
+2026-04-13 13:59:40,271 - ai_copilot - INFO - Message added to session 31
+2026-04-13 13:59:40,404 - ai_copilot - INFO - No chunks met the similarity threshold; returning top fallback matches instead
+2026-04-13 13:59:40,407 - ai_copilot - INFO - Retrieved 5 chunks for query
+2026-04-13 13:59:43,202 - ai_copilot - INFO - Query processed in 2791.75ms
+2026-04-13 13:59:43,285 - ai_copilot - INFO - Message added to session 31
+2026-04-13 14:00:45,707 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 14:04:47,084 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 14:08:48,887 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 14:08:50,684 - ai_copilot - INFO - Shutting down application
+2026-04-13 14:08:50,706 - ai_copilot - INFO - Redis disconnected
+2026-04-13 14:09:17,041 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-13 14:09:17,434 - ai_copilot - INFO - Starting up application
+2026-04-13 14:09:17,435 - ai_copilot - INFO - Environment: development
+2026-04-13 14:09:17,436 - ai_copilot - INFO - Debug: False
+2026-04-13 14:09:17,550 - ai_copilot - INFO - Database initialized
+2026-04-13 14:09:22,164 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-13 14:09:22,165 - ai_copilot - INFO - Redis cache disabled
+2026-04-13 14:09:22,166 - ai_copilot - INFO - LLM keepalive enabled with interval 240s
+2026-04-13 14:09:23,515 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 14:09:23,516 - ai_copilot - INFO - Initialized RAG Retriever
+2026-04-13 14:09:23,953 - ai_copilot - INFO - Initialized FAISS with dimension 384
+2026-04-13 14:10:03,773 - ai_copilot - INFO - Loaded embedding model: all-MiniLM-L6-v2
+2026-04-13 14:10:03,774 - ai_copilot - INFO - Embedding model warmup completed
+2026-04-13 14:13:15,434 - ai_copilot - INFO - Shutting down application
+2026-04-13 14:13:15,459 - ai_copilot - INFO - Redis disconnected
+2026-04-13 14:13:29,029 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-13 14:13:29,503 - ai_copilot - INFO - Starting up application
+2026-04-13 14:13:29,535 - ai_copilot - INFO - Environment: development
+2026-04-13 14:13:29,576 - ai_copilot - INFO - Debug: False
+2026-04-13 14:13:29,650 - ai_copilot - INFO - Database initialized
+2026-04-13 14:13:34,756 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-13 14:13:34,761 - ai_copilot - INFO - Redis cache disabled
+2026-04-13 14:13:34,762 - ai_copilot - INFO - LLM keepalive enabled with interval 240s
+2026-04-13 14:13:36,412 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 14:13:36,430 - ai_copilot - INFO - Initialized RAG Retriever
+2026-04-13 14:13:36,612 - ai_copilot - INFO - Initialized FAISS with dimension 384
+2026-04-13 14:14:21,746 - ai_copilot - INFO - Loaded embedding model: all-MiniLM-L6-v2
+2026-04-13 14:14:21,747 - ai_copilot - INFO - Embedding model warmup completed
+2026-04-13 14:16:01,390 - ai_copilot - INFO - Shutting down application
+2026-04-13 14:16:01,392 - ai_copilot - INFO - Redis disconnected
+2026-04-13 14:16:21,278 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-13 14:16:22,117 - ai_copilot - INFO - Starting up application
+2026-04-13 14:16:22,429 - ai_copilot - INFO - Environment: development
+2026-04-13 14:16:22,640 - ai_copilot - INFO - Debug: False
+2026-04-13 14:16:22,942 - ai_copilot - INFO - Database initialized
+2026-04-13 14:16:23,680 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-13 14:16:27,941 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-13 14:16:27,948 - ai_copilot - INFO - Redis cache disabled
+2026-04-13 14:16:27,952 - ai_copilot - INFO - LLM keepalive enabled with interval 240s
+2026-04-13 14:16:29,567 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 14:16:29,608 - ai_copilot - INFO - Initialized RAG Retriever
+2026-04-13 14:16:30,280 - ai_copilot - INFO - Initialized FAISS with dimension 384
+2026-04-13 14:17:26,497 - ai_copilot - INFO - Loaded embedding model: all-MiniLM-L6-v2
+2026-04-13 14:17:26,525 - ai_copilot - INFO - Embedding model warmup completed
+2026-04-13 14:20:29,577 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 14:24:31,233 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 14:28:32,579 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 14:30:43,666 - ai_copilot - INFO - Shutting down application
+2026-04-13 14:30:43,668 - ai_copilot - INFO - Redis disconnected
+2026-04-13 14:30:57,201 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-13 14:30:57,318 - ai_copilot - INFO - Starting up application
+2026-04-13 14:30:57,318 - ai_copilot - INFO - Environment: development
+2026-04-13 14:30:57,319 - ai_copilot - INFO - Debug: False
+2026-04-13 14:30:57,345 - ai_copilot - INFO - Database initialized
+2026-04-13 14:31:01,384 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-13 14:31:01,386 - ai_copilot - INFO - Redis cache disabled
+2026-04-13 14:31:01,387 - ai_copilot - INFO - LLM keepalive enabled with interval 240s
+2026-04-13 14:31:03,036 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 14:31:03,037 - ai_copilot - INFO - Initialized RAG Retriever
+2026-04-13 14:31:03,161 - ai_copilot - INFO - Initialized FAISS with dimension 384
+2026-04-13 14:31:34,489 - ai_copilot - INFO - Loaded embedding model: all-MiniLM-L6-v2
+2026-04-13 14:31:34,491 - ai_copilot - INFO - Embedding model warmup completed
+2026-04-13 14:32:03,499 - ai_copilot - ERROR - Error connecting Gmail: b'[AUTHENTICATIONFAILED] Invalid credentials (Failure)'
+2026-04-13 14:32:38,403 - ai_copilot - ERROR - Error connecting Gmail: b'[ALERT] Application-specific password required: https://support.google.com/accounts/answer/185833 (Failure)'
+2026-04-13 14:34:17,147 - ai_copilot - INFO - Shutting down application
+2026-04-13 14:34:17,149 - ai_copilot - INFO - Redis disconnected
+2026-04-13 14:34:23,324 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-13 14:34:23,493 - ai_copilot - INFO - Starting up application
+2026-04-13 14:34:23,494 - ai_copilot - INFO - Environment: development
+2026-04-13 14:34:23,494 - ai_copilot - INFO - Debug: False
+2026-04-13 14:34:23,516 - ai_copilot - INFO - Database initialized
+2026-04-13 14:34:27,756 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-13 14:34:27,790 - ai_copilot - INFO - Redis cache disabled
+2026-04-13 14:34:27,800 - ai_copilot - INFO - LLM keepalive enabled with interval 240s
+2026-04-13 14:34:29,241 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 14:34:29,242 - ai_copilot - INFO - Initialized RAG Retriever
+2026-04-13 14:34:29,333 - ai_copilot - INFO - Initialized FAISS with dimension 384
+2026-04-13 14:34:52,706 - ai_copilot - INFO - Loaded embedding model: all-MiniLM-L6-v2
+2026-04-13 14:34:52,706 - ai_copilot - INFO - Embedding model warmup completed
+2026-04-13 14:34:52,810 - ai_copilot - INFO - Shutting down application
+2026-04-13 14:34:52,811 - ai_copilot - INFO - Redis disconnected
+2026-04-13 14:35:00,333 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-13 14:35:00,531 - ai_copilot - INFO - Starting up application
+2026-04-13 14:35:00,531 - ai_copilot - INFO - Environment: development
+2026-04-13 14:35:00,532 - ai_copilot - INFO - Debug: False
+2026-04-13 14:35:00,569 - ai_copilot - INFO - Database initialized
+2026-04-13 14:35:05,044 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-13 14:35:05,058 - ai_copilot - INFO - Redis cache disabled
+2026-04-13 14:35:05,063 - ai_copilot - INFO - LLM keepalive enabled with interval 240s
+2026-04-13 14:35:06,389 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 14:35:06,390 - ai_copilot - INFO - Initialized RAG Retriever
+2026-04-13 14:35:06,493 - ai_copilot - INFO - Initialized FAISS with dimension 384
+2026-04-13 14:35:41,059 - ai_copilot - INFO - Loaded embedding model: all-MiniLM-L6-v2
+2026-04-13 14:35:41,061 - ai_copilot - INFO - Embedding model warmup completed
+2026-04-13 14:39:06,403 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 14:43:07,769 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 14:47:13,400 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 14:47:27,145 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-13 14:51:14,745 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 14:52:42,099 - ai_copilot - INFO - Shutting down application
+2026-04-13 14:52:42,109 - ai_copilot - INFO - Redis disconnected
+2026-04-13 14:52:50,589 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-13 14:52:50,726 - ai_copilot - INFO - Starting up application
+2026-04-13 14:52:50,727 - ai_copilot - INFO - Environment: development
+2026-04-13 14:52:50,727 - ai_copilot - INFO - Debug: False
+2026-04-13 14:52:50,753 - ai_copilot - INFO - Database initialized
+2026-04-13 14:52:55,242 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-13 14:52:55,271 - ai_copilot - INFO - Redis cache disabled
+2026-04-13 14:52:55,271 - ai_copilot - INFO - LLM keepalive enabled with interval 240s
+2026-04-13 14:52:57,186 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 14:52:57,187 - ai_copilot - INFO - Initialized RAG Retriever
+2026-04-13 14:52:57,346 - ai_copilot - INFO - Initialized FAISS with dimension 384
+2026-04-13 14:53:32,963 - ai_copilot - INFO - Loaded embedding model: all-MiniLM-L6-v2
+2026-04-13 14:53:32,964 - ai_copilot - INFO - Embedding model warmup completed
+2026-04-13 14:56:57,211 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 14:57:03,686 - ai_copilot - INFO - Shutting down application
+2026-04-13 14:57:03,686 - ai_copilot - INFO - Redis disconnected
+2026-04-13 14:57:16,328 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-13 15:01:47,085 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-13 15:05:06,960 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-13 15:05:07,076 - ai_copilot - INFO - Starting up application
+2026-04-13 15:05:07,077 - ai_copilot - INFO - Environment: development
+2026-04-13 15:05:07,077 - ai_copilot - INFO - Debug: False
+2026-04-13 15:05:07,098 - ai_copilot - INFO - Database initialized
+2026-04-13 15:05:11,255 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-13 15:05:11,256 - ai_copilot - INFO - Redis cache disabled
+2026-04-13 15:05:11,256 - ai_copilot - INFO - LLM keepalive enabled with interval 240s
+2026-04-13 15:05:13,128 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 15:05:13,134 - ai_copilot - INFO - Initialized RAG Retriever
+2026-04-13 15:05:13,202 - ai_copilot - INFO - Initialized FAISS with dimension 384
+2026-04-13 15:05:36,946 - ai_copilot - INFO - Loaded embedding model: all-MiniLM-L6-v2
+2026-04-13 15:05:36,946 - ai_copilot - INFO - Embedding model warmup completed
+2026-04-13 15:09:12,893 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 15:13:14,480 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 15:17:15,882 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 15:18:33,045 - ai_copilot - INFO - Shutting down application
+2026-04-13 15:18:33,047 - ai_copilot - INFO - Redis disconnected
+2026-04-13 15:18:48,807 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-13 15:18:48,976 - ai_copilot - INFO - Starting up application
+2026-04-13 15:18:48,979 - ai_copilot - INFO - Environment: development
+2026-04-13 15:18:48,988 - ai_copilot - INFO - Debug: False
+2026-04-13 15:18:49,018 - ai_copilot - INFO - Database initialized
+2026-04-13 15:18:53,319 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-13 15:18:53,320 - ai_copilot - INFO - Redis cache disabled
+2026-04-13 15:18:53,320 - ai_copilot - INFO - LLM keepalive enabled with interval 240s
+2026-04-13 15:18:54,626 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 15:18:54,633 - ai_copilot - INFO - Initialized RAG Retriever
+2026-04-13 15:18:54,781 - ai_copilot - INFO - Initialized FAISS with dimension 384
+2026-04-13 15:19:27,175 - ai_copilot - INFO - Loaded embedding model: all-MiniLM-L6-v2
+2026-04-13 15:19:27,176 - ai_copilot - INFO - Embedding model warmup completed
+2026-04-13 15:22:54,788 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 15:23:34,325 - ai_copilot - INFO - Shutting down application
+2026-04-13 15:23:34,328 - ai_copilot - INFO - Redis disconnected
+2026-04-13 15:23:49,098 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-13 15:23:49,232 - ai_copilot - INFO - Starting up application
+2026-04-13 15:23:49,233 - ai_copilot - INFO - Environment: development
+2026-04-13 15:23:49,234 - ai_copilot - INFO - Debug: False
+2026-04-13 15:23:49,275 - ai_copilot - INFO - Database initialized
+2026-04-13 15:23:53,320 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-13 15:23:53,322 - ai_copilot - INFO - Redis cache disabled
+2026-04-13 15:23:53,322 - ai_copilot - INFO - LLM keepalive enabled with interval 240s
+2026-04-13 15:23:54,757 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 15:23:54,757 - ai_copilot - INFO - Initialized RAG Retriever
+2026-04-13 15:23:54,889 - ai_copilot - INFO - Initialized FAISS with dimension 384
+2026-04-13 15:24:31,951 - ai_copilot - INFO - Loaded embedding model: all-MiniLM-L6-v2
+2026-04-13 15:24:31,951 - ai_copilot - INFO - Embedding model warmup completed
+2026-04-13 15:27:54,696 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 15:28:46,191 - ai_copilot - INFO - Chat session created: 33
+2026-04-13 15:28:46,387 - ai_copilot - INFO - Chat session renamed: 33
+2026-04-13 15:28:51,908 - ai_copilot - INFO - Added 44 vectors to FAISS index
+2026-04-13 15:28:51,908 - ai_copilot - INFO - Indexed 44 existing chunks for document 5
+2026-04-13 15:28:51,961 - ai_copilot - INFO - Message added to session 33
+2026-04-13 15:28:52,017 - ai_copilot - INFO - No chunks met the similarity threshold; returning top fallback matches instead
+2026-04-13 15:28:52,018 - ai_copilot - INFO - Retrieved 5 chunks for query
+2026-04-13 15:28:56,432 - ai_copilot - INFO - Query processed in 4412.97ms
+2026-04-13 15:28:56,479 - ai_copilot - INFO - Message added to session 33
+2026-04-13 15:31:56,603 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 15:33:27,293 - ai_copilot - INFO - Shutting down application
+2026-04-13 15:33:27,294 - ai_copilot - INFO - Redis disconnected
+2026-04-13 15:33:39,765 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-13 15:33:40,245 - ai_copilot - INFO - Starting up application
+2026-04-13 15:33:40,247 - ai_copilot - INFO - Environment: development
+2026-04-13 15:33:40,247 - ai_copilot - INFO - Debug: False
+2026-04-13 15:33:40,270 - ai_copilot - INFO - Database initialized
+2026-04-13 15:33:44,626 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-13 15:33:44,627 - ai_copilot - INFO - Redis cache disabled
+2026-04-13 15:33:44,627 - ai_copilot - INFO - LLM keepalive enabled with interval 240s
+2026-04-13 15:33:45,978 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 15:33:45,979 - ai_copilot - INFO - Initialized RAG Retriever
+2026-04-13 15:33:46,064 - ai_copilot - INFO - Initialized FAISS with dimension 384
+2026-04-13 15:34:16,322 - ai_copilot - INFO - Loaded embedding model: all-MiniLM-L6-v2
+2026-04-13 15:34:16,322 - ai_copilot - INFO - Embedding model warmup completed
+2026-04-13 15:36:55,020 - ai_copilot - WARNING - Gmail OAuth callback failed: Google OAuth token exchange failed
+2026-04-13 15:37:27,047 - ai_copilot - WARNING - Gmail OAuth callback failed: Google OAuth token exchange failed
+2026-04-13 15:37:45,986 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 15:38:46,769 - ai_copilot - INFO - Shutting down application
+2026-04-13 15:38:46,770 - ai_copilot - INFO - Redis disconnected
+2026-04-13 15:39:20,970 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-13 15:39:21,874 - ai_copilot - INFO - Starting up application
+2026-04-13 15:39:21,942 - ai_copilot - INFO - Environment: development
+2026-04-13 15:39:22,338 - ai_copilot - INFO - Debug: False
+2026-04-13 15:39:24,102 - ai_copilot - INFO - Database initialized
+2026-04-13 15:39:28,703 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-13 15:39:28,708 - ai_copilot - INFO - Redis cache disabled
+2026-04-13 15:39:28,708 - ai_copilot - INFO - LLM keepalive enabled with interval 240s
+2026-04-13 15:39:30,136 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 15:39:30,144 - ai_copilot - INFO - Initialized RAG Retriever
+2026-04-13 15:39:30,577 - ai_copilot - INFO - Initialized FAISS with dimension 384
+2026-04-13 15:40:45,253 - ai_copilot - INFO - Loaded embedding model: all-MiniLM-L6-v2
+2026-04-13 15:40:45,253 - ai_copilot - INFO - Embedding model warmup completed
+2026-04-13 15:40:59,891 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-13 15:41:00,053 - ai_copilot - INFO - Starting up application
+2026-04-13 15:41:00,066 - ai_copilot - INFO - Environment: development
+2026-04-13 15:41:00,070 - ai_copilot - INFO - Debug: False
+2026-04-13 15:41:00,136 - ai_copilot - INFO - Database initialized
+2026-04-13 15:41:04,334 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-13 15:41:04,335 - ai_copilot - INFO - Redis cache disabled
+2026-04-13 15:41:04,336 - ai_copilot - INFO - LLM keepalive enabled with interval 240s
+2026-04-13 15:41:05,851 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 15:41:05,852 - ai_copilot - INFO - Initialized RAG Retriever
+2026-04-13 15:41:06,069 - ai_copilot - INFO - Initialized FAISS with dimension 384
+2026-04-13 15:41:41,056 - ai_copilot - INFO - Loaded embedding model: all-MiniLM-L6-v2
+2026-04-13 15:41:41,058 - ai_copilot - INFO - Embedding model warmup completed
+2026-04-13 15:42:06,690 - ai_copilot - ERROR - Google OAuth token exchange failed: (insecure_transport) OAuth 2 MUST utilize https.
+2026-04-13 15:42:06,691 - ai_copilot - WARNING - Gmail OAuth callback failed: Google OAuth token exchange failed: (insecure_transport) OAuth 2 MUST utilize https.
+2026-04-13 15:43:02,440 - ai_copilot - INFO - Shutting down application
+2026-04-13 15:43:02,441 - ai_copilot - INFO - Redis disconnected
+2026-04-13 15:43:10,067 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-13 15:43:10,280 - ai_copilot - INFO - Starting up application
+2026-04-13 15:43:10,281 - ai_copilot - INFO - Environment: development
+2026-04-13 15:43:10,281 - ai_copilot - INFO - Debug: False
+2026-04-13 15:43:10,306 - ai_copilot - INFO - Database initialized
+2026-04-13 15:43:15,046 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-13 15:43:15,047 - ai_copilot - INFO - Redis cache disabled
+2026-04-13 15:43:15,047 - ai_copilot - INFO - LLM keepalive enabled with interval 240s
+2026-04-13 15:43:16,538 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 15:43:16,603 - ai_copilot - INFO - Initialized RAG Retriever
+2026-04-13 15:43:16,734 - ai_copilot - INFO - Initialized FAISS with dimension 384
+2026-04-13 15:43:43,338 - ai_copilot - INFO - Loaded embedding model: all-MiniLM-L6-v2
+2026-04-13 15:43:43,339 - ai_copilot - INFO - Embedding model warmup completed
+2026-04-13 15:44:07,260 - ai_copilot - ERROR - Google OAuth token exchange failed: (invalid_grant) Missing code verifier.
+2026-04-13 15:44:07,261 - ai_copilot - WARNING - Gmail OAuth callback failed: Google OAuth token exchange failed: (invalid_grant) Missing code verifier.
+2026-04-13 15:45:41,605 - ai_copilot - INFO - Shutting down application
+2026-04-13 15:45:41,606 - ai_copilot - INFO - Redis disconnected
+2026-04-13 15:45:54,087 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-13 15:45:54,403 - ai_copilot - INFO - Starting up application
+2026-04-13 15:45:54,441 - ai_copilot - INFO - Environment: development
+2026-04-13 15:45:54,444 - ai_copilot - INFO - Debug: False
+2026-04-13 15:45:54,487 - ai_copilot - INFO - Database initialized
+2026-04-13 15:45:59,346 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-13 15:45:59,348 - ai_copilot - INFO - Redis cache disabled
+2026-04-13 15:45:59,349 - ai_copilot - INFO - LLM keepalive enabled with interval 240s
+2026-04-13 15:46:00,872 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 15:46:00,875 - ai_copilot - INFO - Initialized RAG Retriever
+2026-04-13 15:46:01,015 - ai_copilot - INFO - Initialized FAISS with dimension 384
+2026-04-13 15:46:32,188 - ai_copilot - INFO - Loaded embedding model: all-MiniLM-L6-v2
+2026-04-13 15:46:32,188 - ai_copilot - INFO - Embedding model warmup completed
+2026-04-13 15:50:00,831 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 15:54:02,448 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 15:58:03,736 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 16:02:05,242 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 16:06:06,702 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 16:10:08,029 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 16:14:10,566 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 16:18:12,218 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 16:22:13,576 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 16:26:15,199 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 16:30:16,537 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 16:31:31,383 - ai_copilot - ERROR - Google OAuth token exchange failed: Scope has changed from "https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/userinfo.email" to "openid https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/userinfo.email".
+2026-04-13 16:31:31,384 - ai_copilot - WARNING - Gmail OAuth callback failed: Google OAuth token exchange failed: Scope has changed from "https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/userinfo.email" to "openid https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/userinfo.email".
+2026-04-13 16:32:09,346 - ai_copilot - INFO - Shutting down application
+2026-04-13 16:32:09,347 - ai_copilot - INFO - Redis disconnected
+2026-04-13 16:32:19,949 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-13 16:32:20,279 - ai_copilot - INFO - Starting up application
+2026-04-13 16:32:20,280 - ai_copilot - INFO - Environment: development
+2026-04-13 16:32:20,305 - ai_copilot - INFO - Debug: False
+2026-04-13 16:32:20,348 - ai_copilot - INFO - Database initialized
+2026-04-13 16:32:25,302 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-13 16:32:25,303 - ai_copilot - INFO - Redis cache disabled
+2026-04-13 16:32:25,304 - ai_copilot - INFO - LLM keepalive enabled with interval 240s
+2026-04-13 16:32:26,657 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 16:32:26,677 - ai_copilot - INFO - Initialized RAG Retriever
+2026-04-13 16:32:26,839 - ai_copilot - INFO - Initialized FAISS with dimension 384
+2026-04-13 16:32:51,206 - ai_copilot - INFO - Loaded embedding model: all-MiniLM-L6-v2
+2026-04-13 16:32:51,207 - ai_copilot - INFO - Embedding model warmup completed
+2026-04-13 16:33:02,190 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-13 16:33:02,356 - ai_copilot - INFO - Starting up application
+2026-04-13 16:33:02,357 - ai_copilot - INFO - Environment: development
+2026-04-13 16:33:02,358 - ai_copilot - INFO - Debug: False
+2026-04-13 16:33:02,389 - ai_copilot - INFO - Database initialized
+2026-04-13 16:33:07,002 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-13 16:33:07,032 - ai_copilot - INFO - Redis cache disabled
+2026-04-13 16:33:07,080 - ai_copilot - INFO - LLM keepalive enabled with interval 240s
+2026-04-13 16:33:08,512 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 16:33:08,513 - ai_copilot - INFO - Initialized RAG Retriever
+2026-04-13 16:33:08,594 - ai_copilot - INFO - Initialized FAISS with dimension 384
+2026-04-13 16:33:32,308 - ai_copilot - INFO - Loaded embedding model: all-MiniLM-L6-v2
+2026-04-13 16:33:32,360 - ai_copilot - INFO - Embedding model warmup completed
+2026-04-13 16:34:20,596 - ai_copilot - INFO - Document created: Gmail - Turing is hiring a Subject Matter Expert - Jira (ID: 11)
+2026-04-13 16:34:20,598 - ai_copilot - INFO - Chunked document 11 into 553 chunks
+2026-04-13 16:35:30,573 - ai_copilot - INFO - Added 553 vectors to FAISS index
+2026-04-13 16:35:30,575 - ai_copilot - INFO - Stored 553 embeddings for document 11
+2026-04-13 16:35:31,377 - ai_copilot - INFO - Processed document 11 with 553 chunks
+2026-04-13 16:35:31,413 - ai_copilot - INFO - Document created: Gmail - New activity in Freelancer Onboarding (ID: 12)
+2026-04-13 16:35:31,415 - ai_copilot - INFO - Chunked document 12 into 70 chunks
+2026-04-13 16:35:40,276 - ai_copilot - INFO - Added 70 vectors to FAISS index
+2026-04-13 16:35:40,277 - ai_copilot - INFO - Stored 70 embeddings for document 12
+2026-04-13 16:35:40,425 - ai_copilot - INFO - Processed document 12 with 70 chunks
+2026-04-13 16:35:40,655 - ai_copilot - INFO - Document created: Gmail - Update: Confirm your application to follow a step-by-step tech roadmap (ID: 13)
+2026-04-13 16:35:40,657 - ai_copilot - INFO - Chunked document 13 into 133 chunks
+2026-04-13 16:35:59,748 - ai_copilot - INFO - Added 133 vectors to FAISS index
+2026-04-13 16:35:59,750 - ai_copilot - INFO - Stored 133 embeddings for document 13
+2026-04-13 16:35:59,948 - ai_copilot - INFO - Processed document 13 with 133 chunks
+2026-04-13 16:35:59,998 - ai_copilot - INFO - Document created: Gmail - Meril is hiring a Computational Drug Discovery Intern (AI/ML | Bioinformatics) (ID: 14)
+2026-04-13 16:36:00,001 - ai_copilot - INFO - Chunked document 14 into 476 chunks
+2026-04-13 16:36:51,941 - ai_copilot - INFO - Added 476 vectors to FAISS index
+2026-04-13 16:36:51,942 - ai_copilot - INFO - Stored 476 embeddings for document 14
+2026-04-13 16:36:52,445 - ai_copilot - INFO - Processed document 14 with 476 chunks
+2026-04-13 16:36:52,480 - ai_copilot - INFO - Document created: Gmail - Prometteur Solutions SWE+GEN AI position (ID: 15)
+2026-04-13 16:36:52,480 - ai_copilot - INFO - Chunked document 15 into 3 chunks
+2026-04-13 16:36:52,772 - ai_copilot - INFO - Added 3 vectors to FAISS index
+2026-04-13 16:36:52,772 - ai_copilot - INFO - Stored 3 embeddings for document 15
+2026-04-13 16:36:52,794 - ai_copilot - INFO - Processed document 15 with 3 chunks
+2026-04-13 16:36:52,836 - ai_copilot - INFO - Document created: Gmail - Senior Python Developer at NetAI Inc. in Sola, Ahmedabad, Gujarat and 1 more new job (ID: 16)
+2026-04-13 16:36:52,839 - ai_copilot - INFO - Chunked document 16 into 101 chunks
+2026-04-13 16:37:07,411 - ai_copilot - INFO - Added 101 vectors to FAISS index
+2026-04-13 16:37:07,416 - ai_copilot - INFO - Stored 101 embeddings for document 16
+2026-04-13 16:37:07,579 - ai_copilot - INFO - Processed document 16 with 101 chunks
+2026-04-13 16:37:07,626 - ai_copilot - INFO - Document created: Gmail - Make your social content shine (ID: 17)
+2026-04-13 16:37:07,629 - ai_copilot - INFO - Chunked document 17 into 201 chunks
+2026-04-13 16:37:31,539 - ai_copilot - INFO - Added 201 vectors to FAISS index
+2026-04-13 16:37:31,541 - ai_copilot - INFO - Stored 201 embeddings for document 17
+2026-04-13 16:37:31,812 - ai_copilot - INFO - Processed document 17 with 201 chunks
+2026-04-13 16:37:31,847 - ai_copilot - INFO - Document created: Gmail - I want to connect (ID: 18)
+2026-04-13 16:37:31,849 - ai_copilot - INFO - Chunked document 18 into 120 chunks
+2026-04-13 16:37:47,048 - ai_copilot - INFO - Added 120 vectors to FAISS index
+2026-04-13 16:37:47,050 - ai_copilot - INFO - Stored 120 embeddings for document 18
+2026-04-13 16:37:47,219 - ai_copilot - INFO - Processed document 18 with 120 chunks
+2026-04-13 16:37:47,263 - ai_copilot - INFO - Document created: Gmail - Thank you for applying to Prometteur Solutions Pvt. Ltd. (ID: 19)
+2026-04-13 16:37:47,265 - ai_copilot - INFO - Chunked document 19 into 5 chunks
+2026-04-13 16:37:47,763 - ai_copilot - INFO - Added 5 vectors to FAISS index
+2026-04-13 16:37:47,764 - ai_copilot - INFO - Stored 5 embeddings for document 19
+2026-04-13 16:37:47,769 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 16:37:47,795 - ai_copilot - INFO - Processed document 19 with 5 chunks
+2026-04-13 16:37:47,831 - ai_copilot - INFO - Document created: Gmail - SAHIL, these HTML, PHP, and Web Development projects and contests might interest you (ID: 20)
+2026-04-13 16:37:47,832 - ai_copilot - INFO - Chunked document 20 into 217 chunks
+2026-04-13 16:38:15,748 - ai_copilot - INFO - Added 217 vectors to FAISS index
+2026-04-13 16:38:15,749 - ai_copilot - INFO - Stored 217 embeddings for document 20
+2026-04-13 16:38:16,192 - ai_copilot - INFO - Processed document 20 with 217 chunks
+2026-04-13 16:38:16,682 - ai_copilot - INFO - Chunked document 21 into 23 chunks
+2026-04-13 16:38:20,633 - ai_copilot - INFO - Added 23 vectors to FAISS index
+2026-04-13 16:38:20,635 - ai_copilot - INFO - Stored 23 embeddings for document 21
+2026-04-13 16:38:20,686 - ai_copilot - INFO - Processed document 21 with 23 chunks
+2026-04-13 16:38:20,731 - ai_copilot - INFO - Document created: Gmail - Sahil, we have received your application (ID: 22)
+2026-04-13 16:38:20,733 - ai_copilot - INFO - Chunked document 22 into 2 chunks
+2026-04-13 16:38:21,058 - ai_copilot - INFO - Added 2 vectors to FAISS index
+2026-04-13 16:38:21,059 - ai_copilot - INFO - Stored 2 embeddings for document 22
+2026-04-13 16:38:21,084 - ai_copilot - INFO - Processed document 22 with 2 chunks
+2026-04-13 16:38:21,128 - ai_copilot - INFO - Document created: Gmail - Rocket Lawyer is hiring a AI/ML Intern (ID: 23)
+2026-04-13 16:38:21,187 - ai_copilot - INFO - Chunked document 23 into 394 chunks
+2026-04-13 16:39:05,418 - ai_copilot - INFO - Added 394 vectors to FAISS index
+2026-04-13 16:39:05,419 - ai_copilot - INFO - Stored 394 embeddings for document 23
+2026-04-13 16:39:05,995 - ai_copilot - INFO - Processed document 23 with 394 chunks
+2026-04-13 16:39:06,066 - ai_copilot - INFO - Document created: Gmail - You have an invitation (ID: 24)
+2026-04-13 16:39:06,067 - ai_copilot - INFO - Chunked document 24 into 120 chunks
+2026-04-13 16:39:20,573 - ai_copilot - INFO - Added 120 vectors to FAISS index
+2026-04-13 16:39:20,574 - ai_copilot - INFO - Stored 120 embeddings for document 24
+2026-04-13 16:39:20,736 - ai_copilot - INFO - Processed document 24 with 120 chunks
+2026-04-13 16:39:20,779 - ai_copilot - INFO - Document created: Gmail - Now available in India — Grammarly Plus (ID: 25)
+2026-04-13 16:39:20,780 - ai_copilot - INFO - Chunked document 25 into 80 chunks
+2026-04-13 16:39:30,704 - ai_copilot - INFO - Added 80 vectors to FAISS index
+2026-04-13 16:39:30,705 - ai_copilot - INFO - Stored 80 embeddings for document 25
+2026-04-13 16:39:30,822 - ai_copilot - INFO - Processed document 25 with 80 chunks
+2026-04-13 16:39:30,931 - ai_copilot - INFO - Chunked document 26 into 23 chunks
+2026-04-13 16:39:33,686 - ai_copilot - INFO - Added 23 vectors to FAISS index
+2026-04-13 16:39:33,687 - ai_copilot - INFO - Stored 23 embeddings for document 26
+2026-04-13 16:39:33,738 - ai_copilot - INFO - Processed document 26 with 23 chunks
+2026-04-13 16:39:33,780 - ai_copilot - INFO - Document created: Gmail - View: Account update for your HDFC Bank A/c (ID: 27)
+2026-04-13 16:39:33,781 - ai_copilot - INFO - Chunked document 27 into 23 chunks
+2026-04-13 16:39:36,848 - ai_copilot - INFO - Added 23 vectors to FAISS index
+2026-04-13 16:39:36,850 - ai_copilot - INFO - Stored 23 embeddings for document 27
+2026-04-13 16:39:36,933 - ai_copilot - INFO - Processed document 27 with 23 chunks
+2026-04-13 16:39:36,979 - ai_copilot - INFO - Document created: Gmail - 15% OFF – AI for Everyone | Limited to Last 60 Seats (ID: 28)
+2026-04-13 16:39:36,980 - ai_copilot - INFO - Chunked document 28 into 25 chunks
+2026-04-13 16:39:40,041 - ai_copilot - INFO - Added 25 vectors to FAISS index
+2026-04-13 16:39:40,042 - ai_copilot - INFO - Stored 25 embeddings for document 28
+2026-04-13 16:39:40,097 - ai_copilot - INFO - Processed document 28 with 25 chunks
+2026-04-13 16:39:40,191 - ai_copilot - INFO - Chunked document 29 into 23 chunks
+2026-04-13 16:39:42,910 - ai_copilot - INFO - Added 23 vectors to FAISS index
+2026-04-13 16:39:42,910 - ai_copilot - INFO - Stored 23 embeddings for document 29
+2026-04-13 16:39:42,964 - ai_copilot - INFO - Processed document 29 with 23 chunks
+2026-04-13 16:39:43,059 - ai_copilot - INFO - Chunked document 30 into 23 chunks
+2026-04-13 16:39:45,881 - ai_copilot - INFO - Added 23 vectors to FAISS index
+2026-04-13 16:39:45,883 - ai_copilot - INFO - Stored 23 embeddings for document 30
+2026-04-13 16:39:45,934 - ai_copilot - INFO - Processed document 30 with 23 chunks
+2026-04-13 16:39:45,960 - ai_copilot - INFO - Imported 20 Gmail messages for user 2
+2026-04-13 16:39:45,961 - ai_copilot - INFO - Gmail OAuth connected for user 2; imported 20 emails
+2026-04-13 16:41:49,268 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 16:45:50,843 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 16:49:45,037 - ai_copilot - INFO - Chat session created: 34
+2026-04-13 16:49:45,203 - ai_copilot - INFO - Chat session renamed: 34
+2026-04-13 16:49:45,425 - ai_copilot - INFO - Message added to session 34
+2026-04-13 16:49:45,503 - ai_copilot - INFO - No chunks met the similarity threshold; returning top fallback matches instead
+2026-04-13 16:49:45,506 - ai_copilot - INFO - Retrieved 5 chunks for query
+2026-04-13 16:49:48,074 - ai_copilot - INFO - Query processed in 2567.82ms
+2026-04-13 16:49:48,131 - ai_copilot - INFO - Message added to session 34
+2026-04-13 16:49:51,761 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 16:50:27,538 - ai_copilot - INFO - Imported 0 Gmail messages for user 2
+2026-04-13 16:50:27,540 - ai_copilot - INFO - Gmail OAuth connected for user 2; imported 0 emails
+2026-04-13 16:51:51,365 - ai_copilot - INFO - Message added to session 34
+2026-04-13 16:51:51,434 - ai_copilot - INFO - No chunks met the similarity threshold; returning top fallback matches instead
+2026-04-13 16:51:51,435 - ai_copilot - INFO - Retrieved 5 chunks for query
+2026-04-13 16:51:54,648 - ai_copilot - INFO - Query processed in 3211.63ms
+2026-04-13 16:51:54,976 - ai_copilot - INFO - Message added to session 34
+2026-04-13 16:53:47,949 - ai_copilot - INFO - Shutting down application
+2026-04-13 16:53:47,954 - ai_copilot - INFO - Redis disconnected
+2026-04-13 16:54:05,778 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-13 16:54:05,968 - ai_copilot - INFO - Starting up application
+2026-04-13 16:54:05,970 - ai_copilot - INFO - Environment: development
+2026-04-13 16:54:05,970 - ai_copilot - INFO - Debug: False
+2026-04-13 16:54:06,083 - ai_copilot - INFO - Database initialized
+2026-04-13 16:54:10,758 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-13 16:54:10,770 - ai_copilot - INFO - Redis cache disabled
+2026-04-13 16:54:10,770 - ai_copilot - INFO - LLM keepalive enabled with interval 240s
+2026-04-13 16:54:12,179 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 16:54:12,182 - ai_copilot - INFO - Initialized RAG Retriever
+2026-04-13 16:54:12,403 - ai_copilot - INFO - Initialized FAISS with dimension 384
+2026-04-13 16:54:44,189 - ai_copilot - INFO - Loaded embedding model: all-MiniLM-L6-v2
+2026-04-13 16:54:44,189 - ai_copilot - INFO - Embedding model warmup completed
+2026-04-13 16:54:44,291 - ai_copilot - INFO - Shutting down application
+2026-04-13 16:54:44,293 - ai_copilot - INFO - Redis disconnected
+2026-04-13 16:54:51,058 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-13 16:54:51,383 - ai_copilot - INFO - Starting up application
+2026-04-13 16:54:51,404 - ai_copilot - INFO - Environment: development
+2026-04-13 16:54:51,438 - ai_copilot - INFO - Debug: False
+2026-04-13 16:54:51,507 - ai_copilot - INFO - Database initialized
+2026-04-13 16:54:56,170 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-13 16:54:56,174 - ai_copilot - INFO - Redis cache disabled
+2026-04-13 16:54:56,174 - ai_copilot - INFO - LLM keepalive enabled with interval 240s
+2026-04-13 16:54:57,569 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 16:54:57,569 - ai_copilot - INFO - Initialized RAG Retriever
+2026-04-13 16:54:57,659 - ai_copilot - INFO - Initialized FAISS with dimension 384
+2026-04-13 16:55:24,576 - ai_copilot - INFO - Loaded embedding model: all-MiniLM-L6-v2
+2026-04-13 16:55:24,590 - ai_copilot - INFO - Embedding model warmup completed
+2026-04-13 16:57:36,466 - ai_copilot - INFO - Shutting down application
+2026-04-13 16:57:36,467 - ai_copilot - INFO - Redis disconnected
+2026-04-13 16:57:43,225 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-13 16:57:43,626 - ai_copilot - INFO - Starting up application
+2026-04-13 16:57:43,626 - ai_copilot - INFO - Environment: development
+2026-04-13 16:57:43,627 - ai_copilot - INFO - Debug: False
+2026-04-13 16:57:43,653 - ai_copilot - INFO - Database initialized
+2026-04-13 16:57:48,283 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-13 16:57:48,284 - ai_copilot - INFO - Redis cache disabled
+2026-04-13 16:57:48,285 - ai_copilot - INFO - LLM keepalive enabled with interval 240s
+2026-04-13 16:57:49,900 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 16:57:49,902 - ai_copilot - INFO - Initialized RAG Retriever
+2026-04-13 16:57:49,974 - ai_copilot - INFO - Initialized FAISS with dimension 384
+2026-04-13 16:58:19,764 - ai_copilot - INFO - Loaded embedding model: all-MiniLM-L6-v2
+2026-04-13 16:58:19,802 - ai_copilot - INFO - Embedding model warmup completed
+2026-04-13 17:01:49,814 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 17:04:58,919 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-13 17:05:52,526 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 17:07:54,184 - ai_copilot - INFO - Shutting down application
+2026-04-13 17:07:54,185 - ai_copilot - INFO - Redis disconnected
+2026-04-13 17:08:04,901 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-13 17:08:05,048 - ai_copilot - INFO - Starting up application
+2026-04-13 17:08:05,049 - ai_copilot - INFO - Environment: development
+2026-04-13 17:08:05,049 - ai_copilot - INFO - Debug: False
+2026-04-13 17:08:05,082 - ai_copilot - INFO - Database initialized
+2026-04-13 17:08:09,549 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-13 17:08:09,551 - ai_copilot - INFO - Redis cache disabled
+2026-04-13 17:08:09,553 - ai_copilot - INFO - LLM keepalive enabled with interval 240s
+2026-04-13 17:08:11,186 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 17:08:11,187 - ai_copilot - INFO - Initialized RAG Retriever
+2026-04-13 17:08:11,309 - ai_copilot - INFO - Initialized FAISS with dimension 384
+2026-04-13 17:08:50,211 - ai_copilot - INFO - Loaded embedding model: all-MiniLM-L6-v2
+2026-04-13 17:08:50,212 - ai_copilot - INFO - Embedding model warmup completed
+2026-04-13 17:12:11,423 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 17:12:53,745 - ai_copilot - INFO - Added 44 vectors to FAISS index
+2026-04-13 17:12:53,746 - ai_copilot - INFO - Indexed 44 existing chunks for document 5
+2026-04-13 17:14:54,041 - ai_copilot - INFO - Added 553 vectors to FAISS index
+2026-04-13 17:14:54,043 - ai_copilot - INFO - Indexed 553 existing chunks for document 11
+2026-04-13 17:15:10,932 - ai_copilot - INFO - Added 70 vectors to FAISS index
+2026-04-13 17:15:10,938 - ai_copilot - INFO - Indexed 70 existing chunks for document 12
+2026-04-13 17:15:44,262 - ai_copilot - INFO - Added 133 vectors to FAISS index
+2026-04-13 17:15:44,265 - ai_copilot - INFO - Indexed 133 existing chunks for document 13
+2026-04-13 17:16:41,338 - ai_copilot - INFO - Added 476 vectors to FAISS index
+2026-04-13 17:16:41,339 - ai_copilot - INFO - Indexed 476 existing chunks for document 14
+2026-04-13 17:16:41,667 - ai_copilot - INFO - Added 3 vectors to FAISS index
+2026-04-13 17:16:41,668 - ai_copilot - INFO - Indexed 3 existing chunks for document 15
+2026-04-13 17:16:53,929 - ai_copilot - INFO - Added 101 vectors to FAISS index
+2026-04-13 17:16:53,930 - ai_copilot - INFO - Indexed 101 existing chunks for document 16
+2026-04-13 17:17:17,762 - ai_copilot - INFO - Added 201 vectors to FAISS index
+2026-04-13 17:17:17,763 - ai_copilot - INFO - Indexed 201 existing chunks for document 17
+2026-04-13 17:17:32,226 - ai_copilot - INFO - Added 120 vectors to FAISS index
+2026-04-13 17:17:32,227 - ai_copilot - INFO - Indexed 120 existing chunks for document 18
+2026-04-13 17:17:32,966 - ai_copilot - INFO - Added 5 vectors to FAISS index
+2026-04-13 17:17:32,967 - ai_copilot - INFO - Indexed 5 existing chunks for document 19
+2026-04-13 17:18:00,672 - ai_copilot - INFO - Added 217 vectors to FAISS index
+2026-04-13 17:18:00,673 - ai_copilot - INFO - Indexed 217 existing chunks for document 20
+2026-04-13 17:18:00,677 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 17:18:04,349 - ai_copilot - INFO - Added 23 vectors to FAISS index
+2026-04-13 17:18:04,350 - ai_copilot - INFO - Indexed 23 existing chunks for document 21
+2026-04-13 17:18:04,632 - ai_copilot - INFO - Added 2 vectors to FAISS index
+2026-04-13 17:18:04,633 - ai_copilot - INFO - Indexed 2 existing chunks for document 22
+2026-04-13 17:18:42,897 - ai_copilot - INFO - Added 394 vectors to FAISS index
+2026-04-13 17:18:42,898 - ai_copilot - INFO - Indexed 394 existing chunks for document 23
+2026-04-13 17:18:57,562 - ai_copilot - INFO - Added 120 vectors to FAISS index
+2026-04-13 17:18:57,563 - ai_copilot - INFO - Indexed 120 existing chunks for document 24
+2026-04-13 17:19:07,034 - ai_copilot - INFO - Added 80 vectors to FAISS index
+2026-04-13 17:19:07,036 - ai_copilot - INFO - Indexed 80 existing chunks for document 25
+2026-04-13 17:19:09,987 - ai_copilot - INFO - Added 23 vectors to FAISS index
+2026-04-13 17:19:09,988 - ai_copilot - INFO - Indexed 23 existing chunks for document 26
+2026-04-13 17:19:12,797 - ai_copilot - INFO - Added 23 vectors to FAISS index
+2026-04-13 17:19:12,798 - ai_copilot - INFO - Indexed 23 existing chunks for document 27
+2026-04-13 17:19:15,921 - ai_copilot - INFO - Added 25 vectors to FAISS index
+2026-04-13 17:19:15,922 - ai_copilot - INFO - Indexed 25 existing chunks for document 28
+2026-04-13 17:19:18,528 - ai_copilot - INFO - Added 23 vectors to FAISS index
+2026-04-13 17:19:18,529 - ai_copilot - INFO - Indexed 23 existing chunks for document 29
+2026-04-13 17:19:21,605 - ai_copilot - INFO - Added 23 vectors to FAISS index
+2026-04-13 17:19:21,606 - ai_copilot - INFO - Indexed 23 existing chunks for document 30
+2026-04-13 17:19:21,648 - ai_copilot - INFO - Message added to session 34
+2026-04-13 17:19:21,693 - ai_copilot - INFO - No chunks met the similarity threshold; returning top fallback matches instead
+2026-04-13 17:19:21,694 - ai_copilot - INFO - Retrieved 5 chunks for query
+2026-04-13 17:19:26,338 - ai_copilot - INFO - Query processed in 4643.36ms
+2026-04-13 17:19:26,382 - ai_copilot - INFO - Message added to session 34
+2026-04-13 17:22:02,472 - ai_copilot - INFO - External LLM warmup completed
