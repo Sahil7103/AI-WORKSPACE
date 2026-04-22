@@ -6,10 +6,7 @@ import { authAPI, integrationsAPI } from '../services/api'
 import { 
   Paperclip, 
   FileText, 
-  Link, 
-  Mail, 
-  MessageCircle, 
-  GitBranch 
+  Mail
 } from 'lucide-react'
 
 const DashboardPage = () => {
@@ -17,9 +14,7 @@ const DashboardPage = () => {
   const [inputVal, setInputVal] = useState('')
   const [showAttachMenu, setShowAttachMenu] = useState(false)
   const [gmailStatus, setGmailStatus] = useState({ connected: false, imported_count: 0 })
-  const [githubStatus, setGitHubStatus] = useState({ connected: false, imported_count: 0 })
   const [gmailBusy, setGmailBusy] = useState(false)
-  const [githubBusy, setGitHubBusy] = useState(false)
   
   const menuRef = useRef(null)
   const navigate = useNavigate()
@@ -59,37 +54,14 @@ const DashboardPage = () => {
     const params = new URLSearchParams(location.search)
     const gmail = params.get('gmail')
     const gmailMessage = params.get('gmail_message')
-    const github = params.get('github')
-    const githubMessage = params.get('github_message')
 
-    if (!gmail && !github) return
-
-    const loadIntegrationStatus = async () => {
-      try {
-        const [gmailResponse, githubResponse] = await Promise.all([
-          integrationsAPI.getGmailStatus(),
-          integrationsAPI.getGitHubStatus(),
-        ])
-        setGmailStatus(gmailResponse.data)
-        setGitHubStatus(githubResponse.data)
-      } catch {
-        setGmailStatus({ connected: false, imported_count: 0 })
-        setGitHubStatus({ connected: false, imported_count: 0 })
-      }
-    }
+    if (!gmail) return
 
     if (gmail === 'connected') {
       toast.success('Gmail connected successfully')
       loadIntegrationStatus()
     } else if (gmail === 'error') {
       toast.error(gmailMessage || 'Failed to connect Gmail')
-    }
-
-    if (github === 'connected') {
-      toast.success('GitHub connected successfully')
-      loadIntegrationStatus()
-    } else if (github === 'error') {
-      toast.error(githubMessage || 'Failed to connect GitHub')
     }
 
     const cleaned = `${location.pathname}${location.hash || ''}`
@@ -160,47 +132,6 @@ const DashboardPage = () => {
     }
   }
 
-  const handleSyncGitHub = async () => {
-    setGitHubBusy(true)
-    try {
-      const response = await integrationsAPI.syncGitHub(10)
-      setGitHubStatus(response.data)
-      toast.success(`Synced GitHub. Imported ${response.data.imported_count} repositories.`)
-    } catch (error) {
-      toast.error(error.response?.data?.detail || 'Failed to sync GitHub')
-    } finally {
-      setGitHubBusy(false)
-    }
-  }
-
-  const handleDisconnectGitHub = async () => {
-    setGitHubBusy(true)
-    try {
-      await integrationsAPI.disconnectGitHub()
-      setGitHubStatus({ connected: false, imported_count: 0 })
-      toast.success('GitHub disconnected')
-    } catch (error) {
-      toast.error(error.response?.data?.detail || 'Failed to disconnect GitHub')
-    } finally {
-      setGitHubBusy(false)
-    }
-  }
-
-  const handleGitHubToggle = async () => {
-    if (githubStatus?.connected) {
-      await handleDisconnectGitHub()
-      return
-    }
-
-    setGitHubBusy(true)
-    try {
-      const response = await integrationsAPI.getGitHubOAuthUrl('/')
-      window.location.href = response.data.auth_url
-    } catch (error) {
-      toast.error(error.response?.data?.detail || 'Failed to start GitHub connection')
-      setGitHubBusy(false)
-    }
-  }
 
   if (!user) return <div className="flex items-center justify-center min-h-screen text-[#A1A1AA]">Loading workspace...</div>
 
@@ -282,42 +213,6 @@ const DashboardPage = () => {
                           </div>
                         </button>
 
-                        <div className="w-full flex items-center justify-between px-3 py-2 text-sm text-[#F4F4F5] hover:bg-[#3F3F46] rounded-xl transition-colors cursor-pointer group">
-                          <div className="flex items-center gap-3">
-                            <MessageCircle size={16} className="text-[#A1A1AA]" />
-                            <span>Slack</span>
-                          </div>
-                          <div className="w-8 h-5 bg-[#3F3F46] rounded-full flex items-center px-1 transition-colors group-hover:bg-[#52525B]">
-                            <div className="w-3 h-3 bg-[#A1A1AA] rounded-full"></div>
-                          </div>
-                        </div>
-
-                        <button
-                          type="button"
-                          onClick={handleGitHubToggle}
-                          disabled={githubBusy}
-                          className="w-full flex items-center justify-between px-3 py-2 text-sm text-[#F4F4F5] hover:bg-[#3F3F46] rounded-xl transition-colors cursor-pointer group"
-                        >
-                          <div className="flex items-center gap-3">
-                            <GitBranch size={16} className="text-[#A1A1AA]" />
-                            <span>GitHub</span>
-                          </div>
-                          <div className={`w-8 h-5 rounded-full flex items-center px-1 transition-colors ${githubStatus?.connected ? 'bg-[#EA580C] justify-end' : 'bg-[#3F3F46] group-hover:bg-[#52525B]'}`}>
-                            <div className={`w-3 h-3 rounded-full ${githubStatus?.connected ? 'bg-[#F4F4F5]' : 'bg-[#A1A1AA]'}`}></div>
-                          </div>
-                        </button>
-
-                        {githubStatus?.connected && (
-                          <button
-                            type="button"
-                            onClick={handleSyncGitHub}
-                            disabled={githubBusy}
-                            className="w-full flex items-center gap-3 px-3 py-2 text-sm text-[#F4F4F5] hover:bg-[#3F3F46] rounded-xl transition-colors"
-                          >
-                            <Link size={16} className="text-[#A1A1AA]" />
-                            <span>{githubBusy ? 'Syncing GitHub...' : 'Sync GitHub repositories'}</span>
-                          </button>
-                        )}
 
                       </div>
                     </div>

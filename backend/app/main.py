@@ -12,7 +12,8 @@ from app.core.config import settings
 from app.core.database import init_db
 from app.utils.cache import cache
 from app.utils.logger import logger
-from app.api import auth, documents, chat, admin, agents, integrations
+from app.api import auth, documents, chat, admin, agents, integrations, health
+from app.core.security_headers import configure_production_middleware
 
 
 # Lifespan context manager
@@ -76,24 +77,11 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# Add CORS middleware
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=settings.cors_origins,
-    allow_origin_regex=r"https?://(localhost|127\.0\.0\.1)(:\d+)?$",
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-# Add trusted host middleware
-app.add_middleware(
-    TrustedHostMiddleware,
-    allowed_hosts=["localhost", "127.0.0.1", "testserver"],
-)
-
+# Configure production middleware (includes CORS, security headers, rate limiting)
+configure_production_middleware(app)
 
 # Include routers
+app.include_router(health.router)
 app.include_router(auth.router)
 app.include_router(documents.router)
 app.include_router(chat.router)
@@ -115,13 +103,6 @@ async def root():
     }
 
 
-@app.get("/health")
-async def health():
-    """Health check endpoint."""
-    return {
-        "status": "healthy",
-        "environment": settings.environment,
-    }
 
 
 if __name__ == "__main__":

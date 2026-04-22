@@ -25,10 +25,12 @@ def _build_async_database_url(database_url: str) -> str:
 database_url = settings.sqlalchemy_db_url or settings.database_url
 
 # Create async engine for async support
+# Note: For async engines, connection pooling is handled differently
+# The asyncpg driver manages its own connection pool
 engine = create_async_engine(
     _build_async_database_url(database_url),
     echo=settings.debug,
-    poolclass=NullPool,
+    poolclass=NullPool,  # Use NullPool for async, let driver manage pooling
 )
 
 # Create session factory

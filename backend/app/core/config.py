@@ -81,6 +81,20 @@ class Settings(BaseSettings):
     app_version: str = "1.0.0"
     environment: str = "development"
 
+    # Production Security Settings
+    enable_rate_limiting: bool = True
+    enable_audit_logging: bool = True
+    enable_error_tracking: bool = True
+    session_timeout_minutes: int = 480  # 8 hours
+    max_login_attempts: int = 5
+    lockout_duration_minutes: int = 15
+
+    # Database Pool Settings
+    db_pool_size: int = 20
+    db_max_overflow: int = 30
+    db_pool_timeout: int = 30
+    db_pool_recycle: int = 3600
+
     # Document Processing
     chunk_size: int = 500
     chunk_overlap: int = 50

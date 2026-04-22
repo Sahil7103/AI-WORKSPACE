@@ -1507,3 +1507,200 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 2026-04-13 17:19:26,338 - ai_copilot - INFO - Query processed in 4643.36ms
 2026-04-13 17:19:26,382 - ai_copilot - INFO - Message added to session 34
 2026-04-13 17:22:02,472 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 17:26:04,015 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 17:30:05,563 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 17:34:07,369 - ai_copilot - INFO - External LLM warmup completed
+2026-04-13 17:38:09,139 - ai_copilot - INFO - External LLM warmup completed
+2026-04-22 14:29:36,811 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-22 14:29:37,241 - ai_copilot - INFO - Starting up application
+2026-04-22 14:29:37,245 - ai_copilot - INFO - Environment: development
+2026-04-22 14:29:37,251 - ai_copilot - INFO - Debug: False
+2026-04-22 14:29:37,392 - ai_copilot - INFO - Database initialized
+2026-04-22 14:29:42,147 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-22 14:29:42,160 - ai_copilot - INFO - Redis cache disabled
+2026-04-22 14:29:42,161 - ai_copilot - INFO - LLM keepalive enabled with interval 240s
+2026-04-22 14:29:55,117 - ai_copilot - INFO - External LLM warmup completed
+2026-04-22 14:29:55,135 - ai_copilot - INFO - Initialized RAG Retriever
+2026-04-22 14:29:56,368 - ai_copilot - INFO - Initialized FAISS with dimension 384
+2026-04-22 14:32:20,224 - ai_copilot - INFO - Loaded embedding model: all-MiniLM-L6-v2
+2026-04-22 14:32:20,226 - ai_copilot - INFO - Embedding model warmup completed
+2026-04-22 14:33:31,182 - ai_copilot - ERROR - Google OAuth token exchange failed: Scope has changed from "openid https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/userinfo.email" to "openid https://www.googleapis.com/auth/userinfo.email".
+2026-04-22 14:33:31,215 - ai_copilot - WARNING - Gmail OAuth callback failed: Google OAuth token exchange failed: Scope has changed from "openid https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/userinfo.email" to "openid https://www.googleapis.com/auth/userinfo.email".
+2026-04-22 14:33:43,848 - ai_copilot - INFO - External LLM warmup completed
+2026-04-22 14:34:06,126 - ai_copilot - INFO - Document created: Gmail - AIS Technolabs Pvt Ltd is hiring a Artificial Intelligence Engineer (ID: 31)
+2026-04-22 14:34:06,129 - ai_copilot - INFO - Chunked document 31 into 550 chunks
+2026-04-22 14:35:37,551 - ai_copilot - INFO - Added 550 vectors to FAISS index
+2026-04-22 14:35:37,552 - ai_copilot - INFO - Stored 550 embeddings for document 31
+2026-04-22 14:35:38,605 - ai_copilot - INFO - Processed document 31 with 550 chunks
+2026-04-22 14:35:38,672 - ai_copilot - INFO - Document created: Gmail - ScaleTech Solutions is hiring a AI/ML Developer Interns (ID: 32)
+2026-04-22 14:35:38,677 - ai_copilot - INFO - Chunked document 32 into 406 chunks
+2026-04-22 14:36:35,820 - ai_copilot - INFO - Added 406 vectors to FAISS index
+2026-04-22 14:36:35,823 - ai_copilot - INFO - Stored 406 embeddings for document 32
+2026-04-22 14:36:36,358 - ai_copilot - INFO - Processed document 32 with 406 chunks
+2026-04-22 14:36:36,421 - ai_copilot - INFO - Document created: Gmail - Software Engineer – AI/ML Exposure (7+ Years Experience) at Edvance in Remote and 17 more new jobs (ID: 33)
+2026-04-22 14:36:36,424 - ai_copilot - INFO - Chunked document 33 into 295 chunks
+2026-04-22 14:37:26,815 - ai_copilot - INFO - Added 295 vectors to FAISS index
+2026-04-22 14:37:26,821 - ai_copilot - INFO - Stored 295 embeddings for document 33
+2026-04-22 14:37:27,236 - ai_copilot - INFO - Processed document 33 with 295 chunks
+2026-04-22 14:37:27,279 - ai_copilot - INFO - Document created: Gmail - SAHIL, these HTML, PHP, and Website Design projects and contests might interest you (ID: 34)
+2026-04-22 14:37:27,280 - ai_copilot - INFO - Chunked document 34 into 210 chunks
+2026-04-22 14:37:55,733 - ai_copilot - INFO - Added 210 vectors to FAISS index
+2026-04-22 14:37:55,734 - ai_copilot - INFO - Stored 210 embeddings for document 34
+2026-04-22 14:37:56,075 - ai_copilot - INFO - Processed document 34 with 210 chunks
+2026-04-22 14:37:56,173 - ai_copilot - INFO - Document created: Gmail - Secure link to log in to the Claude Console |  2026-04-22 10:04:26 (ID: 35)
+2026-04-22 14:37:56,174 - ai_copilot - INFO - Chunked document 35 into 21 chunks
+2026-04-22 14:37:59,152 - ai_copilot - INFO - Added 21 vectors to FAISS index
+2026-04-22 14:37:59,153 - ai_copilot - INFO - Stored 21 embeddings for document 35
+2026-04-22 14:37:59,205 - ai_copilot - INFO - Processed document 35 with 21 chunks
+2026-04-22 14:37:59,250 - ai_copilot - INFO - Document created: Gmail - Cerence AI is hiring a AI Intern (ID: 36)
+2026-04-22 14:37:59,252 - ai_copilot - INFO - Chunked document 36 into 546 chunks
+2026-04-22 14:39:14,363 - ai_copilot - INFO - Added 546 vectors to FAISS index
+2026-04-22 14:39:14,365 - ai_copilot - INFO - Stored 546 embeddings for document 36
+2026-04-22 14:39:15,066 - ai_copilot - INFO - Processed document 36 with 546 chunks
+2026-04-22 14:39:15,282 - ai_copilot - INFO - Document created: Gmail - Crossing Hurdles is hiring for a E-commerce role (ID: 37)
+2026-04-22 14:39:15,284 - ai_copilot - INFO - Chunked document 37 into 386 chunks
+2026-04-22 14:39:58,493 - ai_copilot - INFO - Added 386 vectors to FAISS index
+2026-04-22 14:39:58,494 - ai_copilot - INFO - Stored 386 embeddings for document 37
+2026-04-22 14:39:58,545 - ai_copilot - INFO - External LLM warmup completed
+2026-04-22 14:39:58,957 - ai_copilot - INFO - Processed document 37 with 386 chunks
+2026-04-22 14:39:59,004 - ai_copilot - INFO - Document created: Gmail - New activity in General Announcements (ID: 38)
+2026-04-22 14:39:59,005 - ai_copilot - INFO - Chunked document 38 into 28 chunks
+2026-04-22 14:40:02,939 - ai_copilot - INFO - Added 28 vectors to FAISS index
+2026-04-22 14:40:02,940 - ai_copilot - INFO - Stored 28 embeddings for document 38
+2026-04-22 14:40:03,319 - ai_copilot - INFO - Processed document 38 with 28 chunks
+2026-04-22 14:40:03,382 - ai_copilot - INFO - Document created: Gmail - Sahil, thanks for being a valued member (ID: 39)
+2026-04-22 14:40:03,383 - ai_copilot - INFO - Chunked document 39 into 122 chunks
+2026-04-22 14:40:24,095 - ai_copilot - INFO - Added 122 vectors to FAISS index
+2026-04-22 14:40:24,103 - ai_copilot - INFO - Stored 122 embeddings for document 39
+2026-04-22 14:40:24,313 - ai_copilot - INFO - Processed document 39 with 122 chunks
+2026-04-22 14:40:24,403 - ai_copilot - INFO - Document created: Gmail - New activity in Freelancer Onboarding (ID: 40)
+2026-04-22 14:40:24,404 - ai_copilot - INFO - Chunked document 40 into 70 chunks
+2026-04-22 14:40:37,118 - ai_copilot - INFO - Added 70 vectors to FAISS index
+2026-04-22 14:40:37,120 - ai_copilot - INFO - Stored 70 embeddings for document 40
+2026-04-22 14:40:37,250 - ai_copilot - INFO - Processed document 40 with 70 chunks
+2026-04-22 14:40:37,308 - ai_copilot - INFO - Document created: Gmail - SPQT Preparation Material – SkillInfyTech Stipend Internship (ID: 41)
+2026-04-22 14:40:37,309 - ai_copilot - INFO - Chunked document 41 into 5 chunks
+2026-04-22 14:40:38,485 - ai_copilot - INFO - Added 5 vectors to FAISS index
+2026-04-22 14:40:38,486 - ai_copilot - INFO - Stored 5 embeddings for document 41
+2026-04-22 14:40:38,523 - ai_copilot - INFO - Processed document 41 with 5 chunks
+2026-04-22 14:40:40,459 - ai_copilot - INFO - Chunked document 42 into 121 chunks
+2026-04-22 14:40:58,465 - ai_copilot - INFO - Added 121 vectors to FAISS index
+2026-04-22 14:40:58,467 - ai_copilot - INFO - Stored 121 embeddings for document 42
+2026-04-22 14:40:58,686 - ai_copilot - INFO - Processed document 42 with 121 chunks
+2026-04-22 14:40:58,835 - ai_copilot - INFO - Document created: Gmail - Don’t miss conversations in Generative AI (ID: 43)
+2026-04-22 14:40:58,840 - ai_copilot - INFO - Chunked document 43 into 112 chunks
+2026-04-22 14:41:15,693 - ai_copilot - INFO - Added 112 vectors to FAISS index
+2026-04-22 14:41:15,694 - ai_copilot - INFO - Stored 112 embeddings for document 43
+2026-04-22 14:41:15,883 - ai_copilot - INFO - Processed document 43 with 112 chunks
+2026-04-22 14:41:15,984 - ai_copilot - INFO - Chunked document 44 into 98 chunks
+2026-04-22 14:41:28,819 - ai_copilot - INFO - Added 98 vectors to FAISS index
+2026-04-22 14:41:28,820 - ai_copilot - INFO - Stored 98 embeddings for document 44
+2026-04-22 14:41:28,982 - ai_copilot - INFO - Processed document 44 with 98 chunks
+2026-04-22 14:41:29,022 - ai_copilot - INFO - Document created: Gmail - Sahil, your profile photo was changed (ID: 45)
+2026-04-22 14:41:29,023 - ai_copilot - INFO - Chunked document 45 into 46 chunks
+2026-04-22 14:41:35,065 - ai_copilot - INFO - Added 46 vectors to FAISS index
+2026-04-22 14:41:35,066 - ai_copilot - INFO - Stored 46 embeddings for document 45
+2026-04-22 14:41:35,145 - ai_copilot - INFO - Processed document 45 with 46 chunks
+2026-04-22 14:41:35,188 - ai_copilot - INFO - Document created: Gmail - Sahil, your posts got 10 impressions last week (ID: 46)
+2026-04-22 14:41:35,189 - ai_copilot - INFO - Chunked document 46 into 63 chunks
+2026-04-22 14:41:43,926 - ai_copilot - INFO - Added 63 vectors to FAISS index
+2026-04-22 14:41:43,947 - ai_copilot - INFO - Stored 63 embeddings for document 46
+2026-04-22 14:41:44,058 - ai_copilot - INFO - Processed document 46 with 63 chunks
+2026-04-22 14:41:44,103 - ai_copilot - INFO - Document created: Gmail - Sahil, your profile photo was changed (ID: 47)
+2026-04-22 14:41:44,104 - ai_copilot - INFO - Chunked document 47 into 46 chunks
+2026-04-22 14:41:50,071 - ai_copilot - INFO - Added 46 vectors to FAISS index
+2026-04-22 14:41:50,071 - ai_copilot - INFO - Stored 46 embeddings for document 47
+2026-04-22 14:41:50,151 - ai_copilot - INFO - Processed document 47 with 46 chunks
+2026-04-22 14:41:50,194 - ai_copilot - INFO - Document created: Gmail - Transform your photos with Adobe Lightroom Mobile (ID: 48)
+2026-04-22 14:41:50,195 - ai_copilot - INFO - Chunked document 48 into 40 chunks
+2026-04-22 14:41:55,626 - ai_copilot - INFO - Added 40 vectors to FAISS index
+2026-04-22 14:41:55,627 - ai_copilot - INFO - Stored 40 embeddings for document 48
+2026-04-22 14:41:55,712 - ai_copilot - INFO - Processed document 48 with 40 chunks
+2026-04-22 14:41:55,764 - ai_copilot - INFO - Document created: Gmail - SAHIL, these PHP, Web Development, and Website Design projects and contests might interest you (ID: 49)
+2026-04-22 14:41:55,765 - ai_copilot - INFO - Chunked document 49 into 210 chunks
+2026-04-22 14:42:27,319 - ai_copilot - INFO - Added 210 vectors to FAISS index
+2026-04-22 14:42:27,321 - ai_copilot - INFO - Stored 210 embeddings for document 49
+2026-04-22 14:42:27,605 - ai_copilot - INFO - Processed document 49 with 210 chunks
+2026-04-22 14:42:27,868 - ai_copilot - INFO - Document created: Gmail - Updating Netlify’s privacy statement (ID: 50)
+2026-04-22 14:42:27,900 - ai_copilot - INFO - Chunked document 50 into 34 chunks
+2026-04-22 14:42:34,609 - ai_copilot - INFO - Added 34 vectors to FAISS index
+2026-04-22 14:42:34,610 - ai_copilot - INFO - Stored 34 embeddings for document 50
+2026-04-22 14:42:34,682 - ai_copilot - INFO - Processed document 50 with 34 chunks
+2026-04-22 14:42:34,713 - ai_copilot - INFO - Imported 20 Gmail messages for user 2
+2026-04-22 14:42:34,714 - ai_copilot - INFO - Gmail OAuth connected for user 2; imported 20 emails
+2026-04-22 14:44:00,503 - ai_copilot - INFO - External LLM warmup completed
+2026-04-22 14:48:02,349 - ai_copilot - INFO - External LLM warmup completed
+2026-04-22 14:52:04,230 - ai_copilot - INFO - External LLM warmup completed
+2026-04-22 14:54:30,379 - ai_copilot - INFO - Message added to session 34
+2026-04-22 14:54:30,526 - ai_copilot - INFO - No chunks met the similarity threshold; returning top fallback matches instead
+2026-04-22 14:54:30,528 - ai_copilot - INFO - Retrieved 5 chunks for query
+2026-04-22 14:54:33,495 - ai_copilot - INFO - Query processed in 2965.77ms
+2026-04-22 14:54:33,766 - ai_copilot - INFO - Message added to session 34
+2026-04-22 14:56:06,081 - ai_copilot - INFO - External LLM warmup completed
+2026-04-22 15:00:07,738 - ai_copilot - INFO - External LLM warmup completed
+2026-04-22 15:01:40,297 - ai_copilot - INFO - Imported 0 Gmail messages for user 2
+2026-04-22 15:04:09,578 - ai_copilot - INFO - External LLM warmup completed
+2026-04-22 15:04:12,354 - ai_copilot - INFO - Document 5 deleted
+2026-04-22 15:05:08,627 - ai_copilot - INFO - Imported 0 Gmail messages for user 2
+2026-04-22 15:05:08,630 - ai_copilot - INFO - Gmail OAuth connected for user 2; imported 0 emails
+2026-04-22 15:08:11,539 - ai_copilot - INFO - External LLM warmup completed
+2026-04-22 15:12:13,513 - ai_copilot - INFO - External LLM warmup completed
+2026-04-22 15:16:15,483 - ai_copilot - INFO - External LLM warmup completed
+2026-04-22 15:17:23,255 - ai_copilot - INFO - Shutting down application
+2026-04-22 15:17:23,259 - ai_copilot - INFO - Redis disconnected
+2026-04-22 15:22:46,762 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-22 15:22:47,243 - ai_copilot - INFO - Starting up application
+2026-04-22 15:22:47,283 - ai_copilot - INFO - Environment: development
+2026-04-22 15:22:47,297 - ai_copilot - INFO - Debug: False
+2026-04-22 15:22:47,341 - ai_copilot - INFO - Database initialized
+2026-04-22 15:22:52,065 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-22 15:22:52,067 - ai_copilot - INFO - Redis cache disabled
+2026-04-22 15:22:52,071 - ai_copilot - INFO - LLM keepalive enabled with interval 240s
+2026-04-22 15:22:53,828 - ai_copilot - INFO - External LLM warmup completed
+2026-04-22 15:22:53,836 - ai_copilot - INFO - Initialized RAG Retriever
+2026-04-22 15:22:54,302 - ai_copilot - INFO - Initialized FAISS with dimension 384
+2026-04-22 15:23:58,882 - ai_copilot - INFO - Loaded embedding model: all-MiniLM-L6-v2
+2026-04-22 15:23:58,885 - ai_copilot - INFO - Embedding model warmup completed
+2026-04-22 15:24:01,370 - ai_copilot - ERROR - Rate limiter error: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-22 15:24:03,870 - ai_copilot - ERROR - Rate limiter error: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-22 15:24:06,144 - ai_copilot - ERROR - Rate limiter error: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-22 15:24:08,827 - ai_copilot - ERROR - Rate limiter error: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-22 15:24:09,227 - ai_copilot - INFO - Shutting down application
+2026-04-22 15:24:09,232 - ai_copilot - INFO - Redis disconnected
+2026-04-22 15:24:37,493 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
+2026-04-22 15:24:38,987 - ai_copilot - INFO - Starting up application
+2026-04-22 15:24:39,028 - ai_copilot - INFO - Environment: development
+2026-04-22 15:24:39,053 - ai_copilot - INFO - Debug: False
+2026-04-22 15:24:39,270 - ai_copilot - INFO - Database initialized
+2026-04-22 15:24:44,180 - ai_copilot - WARNING - Redis unavailable, cache disabled: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-22 15:24:44,201 - ai_copilot - INFO - Redis cache disabled
+2026-04-22 15:24:44,202 - ai_copilot - INFO - LLM keepalive enabled with interval 240s
+2026-04-22 15:24:46,065 - ai_copilot - INFO - External LLM warmup completed
+2026-04-22 15:24:46,079 - ai_copilot - INFO - Initialized RAG Retriever
+2026-04-22 15:24:46,350 - ai_copilot - INFO - Initialized FAISS with dimension 384
+2026-04-22 15:26:12,183 - ai_copilot - INFO - Loaded embedding model: all-MiniLM-L6-v2
+2026-04-22 15:26:12,216 - ai_copilot - INFO - Embedding model warmup completed
+2026-04-22 15:26:14,485 - ai_copilot - ERROR - Rate limiter error: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-22 15:26:14,526 - ai_copilot - ERROR - Rate limiter error: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-22 15:26:14,542 - ai_copilot - ERROR - Rate limiter error: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-22 15:26:14,597 - ai_copilot - ERROR - Rate limiter error: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-22 15:26:14,666 - ai_copilot - ERROR - Rate limiter error: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-22 15:26:14,680 - ai_copilot - ERROR - Rate limiter error: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-22 15:26:19,142 - ai_copilot - ERROR - Rate limiter error: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-22 15:26:19,311 - ai_copilot - ERROR - Rate limiter error: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-22 15:26:19,316 - ai_copilot - ERROR - Rate limiter error: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-22 15:26:19,379 - ai_copilot - ERROR - Rate limiter error: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-22 15:26:19,393 - ai_copilot - ERROR - Rate limiter error: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-22 15:26:19,655 - ai_copilot - ERROR - Rate limiter error: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-22 15:26:24,741 - ai_copilot - ERROR - Rate limiter error: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-22 15:26:24,772 - ai_copilot - ERROR - Rate limiter error: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-22 15:26:24,835 - ai_copilot - ERROR - Rate limiter error: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-22 15:26:24,855 - ai_copilot - ERROR - Rate limiter error: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-22 15:26:29,335 - ai_copilot - ERROR - Rate limiter error: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-22 15:26:29,390 - ai_copilot - ERROR - Rate limiter error: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-22 15:26:29,774 - ai_copilot - ERROR - Rate limiter error: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-22 15:26:29,787 - ai_copilot - ERROR - Rate limiter error: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+2026-04-22 15:28:46,191 - ai_copilot - INFO - External LLM warmup completed
+2026-04-22 15:32:48,061 - ai_copilot - INFO - External LLM warmup completed
+2026-04-22 15:36:49,751 - ai_copilot - INFO - External LLM warmup completed
+2026-04-22 15:40:00,474 - ai_copilot - INFO - Initialized external LLM service with model: sk1354/llama3-career-api via https://sk1354-llama3-career-api.hf.space/chat
